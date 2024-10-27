@@ -1,0 +1,51 @@
+@font-face{
+    font-family: yekan;
+    src : url("../fonts/iranyekanwebbold.ttf")
+}
+
+*{
+    font-family: yekan;
+}
+/* utility  */
+.lh-1{
+    line-height: 30px;
+  }
+  
+  .lh-2{
+    line-height: 35px;
+  }
+  /* end of utility  */
+
+  /* header  */
+header{
+    height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.407), rgba(0,0,0,.8)) , url(../images/p1.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  
+  }
+
+  .banner{
+    animation-name: anim;
+    animation-duration: 2s;
+  }
+  .banner-link{
+    animation-name: anim;
+    animation-duration: 2s;
+    animation-delay: .2s;
+    animation-fill-mode: backwards;
+  }
+  @keyframes anim{
+    0%{
+        transform: translateX(120px);
+        opacity:0;
+    }
+    100%{
+        transform: translateX(0px);
+        opacity:1;
+    }
+  }
+
+  
