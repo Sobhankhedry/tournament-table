@@ -14,7 +14,7 @@
     <!-- header   -->
     <header>
     <!-- anvbar -->
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm nav-menu">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm  nav-menu">
       <button class="navbar-toggler" data-toggle="collapse" data-target="#mynav">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -39,9 +39,179 @@
       <h3 class="display-5 text-white">مسابقات هنرهای رزمی</h3>
       <a href="" class="btn btn-success banner-link">مشاهده جدول مسابقات</a>
     </div>
+    <!-- end of banner -->
+  </header>
+   <!-- services  -->
+   <section class="bg-secondary py-4">
+    <div class="container-fluid">
+      <!-- title  -->
+      <div class="row text-center mb-5 justify-content-center">
+        <div class="col-xl-6 col-lg-8 col-md-10">
+          <h1 class="text-dark">افتخارات</h1>
+          <div class="underline my-5"></div>
+          <p class="text-dark lh-2 h5">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است</p>
+        </div>
+      </div>
+      <!-- end of title  -->
+      <div class="row">
+        <div class="col-lg-3 col-sm-6 my-5">
+            <div class="card border-0 card-shadow">
+                <img src="images/p2.jpg" alt="" class="card-img">
+                <div class="card-img-overlay">
+                    <button class="btn btn-dark text-white heading p-2" data-bs-toggle="modal" data-bs-target="#infoModal1" id="showInfoButton1" type="button">قهرمانی</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 my-5">
+            <div class="card border-0 card-shadow">
+                <img src="images/p3.jpg" alt="" class="card-img">
+                <div class="card-img-overlay">
+                    <button class="btn btn-dark text-white heading p-2" data-bs-toggle="modal" data-bs-target="#infoModal2" id="showInfoButton2" type="button">مدال ها</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 my-5">
+            <div class="card border-0 card-shadow">
+                <img src="images/p3.jpg" alt="" class="card-img">
+                <div class="card-img-overlay">
+                    <button class="btn btn-dark text-white heading p-2" data-bs-toggle="modal" data-bs-target="#infoModal3" id="showInfoButton3" type="button">داوران</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 my-5">
+            <div class="card border-0 card-shadow">
+                <img src="images/p4.jpg" alt="" class="card-img">
+                <div class="card-img-overlay">
+                    <button class="btn btn-dark text-white heading p-2" data-bs-toggle="modal" data-bs-target="#infoModal4" id="showInfoButton4" type="button">مربیان</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    </header>
-      
+<!-- Modals -->
+<div class="modal fade" id="infoModal1" tabindex="-1" aria-labelledby="infoModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel1">قهرمانی</h5>
+            </div>
+            <div class="modal-body">
+                <h2>مقام اول</h2>
+                <br>
+                <h3>مقام دوم</h3>
+                <br>
+                <h3>مقام سوم</h3>
+                <br>
+                <img src="" alt="Placeholder Image" class="img-fluid mt-3">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="infoModal2" tabindex="-1" aria-labelledby="infoModalLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel2">مدال ها</h5>
+            </div>
+            <div class="modal-body">
+                <h2>مدال های طلا</h2>
+                <h2>مدال های نقره</h2>
+                <h2>مدال های برنز</h2>
+                <img src="/placeholder.svg?height=200&width=400" alt="Placeholder Image" class="img-fluid mt-3">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="infoModal3" tabindex="-1" aria-labelledby="infoModalLabel3" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel3">داوران</h5>
+            </div>
+            <div class="modal-body">
+                <h2>لیست داوران</h2>
+                <ul>
+                    <li>داور 1</li>
+                    <li>داور 2</li>
+                    <li>داور 3</li>
+                </ul>
+                <img src="" alt="Placeholder Image" class="img-fluid mt-3">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="infoModal4" tabindex="-1" aria-labelledby="infoModalLabel4" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel4">مربیان</h5>
+            </div>
+            <div class="modal-body">
+                <h2>لیست مربیان</h2>
+                <ul>
+                    <li>مربی 1</li>
+                    <li>مربی 2</li>
+                    <li>مربی 3</li>
+                </ul>
+                <img src="" alt="Placeholder Image" class="img-fluid mt-3">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+   document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('[id^="showInfoButton"]');
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                const modalId = this.getAttribute('data-bs-target').substring(1);
+                const modal = new bootstrap.Modal(document.getElementById(modalId));
+                modal.show();
+            });
+        });
+
+        // Add event listeners for all close buttons
+        const closeButtons = document.querySelectorAll('[data-bs-dismiss="modal"]');
+        closeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const modal = bootstrap.Modal.getInstance(this.closest('.modal'));
+                if (modal) {
+                    modal.hide();
+                }
+            });
+        });
+
+        // Add event listener for when modal is hidden
+        document.querySelectorAll('.modal').forEach(modalElement => {
+            modalElement.addEventListener('hidden.bs.modal', function() {
+                document.body.classList.remove('modal-open');
+                const modalBackdrops = document.querySelectorAll('.modal-backdrop');
+                modalBackdrops.forEach(backdrop => backdrop.remove());
+            });
+        });
+    });
+
+</script>
+  <!-- end of services  -->    
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+  
     <script src="./js/jquery-3.7.1.min.js"></script>
     <script src="./js/popper.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>

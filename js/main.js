@@ -5,4 +5,4 @@ $(window).scroll(function(){
     }else{
         $('.nav-menu').removeClass('custom-navbar')
     }
-})
+}) 
