@@ -1,4 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using TournamentProject.Areas.Identity.Data;
+
+
+
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("TournamentProjectContextConnection") ?? throw new InvalidOperationException("Connection string 'TournamentProjectContextConnection' not found.");
+
+builder.Services.AddDbContext<TournamentDBContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<TournamentDBContext>();
+
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -23,5 +35,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();
