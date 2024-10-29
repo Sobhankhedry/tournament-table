@@ -8,7 +8,7 @@ var connectionString = builder.Configuration.GetConnectionString("TournamentProj
 
 builder.Services.AddDbContext<TournamentDBContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<TournamentDBContext>();
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<TournamentDBContext>();
 
 
 
