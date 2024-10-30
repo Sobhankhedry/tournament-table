@@ -24,10 +24,10 @@
       <div class="collapse navbar-collapse" id="mynav">
         <ul class="navbar-nav list-unstyled my-3">
           <li class="nav-item mx-2">
-            <a href="" class="nav-link badge badge-light text-dark mb-2 p-2 menu-item">ورود</a>
+            <a href="login.html" class="nav-link badge badge-light text-dark mb-2 p-2 menu-item">ورود</a>
           </li>
           <li class="nav-item mx-2">
-            <a href="" class="nav-link badge badge-light text-dark p-2 menu-item">ثبت نام</a>
+            <a href="signup" class="nav-link badge badge-light text-dark p-2 menu-item">ثبت نام</a>
           </li>
         </ul> 
       </div>
@@ -278,6 +278,54 @@
     </div>
     <!-- Copyright -->
   </footer>
+
+  <div class="container">
+    <div id="main-page" class="page">
+      <h1>Welcome to My Website</h1>
+      <p>This is the main page content.</p>
+      <button id="login-btn">Login</button>
+      <button id="signup-btn">Sign Up</button>
+    </div>
+
+    <div id="login-page" class="page hide">
+      <!-- Your login form -->
+      <h1>Login</h1>
+      <form>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" class="form-control" id="password" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      <p>Don't have an account? <a href="#" id="switch-signup">Sign Up</a></p>
+    </div>
+
+    <div id="signup-page" class="page hide">
+      <!-- Your signup form -->
+      <h1>Sign Up</h1>
+      <form>
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" class="form-control" id="username" placeholder="Enter username">
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" class="form-control" id="password" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      <p>Already have an account? <a href="#" id="switch-login">Log In</a></p>
+    </div>
+  </div>
+
 <script>
    document.addEventListener('DOMContentLoaded', function() {
         const buttons = document.querySelectorAll('[id^="showInfoButton"]');
@@ -309,14 +357,10 @@
             });
         });
     });
-
-</script>
+ </script>
   
-
- 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-  
     <script src="./js/jquery-3.7.1.min.js"></script>
     <script src="./js/popper.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>

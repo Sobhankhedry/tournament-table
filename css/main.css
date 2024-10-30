@@ -114,7 +114,7 @@ header{
 }
 .myinput::placeholder {
   color: black !important;
-  opacity: 1 !important; /* Ensures full opacity */
+  opacity: 1 !important;
 }
 .label{
   color: black !important; 
@@ -138,6 +138,15 @@ header{
     margin: auto;
   }
 }
+.hide {
+  display: none;
+}
 
+.page {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
 
 /* end of contact */
