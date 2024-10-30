@@ -1,50 +1,227 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - TournamentProject</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/TournamentProject.styles.css" asp-append-version="true" />
+    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/bootstrap.fa.min.css">
+    <script src="https://kit.fontawesome.com/9682b0efe9.js" crossorigin="anonymous"></script>
 </head>
 <body>
+
+    <!-- header   -->
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TournamentProject</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-                <partial name="_LoginPartial" />
+        <!-- anvbar -->
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm  nav-menu">
+            <button class="navbar-toggler" data-toggle="collapse" data-target="#mynav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a href="" class="navbar-brand text-dark mx-3">
+                <i class="fa-solid fa-yin-yang " style="color: #ffffff; font-size: 25px; margin-left: 40px;"></i>
+            </a>
+            <div class="collapse navbar-collapse" id="mynav">
+                <ul class="navbar-nav list-unstyled my-3">
+                    <li class="nav-item mx-2">
+                        <a href="" class="nav-link badge badge-light text-dark mb-2 p-2 menu-item">ورود</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a href="" class="nav-link badge badge-light text-dark p-2 menu-item">ثبت نام</a>
+                    </li>
+                </ul>
             </div>
         </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - TournamentProject - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <!-- end of navbar -->
+        <!-- Banner -->
+        <div class="banner mt-3" style="text-align: center;">
+            <h3 class="display-5 text-white">مسابقات هنرهای رزمی</h3>
+            <a href="" class="btn btn-success banner-link">مشاهده جدول مسابقات</a>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+        <!-- end of banner -->
+    </header>
+    <!-- services  -->
+    <section class="bg-secondary py-4">
+        <div class="container-fluid">
+            <!-- title  -->
+            <div class="row text-center mb-5 justify-content-center">
+                <div class="col-xl-6 col-lg-8 col-md-10">
+                    <h1 class="text-dark">افتخارات</h1>
+                    <div class="underline my-5"></div>
+                    <p class="text-dark lh-2 h5">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است</p>
+                </div>
+            </div>
+            <!-- end of title  -->
+            <div class="">
+                <!-- Main content placeholder -->
+                @RenderBody()
+            <div class="row">
+                <div class="col-lg-3 col-sm-6 my-5">
+                    <div class="card border-0 card-shadow">
+                        <img src="images/p2.jpg" alt="" class="card-img">
+                        <div class="card-img-overlay">
+                            <button class="btn btn-dark text-white heading p-2" data-bs-toggle="modal" data-bs-target="#infoModal1" id="showInfoButton1" type="button">قهرمانی</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 my-5">
+                    <div class="card border-0 card-shadow">
+                        <img src="images/p3.jpg" alt="" class="card-img">
+                        <div class="card-img-overlay">
+                            <button class="btn btn-dark text-white heading p-2" data-bs-toggle="modal" data-bs-target="#infoModal2" id="showInfoButton2" type="button">مدال ها</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 my-5">
+                    <div class="card border-0 card-shadow">
+                        <img src="images/p3.jpg" alt="" class="card-img">
+                        <div class="card-img-overlay">
+                            <button class="btn btn-dark text-white heading p-2" data-bs-toggle="modal" data-bs-target="#infoModal3" id="showInfoButton3" type="button">داوران</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 my-5">
+                    <div class="card border-0 card-shadow">
+                        <img src="images/p4.jpg" alt="" class="card-img">
+                        <div class="card-img-overlay">
+                            <button class="btn btn-dark text-white heading p-2" data-bs-toggle="modal" data-bs-target="#infoModal4" id="showInfoButton4" type="button">مربیان</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <div class="modal fade" id="infoModal1" tabindex="-1" aria-labelledby="infoModalLabel1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="infoModalLabel1">قهرمانی</h5>
+                    </div>
+                    <div class="modal-body">
+                        <h2>مقام اول</h2>
+                        <br>
+                        <h3>مقام دوم</h3>
+                        <br>
+                        <h3>مقام سوم</h3>
+                        <br>
+                        <img src="" alt="Placeholder Image" class="img-fluid mt-3">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="infoModal2" tabindex="-1" aria-labelledby="infoModalLabel2" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="infoModalLabel2">مدال ها</h5>
+                    </div>
+                    <div class="modal-body">
+                        <h2>مدال های طلا</h2>
+                        <h2>مدال های نقره</h2>
+                        <h2>مدال های برنز</h2>
+                        <img src="/placeholder.svg?height=200&width=400" alt="Placeholder Image" class="img-fluid mt-3">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="infoModal3" tabindex="-1" aria-labelledby="infoModalLabel3" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="infoModalLabel3">داوران</h5>
+                    </div>
+                    <div class="modal-body">
+                        <h2>لیست داوران</h2>
+                        <ul>
+                            <li>داور 1</li>
+                            <li>داور 2</li>
+                            <li>داور 3</li>
+                        </ul>
+                        <img src="" alt="Placeholder Image" class="img-fluid mt-3">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="infoModal4" tabindex="-1" aria-labelledby="infoModalLabel4" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="infoModalLabel4">مربیان</h5>
+                    </div>
+                    <div class="modal-body">
+                        <h2>لیست مربیان</h2>
+                        <ul>
+                            <li>مربی 1</li>
+                            <li>مربی 2</li>
+                            <li>مربی 3</li>
+                        </ul>
+                        <img src="" alt="Placeholder Image" class="img-fluid mt-3">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const buttons = document.querySelectorAll('[id^="showInfoButton"]');
+                buttons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const modalId = this.getAttribute('data-bs-target').substring(1);
+                        const modal = new bootstrap.Modal(document.getElementById(modalId));
+                        modal.show();
+                    });
+                });
+
+                // Add event listeners for all close buttons
+                const closeButtons = document.querySelectorAll('[data-bs-dismiss="modal"]');
+                closeButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const modal = bootstrap.Modal.getInstance(this.closest('.modal'));
+                        if (modal) {
+                            modal.hide();
+                        }
+                    });
+                });
+
+                // Add event listener for when modal is hidden
+                document.querySelectorAll('.modal').forEach(modalElement => {
+                    modalElement.addEventListener('hidden.bs.modal', function () {
+                        document.body.classList.remove('modal-open');
+                        const modalBackdrops = document.querySelectorAll('.modal-backdrop');
+                        modalBackdrops.forEach(backdrop => backdrop.remove());
+                    });
+                });
+            });
+
+        </script>
+        </div>
+        <!-- end of services  -->
+        <script src="~/js/popper.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
+
+        <script src="./js/jquery-3.7.1.min.js"></script>
+        <script src="./js/popper.min.js"></script>
+        <script src="./js/bootstrap.min.js"></script>
+        <script src="./js/main.js"></script>
+        <footer>
+            <!-- Your footer content here -->
+        </footer>
 </body>
+
 </html>
