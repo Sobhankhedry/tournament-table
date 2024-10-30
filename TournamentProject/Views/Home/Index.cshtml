@@ -1,5 +1,4 @@
-﻿
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
     <title>Title</title>
@@ -9,6 +8,19 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/bootstrap.fa.min.css">
     <script src="https://kit.fontawesome.com/9682b0efe9.js" crossorigin="anonymous"></script>
+        <script src="~/js/popper.min.js"></script>
+        <script src="~/js/bootstrap.min.js"></script>
+        <script src="./js/jquery-3.7.1.min.js"></script>
+        <script src="./js/popper.min.js"></script>
+        <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/main.js"></script>
+    
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.esm.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.esm.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 </head>
 <body>
 
@@ -25,10 +37,10 @@
             <div class="collapse navbar-collapse" id="mynav">
                 <ul class="navbar-nav list-unstyled my-3">
                     <li class="nav-item mx-2">
-                        <a href="" class="nav-link badge badge-light text-dark mb-2 p-2 menu-item">ورود</a>
+                        <a href="login.html" class="nav-link badge badge-light text-dark mb-2 p-2 menu-item">ورود</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a href="" class="nav-link badge badge-light text-dark p-2 menu-item">ثبت نام</a>
+                        <a href="signup" class="nav-link badge badge-light text-dark p-2 menu-item">ثبت نام</a>
                     </li>
                 </ul>
             </div>
@@ -42,7 +54,7 @@
         <!-- end of banner -->
     </header>
     <!-- Tournament banner -->
-    <section class="p-5 bg-dark accordion">
+    <section    class="p-5 bg-dark accordion">
         <div class="container-fluid">
             <div class="row text-center justify-content-center">
                 <div class="col-xl-6 col-lg-8">
@@ -74,10 +86,6 @@
         </div>
     </section>
     <!-- End of tournament banner -->
-    <div class="container">
-        @* @IgnoreBody(); *@
-    </div>
-
     <!-- services  -->
     <section class="bg-dark accordion py-4">
         <div class="container-fluid">
@@ -278,48 +286,59 @@
                 <a class="text-reset fw-bold" href="https://mdbootstrap.ir/">ourCompany.ir</a>
             </div>
             <!-- Copyright -->
-        </footer>
+        </footer>  
+
+
+
+
+
+
+     
+
+
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                 const buttons = document.querySelectorAll('[id^="showInfoButton"]');
-                 buttons.forEach(button => {
-                     button.addEventListener('click', function() {
-                         const modalId = this.getAttribute('data-bs-target').substring(1);
-                         const modal = new bootstrap.Modal(document.getElementById(modalId));
-                         modal.show();
-                     });
-                 });
+            document.addEventListener('DOMContentLoaded', function () {
+                const buttons = document.querySelectorAll('[id^="showInfoButton"]');
+                buttons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const modalId = this.getAttribute('data-bs-target').substring(1);
+                        const modal = new bootstrap.Modal(document.getElementById(modalId));
 
-                 // Add event listeners for all close buttons
-                 const closeButtons = document.querySelectorAll('[data-bs-dismiss="modal"]');
-                 closeButtons.forEach(button => {
-                     button.addEventListener('click', function() {
-                         const modal = bootstrap.Modal.getInstance(this.closest('.modal'));
-                         if (modal) {
-                             modal.hide();
-                         }
-                     });
-                 });
+                        // Add blur class to body or specific element
+                        document.body.classList.add('blur');
+                        
+                        modal.show();
+                    });
+                });
 
-                 // Add event listener for when modal is hidden
-                 document.querySelectorAll('.modal').forEach(modalElement => {
-                     modalElement.addEventListener('hidden.bs.modal', function() {
-                         document.body.classList.remove('modal-open');
-                         const modalBackdrops = document.querySelectorAll('.modal-backdrop');
-                         modalBackdrops.forEach(backdrop => backdrop.remove());
-                     });
-                 });
-             });
+                // Add event listeners for all close buttons
+                const closeButtons = document.querySelectorAll('[data-bs-dismiss="modal"]');
+                closeButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const modal = bootstrap.Modal.getInstance(this.closest('.modal'));
+                        if (modal) {
+                            modal.hide();
+                        }
+                    });
+                });
 
+                // Add event listener for when modal is hidden
+                document.querySelectorAll('.modal').forEach(modalElement => {
+                    modalElement.addEventListener('hidden.bs.modal', function () {
+                        // Remove blur class
+                        document.body.classList.remove('blur');
+
+                        // Optionally remove backdrop
+                        const modalBackdrops = document.querySelectorAll('.modal-backdrop');
+                        modalBackdrops.forEach(backdrop => backdrop.remove());
+                    });
+                });
+            });
+
+        
         </script>
 
-
-        <script src="~/popper.min.js"></script>
-        <script src="~/js/bootstrap.min.js"></script>
-
-        <script src="./js/jquery-3.7.1.min.js"></script>
-        <script src="./js/popper.min.js"></script>
-        <script src="./js/bootstrap.min.js"></script>
-        <script src="./js/main.js"></script>
 </body>
 </html>
+
+    

@@ -137,6 +137,12 @@ header {
     visibility: hidden !important;
 }
 
+.modal-blur {
+    filter: blur(5px); /* Adjust the blur strength as needed */
+    transition: filter 0.3s ease; /* Optional transition for smoothness */
+}
+
+
 @media(max-width: 992px) {
     .contact {
         background: linear-gradient(105deg,rgba(99, 118, 137, 0.8)0%,rgba(99, 118, 137,.9)50%);
