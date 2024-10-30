@@ -90,4 +90,63 @@ header{
 
 
 /* end of services  */
-  
+
+
+/* contact */
+.contact {
+    background: linear-gradient(105deg,rgba(99, 118, 137, 0.8)0%,rgba(99, 118, 137,.9)50%,transparent 50% ),url(../bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.myinput {
+    background: transparent !important;
+    border: none !important;
+    border-color: transparent !important;
+    border-radius: 0px !important;
+    color: #000 !important;
+    border-bottom: 2px solid #ccc !important;
+    transition: all 0.8s !important;
+}
+
+    .myinput:focus {
+        background: transparent !important;
+        border: none !important;
+        border-color: transparent !important;
+        box-shadow: none !important;
+        border-bottom: 2px solid black !important;
+    }
+
+    .myinput::placeholder {
+        color: black !important;
+        opacity: 1 !important; /* Ensures full opacity */
+    }
+
+.label {
+    color: black !important;
+    display: block !important;
+    font-size: 13px !important;
+    margin-top: -60px !important;
+    margin-right: 4px !important;
+    transition: all .4s;
+}
+
+.myinput:placeholder-shown + .label {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+@media(max-width: 992px) {
+    .contact {
+        background: linear-gradient(105deg,rgba(99, 118, 137, 0.8)0%,rgba(99, 118, 137,.9)50%);
+    }
+
+    .contact-form {
+        width: 80%;
+        margin: auto;
+    }
+}
+
+
+/* end of contact */
