@@ -14,7 +14,7 @@
         <script src="./js/popper.min.js"></script>
         <script src="./js/bootstrap.min.js"></script>
     <script src="./js/main.js"></script>
-    
+  
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.esm.min.js"></script>
@@ -22,7 +22,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 </head>
-<body>
+<body >
 
     <!-- header  -->
     <header>
@@ -302,11 +302,8 @@
                 buttons.forEach(button => {
                     button.addEventListener('click', function () {
                         const modalId = this.getAttribute('data-bs-target').substring(1);
-                        const modal = new bootstrap.Modal(document.getElementById(modalId));
-
-                        // Add blur class to body or specific element
-                        document.body.classList.add('blur');
-                        
+                        const modal = new bootstrap.Modal(document.getElementById(modalId));                   
+                        alert("hello")                      
                         modal.show();
                     });
                 });
@@ -334,7 +331,7 @@
                     });
                 });
             });
-
+           
         
         </script>
 
