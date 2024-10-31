@@ -1,19 +1,25 @@
 ﻿@using TournamentProject.ViewModels
 @model LoginVM
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.rtl.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
+    <title>Login</title>
     <link rel="stylesheet" href="~/css/validation.css">
     <link href="~/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/9682b0efe9.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="wrapper">
-        <form action="" method="post">
-            <h1>ثبت نام</h1>
+        <form action="">
+            <h1>ورود</h1>
             <div class="input-box">
                 <input type="text" placeholder="ایمیل" required dir="rtl">
                 <i class="fa-solid fa-envelope"></i>
@@ -22,13 +28,13 @@
                 <input type="password" placeholder="رمز عبور" required dir="rtl">
                 <i class="fa-solid fa-lock"></i>
             </div>
-            <div class="input-box">
-                <input type="password" placeholder="تکرار رمز عبور" required dir="rtl">
-                <i class="fa-solid fa-lock"></i>
+            <div class="remember-forgot">
+                <label for=""><input type="checkbox">به خاطر سپردن نام کابری</label>
+                <a href="#">فراموشی رمز عبور</a>
             </div>
-            <button type="submit" class="btn">ثبت نام</button>
+            <button type="submit" class="btn">ورود</button>
             <div class="register-link">
-                <p>حساب کاربری دارید؟ <a href="./login.html">ورود</a></p>
+                <p>حساب کاربری ندارید؟ <a href="./signup.html">ثبت نام</a></p>
             </div>
         </form>
     </div>
