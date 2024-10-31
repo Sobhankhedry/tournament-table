@@ -8,20 +8,18 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/bootstrap.fa.min.css">
     <script src="https://kit.fontawesome.com/9682b0efe9.js" crossorigin="anonymous"></script>
-         <script src="~/js/popper.min.js"></script>        
-        <script src="./js/jquery-3.7.1.min.js"></script>
-         <script src="./js/popper.min.js"></script>       
-     <script src="./js/main.js"></script>
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>   
-    <script src="~/lib/bootstrap/dist/js/bootstrap.esm.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.esm.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script> 
+           <script src="~/js/popper.min.js"></script>        
+         <script src="./js/jquery-3.7.1.min.js"></script>         
+      <script src="./js/main.js"></script> 
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <script src="~/js/bootstrap.min.js"></script>    
+   @*  <script src="~/lib/bootstrap/dist/js/bootstrap.esm.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.esm.js"></script> *@
+     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>  
 </head>
 <body >
-
+    
     <!-- header  -->
     <header>
         <!-- anvbar -->
@@ -53,7 +51,7 @@
         <!-- end of banner -->
     </header>
     <!-- Tournament banner -->
-    <section    class="p-5 bg-dark accordion">
+    <section class="p-5 bg-dark accordion">
         <div class="container-fluid">
             <div class="row text-center justify-content-center">
                 <div class="col-xl-6 col-lg-8">
@@ -71,7 +69,7 @@
                     </ol>
                     <div class="carousel-inner">
                         <div class="carousel-item active text-center">
-                            <img src="./bg.jpg" alt="" class="img-fluid d-block w-100" style="height: 700px;">
+                            <img src="./images/p3.jpg" alt="" class="img-fluid d-block w-100" style="height: 700px;">
                         </div>
                         <div class="carousel-item text-center">
                             <img src="./images/p1.jpg" alt="" class="img-fluid d-block w-100" style="height: 700px;">
@@ -84,6 +82,7 @@
             </div>
         </div>
     </section>
+   
     <!-- End of tournament banner -->
     <!-- services  -->
     <section class="bg-dark accordion py-4">
@@ -132,6 +131,7 @@
                 </div>
             </div>
         </div>
+        </section>
         <!-- Modals -->
         <div class="modal fade" id="infoModal1" tabindex="-1" aria-labelledby="infoModalLabel1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable">
@@ -286,25 +286,16 @@
             </div>
             <!-- Copyright -->
         </footer>  
-
-
-
-
-
-
-     
-
-
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const buttons = document.querySelectorAll('[id^="showInfoButton"]');
                 buttons.forEach(button => {
                     button.addEventListener('click', function () {
-                    
+
                         const modalId = this.getAttribute('data-bs-target').substring(1);
-                        const modal = new bootstrap.Modal(document.getElementById(modalId));                   
-                                            
-                        modal.show();
+                        const modal = new bootstrap.Modal(document.getElementById(modalId));
+
+                        modal.show()
                     });
                 });
 
@@ -322,19 +313,16 @@
                 // Add event listener for when modal is hidden
                 document.querySelectorAll('.modal').forEach(modalElement => {
                     modalElement.addEventListener('hidden.bs.modal', function () {
-              
+
 
                         // Optionally remove backdrop
                         const modalBackdrops = document.querySelectorAll('.modal-backdrop');
                         modalBackdrops.forEach(backdrop => backdrop.remove());
-                    });
-                });
+                    })
+                })
             });
-           
-        
         </script>
-
-</body>
+        </body>
 </html>
 
     
