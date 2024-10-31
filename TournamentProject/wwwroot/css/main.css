@@ -94,7 +94,7 @@ header {
 
 /* contact */
 .contact {
-    background: linear-gradient(105deg,rgba(99, 118, 137, 0.8)0%,rgba(99, 118, 137,.9)50%,transparent 50% ),url(../bg.jpg);
+    background: linear-gradient(105deg,rgba(99, 118, 137, 0.8)0%,rgba(99, 118, 137,.9)50%,transparent 50% ),url(../images/bg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
