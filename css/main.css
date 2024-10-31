@@ -15,6 +15,9 @@
     line-height: 35px;
   }
   /* end of utility  */
+  body{
+    background: linear-gradient(rgba(0,0,0,.3),rgba(0,0,0,.5));
+  }
 
   /* header  */
 header{
@@ -26,7 +29,11 @@ header{
     background-attachment: fixed;
   
   }
-
+  .nav-menu{
+    background: linear-gradient(rgba(0,0,0,.3),rgba(0,0,0,.5));
+    padding: 30px;
+    transition: all .7s;
+  }
   .banner{
     animation-name: anim;
     animation-duration: 2s;
@@ -115,6 +122,7 @@ header{
 .myinput::placeholder {
   color: black !important;
   opacity: 1 !important;
+  color: white !important;
 }
 .label{
   color: black !important; 

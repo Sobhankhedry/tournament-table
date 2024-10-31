@@ -10,69 +10,91 @@
     <script src="https://kit.fontawesome.com/9682b0efe9.js" crossorigin="anonymous"></script>
   </head>
   <body>
-
-    <!-- header  -->
-    <header>
+<!-- header  -->
+<header>
     <!-- anvbar -->
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm  nav-menu">
-      <button class="navbar-toggler" data-toggle="collapse" data-target="#mynav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <a href="" class="navbar-brand text-dark mx-3">
-        <i class="fa-solid fa-yin-yang " style="color: #ffffff; font-size: 25px; margin-left: 40px;"></i>
-      </a>
-      <div class="collapse navbar-collapse" id="mynav">
-        <ul class="navbar-nav list-unstyled my-3">
-          <li class="nav-item mx-2">
-            <a href="login.html" class="nav-link badge badge-light text-dark mb-2 p-2 menu-item">ورود</a>
-          </li>
-          <li class="nav-item mx-2">
-            <a href="signup" class="nav-link badge badge-light text-dark p-2 menu-item">ثبت نام</a>
-          </li>
-        </ul> 
-      </div>
-    </nav>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm nav-menu">
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#mynav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mynav">
+          <a href="" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">مشاهده جدول مسابقات</a>
+          <ul class="navbar-nav list-unstyled mr-auto mx-5"> 
+            <li class="nav-item mx-2">
+              <a href="./login.html" class="nav-link badge badge-light text-dark mb-1 p-2 menu-item">ورود</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a href="./signup.html" class="nav-link badge badge-light text-dark p-2 menu-item">ثبت نام</a>
+            </li>
+          </ul> 
+          <a href="" class="navbar-brand text-dark ">
+            <i class="fa-solid fa-yin-yang" style="color: #ffffff; font-size: 25px; margin-left: 10px;"></i>
+          </a> 
+        </div>
+      </nav>
     <!-- end of navbar -->
 
     <!-- Banner -->
-    <div class="banner mt-3" style="text-align: center;">
+    <div class="banner" style="text-align: center; margin-top: 20%;">
       <h3 class="display-5 text-white">مسابقات هنرهای رزمی</h3>
-      <a href="" class="btn btn-success banner-link">مشاهده جدول مسابقات</a>
+      <h3 class="display-4 text-white banner-link">کونگ فو</h3>
+      
     </div>
     <!-- end of banner -->
   </header>
   <!-- Tournament banner -->
-  <section class="p-5 bg-dark accordion">
+  <section class="announcements-section p-5 bg-dark accordion">
     <div class="container-fluid">
-        <div class="row text-center justify-content-center">
-            <div class="col-xl-6 col-lg-8">
-                <h1 class="text-light">اطلاعیه ها</h1>
-            </div>
+      <div class="row justify-content-center mb-5">
+        <div class="col-lg-8 text-center">
+          <h2 class="section-title text-light">اطلاعیه ها</h2>
+          <div class="section-divider"></div>
         </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col">
-            <div class="carousel slide carousel-fade" data-ride="carousel" id="tournament_carousel">
-                <ol class="carousel-indicators list-unstyled">
-                    <li data-target="#tournament_carousel" data-slide-to="0"></li>
-                    <li data-target="#tournament_carousel" data-slide-to="1"></li>
-                    <li data-target="#tournament_carousel" data-slide-to="2" class="active"></li>
-                </ol>
-                <div class="carousel-inner">
-                    <div class="carousel-item active text-center">
-                        <img src="./bg.jpg" alt="" class="img-fluid d-block w-100" style="height: 700px;">
-                    </div>
-                    <div class="carousel-item text-center">
-                        <img src="./images/p1.jpg" alt="" class="img-fluid d-block w-100" style="height: 700px;">
-                    </div> 
-                    <div class="carousel-item text-center">
-                        <img src="./images/p2.jpg" alt="" class="img-fluid d-block w-100" style="height: 700px;">
-                    </div>  
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div id="announcementsCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+            <ol class="carousel-indicators list-unstyled">
+              <li data-target="#announcementsCarousel" data-slide-to="0" class="active"></li>
+              <li data-target="#announcementsCarousel" data-slide-to="1"></li>
+              <li data-target="#announcementsCarousel" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+              <div class="carousel-item active text-center">
+                <img src="./bg.jpg" alt="First announcement" class="img-fluid d-block w-100" style="height: 700px;">
+                <div class="carousel-caption d-none d-md-block">
+                  <h3>عنوان اطلاعیه اول</h3>
+                  <p>توضیحات مربوط به اطلاعیه اول در اینجا قرار می‌گیرد.</p>
                 </div>
+              </div>
+              <div class="carousel-item text-center">
+                <img src="./images/p1.jpg" alt="Second announcement" class="img-fluid d-block w-100" style="height: 700px;">
+                <div class="carousel-caption d-none d-md-block">
+                  <h3>عنوان اطلاعیه دوم</h3>
+                  <p>توضیحات مربوط به اطلاعیه دوم در اینجا قرار می‌گیرد.</p>
+                </div>
+              </div>
+              <div class="carousel-item text-center">
+                <img src="./images/p2.jpg" alt="Third announcement" class="img-fluid d-block w-100" style="height: 700px;">
+                <div class="carousel-caption d-none d-md-block">
+                  <h3>عنوان اطلاعیه سوم</h3>
+                  <p>توضیحات مربوط به اطلاعیه سوم در اینجا قرار می‌گیرد.</p>
+                </div>
+              </div>
             </div>
+            <a class="carousel-control-prev" href="#announcementsCarousel" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">قبلی</span>
+            </a>
+            <a class="carousel-control-next" href="#announcementsCarousel" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">بعدی</span>
+            </a>
+          </div>
         </div>
+      </div>
     </div>
-  </section>   
+  </section>
   <!-- End of tournament banner -->
 
    <!-- services  -->
@@ -214,21 +236,21 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-5 mr-auto pb-4">
-                <h3 class="mb-5">با ما در ارتباط باشید</h3>
+                <h3 class="mb-5 text-white">با ما در ارتباط باشید</h3>
                 <form action="" class="contact-form">
                     <div class="form-group py-4">
-                        <input type="text" class="form-control my-1 p-2 myinput" id="name" placeholder="نام و نام خانوادگی">
-                        <label for="name" class="label">نام و نام خانوادگی</label>
+                        <input type="text" class="form-control my-1 p-2 myinput text-white" id="name" placeholder="نام و نام خانوادگی">
+                        <label for="name" class="label text-white">نام و نام خانوادگی</label>
                     </div>
                     <div class="form-group py-4">
-                        <input type="text" class="form-control my-1 p-2 myinput" id="email" placeholder="ایمیل">
-                        <label for="email" class="label">ایمیل</label>
+                        <input type="text" class="form-control my-1 p-2 myinput text-white" id="email" placeholder="ایمیل">
+                        <label for="email" class="label text-white">ایمیل</label>
                     </div>
                     <div class="form-group py-4">
                         <input type="checkbox" id="check">
-                        <label for="check" class="mt-2">اطلاعیه ها برایمان ارسال کنید</label>
+                        <label for="check" class="mt-2 text-white">اطلاعیه ها برایمان ارسال کنید</label>
                     </div>
-                    <button class="btn btn-primary">عضویت</button>
+                    <button class="btn btn-primary w-100">ارسال</button>
                 </form>
             </div>
         </div>
