@@ -2,7 +2,7 @@
 
 namespace TournamentProject.Controllers
 {
-    public class _َAccountController : Controller
+    public class AccountController : Controller
     {
         public IActionResult Login()
         {
