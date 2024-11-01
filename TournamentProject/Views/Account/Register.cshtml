@@ -10,28 +10,33 @@
     <link rel="stylesheet" href="~/css/validation.css">
     <link href="~/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/9682b0efe9.js" crossorigin="anonymous"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 </head>
 <body>
     <div class="wrapper">
         <form asp-action="Register" , method="post">
             <h1>ثبت نام</h1>
             <div class="input-box">
-                <input asp-for="Name" type="text" placeholder="نام و نام خانوادگی" required dir="rtl">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <input asp-for="Name" type="text" placeholder="نام و نام خانوادگی" dir="rtl">
                 <i class="fa-solid fa-envelope"></i>
                 <span asp-validation-for="Name" class="validation-message"></span>
             </div>
             <div class="input-box">
-                <input asp-for="Email" type="text" placeholder="ایمیل" required dir="rtl">
+                <input asp-for="Email" type="text" placeholder="ایمیل"  dir="rtl">
                 <i class="fa-solid fa-envelope"></i>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="input-box">
-                <input asp-for="Password" type="password" placeholder="رمز عبور" required dir="rtl">
+
+                <input asp-for="Password" type="password" placeholder="رمز عبور"  dir="rtl">
                 <i class="fa-solid fa-lock"></i>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="input-box">
-                <input asp-for="ConfirmPassword" type="password" placeholder="تکرار رمز عبور" required dir="rtl">
+                <input asp-for="ConfirmPassword" type="password" placeholder="تکرار رمز عبور"  dir="rtl">
                 <i class="fa-solid fa-lock"></i>
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>

@@ -21,7 +21,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(
         options.Password.RequiredLength = 3;
 
     })
-    .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders()
+    .AddErrorDescriber<IdentityErrorDescriber>();
 
 
 //builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDBContext>();
