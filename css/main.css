@@ -119,6 +119,18 @@ header{
   box-shadow: none !important;
   border-bottom: 2px solid black !important;
 }
+.mycomment{
+  background-color: rgba(0, 0, 0, 0.272) !important;
+}
+.mycomment:focus {
+  border: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  border: 2px solid black !important;
+}
+.mycomment::placeholder{
+  color: rgba(255, 255, 255, 0.454) !important;
+}
 .myinput::placeholder {
   color: black !important;
   opacity: 1 !important;
