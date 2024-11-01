@@ -8,9 +8,11 @@ namespace TournamentProject.Controllers
     public class AccountController : Controller
     {
         private readonly SignInManager<AppUser> signInManager;
-        public AccountController(SignInManager<AppUser> signinmanager)
+        private readonly UserManager<AppUser> userManager;
+        public AccountController(SignInManager<AppUser> signinmanager, UserManager<AppUser> userManager)
         {
             this.signInManager = signinmanager;
+            this.userManager = userManager;
         }
         public IActionResult Login()
         {
@@ -18,7 +20,7 @@ namespace TournamentProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LoginAsync(LoginVM loginVM)
+        public async Task<IActionResult> Login(LoginVM loginVM)
         {
             if (ModelState.IsValid)
             {
@@ -38,14 +40,45 @@ namespace TournamentProject.Controllers
             return View();
         }
 
-        public IActionResult Logout()
-        {
-            return View();
-        }
+
         public IActionResult Register()
         {
             return View();
         }
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterVM registerVM)
+        {
+            if (ModelState.IsValid)
+            {
+                AppUser user = new()
+                {
+                    Name = registerVM.Name,
+                    UserName = registerVM.Name,
+                    Email = registerVM.Email,
+
+                };
+
+                var result = await userManager.CreateAsync(user, registerVM.Password!);
+                if (result.Succeeded)
+                {
+                    await signInManager.SignInAsync(user, false);
+                    return RedirectToAction("Index", "Home");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+            }
+
+            return View();
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return View();
+        }
+
     }
 }
 

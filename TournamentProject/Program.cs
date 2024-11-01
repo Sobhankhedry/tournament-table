@@ -14,10 +14,12 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(
     options =>
     {
         options.Password.RequiredUniqueChars = 0;
-        options.Password.RequireUppercase = false;
-        options.Password.RequireLowercase = false;
-        options.Password.RequiredLength = 5;
         options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequiredLength = 3;
+
     })
     .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
 
@@ -29,6 +31,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Account/Login";
     options.LogoutPath = "/Account/Logout";
     options.AccessDeniedPath = "/Account/AccessDenied";
+
 });
 
 // Add services to the container.

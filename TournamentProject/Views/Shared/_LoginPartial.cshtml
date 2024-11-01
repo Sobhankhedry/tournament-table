@@ -1,1 +1,18 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> signIn
+
+<ul class="navbar-nav">
+    @if (signIn.IsSignedIn(User))
+    {
+        
+    }
+    else
+    {
+        @* <li class="nav-item mx-2">
+            <a asp-controller="Account" asp-action="Login" class="nav-link badge badge-light text-dark mb-2 p-2 menu-item">ورود</a>
+        </li>
+        <li class="nav-item mx-2">
+            <a asp-controller="Account" asp-action="Register" class="nav-link badge badge-light text-dark p-2 menu-item">ثبت نام</a>
+        </li> *@
+    }
+</ul>
