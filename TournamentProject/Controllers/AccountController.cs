@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TournamentProject.Areas.Identity.Data;
 using TournamentProject.Models;
 using TournamentProject.ViewModels;
 
@@ -9,10 +10,12 @@ namespace TournamentProject.Controllers
     {
         private readonly SignInManager<AppUser> signInManager;
         private readonly UserManager<AppUser> userManager;
-        public AccountController(SignInManager<AppUser> signinmanager, UserManager<AppUser> userManager)
+        private readonly ApplicationDBContext _DBContext;
+        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ApplicationDBContext context)
         {
-            this.signInManager = signinmanager;
+            this.signInManager = signInManager;
             this.userManager = userManager;
+            this._DBContext = context;
         }
         public IActionResult Login()
         {
@@ -24,7 +27,11 @@ namespace TournamentProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(loginVM.UserName, loginVM.Password, loginVM.RememberMe, false);
+                var user = userManager.FindByEmailAsync(loginVM.Email);
+
+
+
+                var result = await signInManager.PasswordSignInAsync(loginVM.Email, loginVM.Password, loginVM.RememberMe, false);
 
                 if (result.Succeeded)
                 {
@@ -52,8 +59,9 @@ namespace TournamentProject.Controllers
             {
                 AppUser user = new()
                 {
-                    Name = registerVM.Name,
+
                     UserName = registerVM.Name,
+                    Name = registerVM.Name,
                     Email = registerVM.Email,
 
                 };

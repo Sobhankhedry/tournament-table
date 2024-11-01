@@ -1,6 +1,6 @@
 ﻿@using TournamentProject.ViewModels
 @model LoginVM
-<!DOCTYPE html>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,20 +18,22 @@
 </head>
 <body>
     <div class="wrapper">
-        <form action="" method="post">
+        <form asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly"></div>
             <h1>ورود</h1>
             <div class="input-box">
-                <input asp-for="UserName" type="text" placeholder="ایمیل" required dir="rtl">
+                <input asp-for=Email type="text" placeholder="ایمیل" dir="rtl">
                 <i class="fa-solid fa-envelope"></i>
-                <span asp-validation-for="UserName" class="text-danger"></span>
+                <span asp-validation-for="Email" class="validation-message"></span>
             </div>
             <div class="input-box">
-                <input asp-for="Password" type="password" placeholder="رمز عبور" required dir="rtl">
+                <input asp-for="Password" type="password" placeholder="رمز عبور" dir="rtl">
                 <i class="fa-solid fa-lock"></i>
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <span asp-validation-for="Password" class="validation-message"></span>
             </div>
             <div class="remember-forgot">
-                <label class="form-check-label" for=""><input asp-for="RememberMe" type="checkbox">به خاطر سپردن نام کابری</label>
+                <label class="form-check-label" for="">
+                    <input asp-for="RememberMe"class="form-check-input">به خاطر سپردن نام کابری</label>
                 <a href="#">فراموشی رمز عبور</a>
             </div>
             <button type="submit" class="btn">ورود</button>
@@ -39,6 +41,7 @@
                 <p>حساب کاربری ندارید؟ <a asp-controller="Account" asp-action="Register">ثبت نام</a></p>
             </div>
         </form>
+        
     </div>
 </body>
 @section Scripts{

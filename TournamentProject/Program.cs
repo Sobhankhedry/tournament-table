@@ -1,6 +1,5 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TournamentProject.Data;
+using TournamentProject.Areas.Identity.Data;
 using TournamentProject.Models;
 
 
@@ -10,19 +9,24 @@ var connectionString = builder.Configuration.GetConnectionString("TournamentProj
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddIdentity<AppUser, IdentityRole>(
-    options =>
-    {
-        options.Password.RequiredUniqueChars = 0;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequireDigit = false;
-        options.Password.RequireLowercase = false;
-        options.Password.RequireUppercase = false;
-        options.Password.RequiredLength = 3;
+builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDBContext>();
 
-    })
-    .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders()
-    .AddErrorDescriber<IdentityErrorDescriber>();
+//builder.Services.AddIdentity<AppUser, IdentityRole>(
+//    options =>
+//    {
+//        options.SignIn.RequireConfirmedPhoneNumber = false;
+//        options.SignIn.RequireConfirmedAccount = false;
+//        options.Password.RequiredUniqueChars = 0;
+//        options.Password.RequireNonAlphanumeric = false;
+//        options.Password.RequireDigit = false;
+//        options.Password.RequireLowercase = false;
+//        options.Password.RequireUppercase = false;
+//        options.Password.RequiredLength = 3;
+//        options.SignIn.RequireConfirmedEmail = false;
+//        options.Lockout.AllowedForNewUsers = false;
+//        // options.User.RequireUniqueEmail = true;
+//    })
+//    .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
 
 
 //builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDBContext>();
@@ -52,8 +56,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",
