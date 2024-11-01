@@ -7,6 +7,6 @@ namespace TournamentProject.Models
     {
         [Required]
         [MaxLength(30)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }

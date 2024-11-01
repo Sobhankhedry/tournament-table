@@ -18,25 +18,34 @@
 </head>
 <body>
     <div class="wrapper">
-        <form action="">
+        <form action="" method="post">
             <h1>ورود</h1>
             <div class="input-box">
-                <input type="text" placeholder="ایمیل" required dir="rtl">
+                <input asp-for="UserName" type="text" placeholder="ایمیل" required dir="rtl">
                 <i class="fa-solid fa-envelope"></i>
+                <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="input-box">
-                <input type="password" placeholder="رمز عبور" required dir="rtl">
+                <input asp-for="Password" type="password" placeholder="رمز عبور" required dir="rtl">
                 <i class="fa-solid fa-lock"></i>
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="remember-forgot">
-                <label for=""><input type="checkbox">به خاطر سپردن نام کابری</label>
+                <label class="form-check-label" for=""><input asp-for="RememberMe" type="checkbox">به خاطر سپردن نام کابری</label>
                 <a href="#">فراموشی رمز عبور</a>
             </div>
             <button type="submit" class="btn">ورود</button>
             <div class="register-link">
-                <p>حساب کاربری ندارید؟ <a href="./signup.html">ثبت نام</a></p>
+                <p>حساب کاربری ندارید؟ <a asp-controller="Account" asp-action="Register">ثبت نام</a></p>
             </div>
         </form>
     </div>
 </body>
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
 </html>
