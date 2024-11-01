@@ -1,92 +1,87 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TournamentProject.Areas.Identity.Data;
 using TournamentProject.Models;
-using TournamentProject.ViewModels;
+using TournamentProject.ViewModels; // Make sure to include this for your view models
 
 namespace TournamentProject.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<AppUser> signInManager;
-        private readonly UserManager<AppUser> userManager;
-        private readonly ApplicationDBContext _DBContext;
-        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ApplicationDBContext context)
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
+
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
-            this.signInManager = signInManager;
-            this.userManager = userManager;
-            this._DBContext = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
+
+        // GET: Account/Register
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        // POST: Account/Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new AppUser
+                {
+                    Name = model.Email,
+                    UserName = model.Email
+                    ,
+                    Email = model.Email
+                }; // Ensure using AppUser here
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Home"); // Redirect to the home page
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return View(model);
+        }
+
+        // GET: Account/Login
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
+        // POST: Account/Login
         [HttpPost]
-        public async Task<IActionResult> Login(LoginVM loginVM)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginVM model)
         {
             if (ModelState.IsValid)
             {
-                var user = userManager.FindByEmailAsync(loginVM.Email);
-
-
-
-                var result = await signInManager.PasswordSignInAsync(loginVM.Email, loginVM.Password, loginVM.RememberMe, false);
-
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home"); // Redirect to the home page
                 }
-                else
-                {
-                    ModelState.AddModelError("", "invalid login attempt");
-                    return View(loginVM);
-                }
-
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
-            return View();
+            return View(model);
         }
 
-
-        public IActionResult Register()
-        {
-            return View();
-        }
+        // POST: Account/Logout
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterVM registerVM)
-        {
-            if (ModelState.IsValid)
-            {
-                AppUser user = new()
-                {
-
-                    UserName = registerVM.Name,
-                    Name = registerVM.Name,
-                    Email = registerVM.Email,
-
-                };
-
-                var result = await userManager.CreateAsync(user, registerVM.Password!);
-                if (result.Succeeded)
-                {
-                    await signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-
-            }
-
-            return View();
-        }
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync();
-            return View();
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home"); // Redirect to the home page
         }
-
     }
 }
-

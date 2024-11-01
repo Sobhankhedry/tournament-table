@@ -21,10 +21,10 @@
         <div class="collapse navbar-collapse" id="mynav">
             <ul class="navbar-nav list-unstyled my-3">
                 <li class="nav-item mx-2">
-                    <a asp-area="Identity" asp-page="/Account/Login" class="nav-link badge badge-light text-dark mb-2 p-2 menu-item">ورود</a>
+                    <a asp-controller="Account" asp-action="Login" class="nav-link badge badge-light text-dark mb-2 p-2 menu-item">ورود</a>
                 </li>
                 <li class="nav-item mx-2">
-                        <a asp-area="Identity" asp-page="/Account/Register" class="nav-link badge badge-light text-dark p-2 menu-item">ثبت نام</a>
+                        <a asp-controller="Account" asp-action="Register" class="nav-link badge badge-light text-dark p-2 menu-item">ثبت نام</a>
                 </li>
             </ul>
             <partial name="_LoginPartial" />

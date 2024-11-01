@@ -1,5 +1,6 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TournamentProject.Areas.Identity.Data;
+using TournamentProject.Data;
 using TournamentProject.Models;
 
 
@@ -9,34 +10,35 @@ var connectionString = builder.Configuration.GetConnectionString("TournamentProj
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDBContext>();
 
-//builder.Services.AddIdentity<AppUser, IdentityRole>(
-//    options =>
-//    {
-//        options.SignIn.RequireConfirmedPhoneNumber = false;
-//        options.SignIn.RequireConfirmedAccount = false;
-//        options.Password.RequiredUniqueChars = 0;
-//        options.Password.RequireNonAlphanumeric = false;
-//        options.Password.RequireDigit = false;
-//        options.Password.RequireLowercase = false;
-//        options.Password.RequireUppercase = false;
-//        options.Password.RequiredLength = 3;
-//        options.SignIn.RequireConfirmedEmail = false;
-//        options.Lockout.AllowedForNewUsers = false;
-//        // options.User.RequireUniqueEmail = true;
-//    })
-//    .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
+builder.Services.AddIdentity<AppUser, IdentityRole>(
+    options =>
+    {
+        options.SignIn.RequireConfirmedPhoneNumber = false;
+        options.SignIn.RequireConfirmedAccount = false;
+        options.Password.RequiredUniqueChars = 0;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequiredLength = 3;
+        options.SignIn.RequireConfirmedEmail = false;
+        options.Lockout.AllowedForNewUsers = false;
+        // options.User.RequireUniqueEmail = true;
+    })
+    .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
 
 
-//builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDBContext>();
-
+builder.Services.AddRazorPages()
+    .AddRazorPagesOptions(options =>
+    {
+        options.Conventions.AuthorizeAreaFolder("Identity", "/Account");
+        options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "Identity/Account/Login");
+    });
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Account/Login";
-    options.LogoutPath = "/Account/Logout";
-    options.AccessDeniedPath = "/Account/AccessDenied";
-
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 });
 
 // Add services to the container.
@@ -67,3 +69,4 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+

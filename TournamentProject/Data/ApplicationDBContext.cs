@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TournamentProject.Models;
 
-namespace TournamentProject.Areas.Identity.Data
+namespace TournamentProject.Data
 {
     public class ApplicationDBContext : IdentityDbContext<AppUser>
     {
