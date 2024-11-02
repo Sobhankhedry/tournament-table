@@ -8,45 +8,79 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/bootstrap.fa.min.css">
     <script src="https://kit.fontawesome.com/9682b0efe9.js" crossorigin="anonymous"></script>
-          
+    <script src="~/js/popper.min.js"></script>
+    <script src="./js/jquery-3.7.1.min.js"></script>
+    <script src="./js/popper.min.js"></script>
+    <script src="./js/main.js"></script> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.esm.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.esm.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>     
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    
+    
+
 </head>
 <body >
     
     <!-- header  -->
-    
     <!-- Tournament banner -->
-    <section class="p-5 bg-dark accordion">
+    <section class="announcements-section p-5 bg-dark accordion">
         <div class="container-fluid">
-            <div class="row text-center justify-content-center">
-                <div class="col-xl-6 col-lg-8">
-                    <h1 class="text-light">اطلاعیه ها</h1>
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="section-title text-light">اطلاعیه ها</h2>
+                    <div class="section-divider"></div>
                 </div>
             </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col">
-                <div class="carousel slide carousel-fade" data-ride="carousel" id="tournament_carousel">
-                    <ol class="carousel-indicators list-unstyled">
-                        <li data-target="#tournament_carousel" data-slide-to="0"></li>
-                        <li data-target="#tournament_carousel" data-slide-to="1"></li>
-                        <li data-target="#tournament_carousel" data-slide-to="2" class="active"></li>
-                    </ol>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active text-center">
-                            <img src="./images/p3.jpg" alt="" class="img-fluid d-block w-100" style="height: 700px;">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div id="announcementsCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+                        <ol class="carousel-indicators list-unstyled">
+                            <li data-target="#announcementsCarousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#announcementsCarousel" data-slide-to="1"></li>
+                            <li data-target="#announcementsCarousel" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active text-center">
+                                <img src="./bg.jpg" alt="First announcement" class="img-fluid d-block w-100" style="height: 700px;">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h3>عنوان اطلاعیه اول</h3>
+                                    <p>توضیحات مربوط به اطلاعیه اول در اینجا قرار می‌گیرد.</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item text-center">
+                                <img src="./images/p1.jpg" alt="Second announcement" class="img-fluid d-block w-100" style="height: 700px;">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h3>عنوان اطلاعیه دوم</h3>
+                                    <p>توضیحات مربوط به اطلاعیه دوم در اینجا قرار می‌گیرد.</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item text-center">
+                                <img src="./images/p2.jpg" alt="Third announcement" class="img-fluid d-block w-100" style="height: 700px;">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h3>عنوان اطلاعیه سوم</h3>
+                                    <p>توضیحات مربوط به اطلاعیه سوم در اینجا قرار می‌گیرد.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="carousel-item text-center">
-                            <img src="./images/p1.jpg" alt="" class="img-fluid d-block w-100" style="height: 700px;">
-                        </div>
-                        <div class="carousel-item text-center">
-                            <img src="./images/p2.jpg" alt="" class="img-fluid d-block w-100" style="height: 700px;">
-                        </div>
+                        <a class="carousel-control-prev" href="#announcementsCarousel" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">قبلی</span>
+                        </a>
+                        <a class="carousel-control-next" href="#announcementsCarousel" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">بعدی</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-   
     <!-- End of tournament banner -->
     <!-- services  -->
     <section class="bg-dark accordion py-4">

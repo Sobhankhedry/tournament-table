@@ -15,7 +15,10 @@
     line-height: 35px;
 }
 /* end of utility  */
-
+/* end of utility  */
+body {
+    background: linear-gradient(rgba(0,0,0,.3),rgba(0,0,0,.5));
+}
 /* header  */
 header {
     height: 100vh;
@@ -24,6 +27,11 @@ header {
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+}
+.nav-menu {
+    background: linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5));
+    padding: 30px;
+    transition: all .7s;
 }
 
 .banner {
@@ -120,7 +128,7 @@ header {
 
     .myinput::placeholder {
         color: black !important;
-        opacity: 1 !important; /* Ensures full opacity */
+        opacity: 1 !important; 
     }
 
 .label {
@@ -151,5 +159,16 @@ header {
     }
 }
 
+
+.hide {
+    display: none;
+}
+
+.page {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
 
 /* end of contact */
