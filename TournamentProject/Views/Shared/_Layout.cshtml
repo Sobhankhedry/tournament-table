@@ -48,48 +48,7 @@
                 </a>
             </div>
         </nav>
-        @* <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm nav-menu">
-            <button class="navbar-toggler" data-toggle="collapse" data-target="#mynav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <a href="/" class="navbar-brand mx-3">
-                <i class="bi bi-yin-yang"></i>
-            </a>
-            <div class="collapse navbar-collapse" id="mynav">
-                <ul class="navbar-nav list-unstyled my-3">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li class="nav-item mx-2">
-                            <span class="nav-link text-white">Welcome back, @User.Identity.Name!</span>
-                        </li>
-                        <li class="nav-item mx-2">
-                            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
-                                <button type="submit" class="nav-link badge badge-light text-dark p-2 menu-item">Logout</button>
-                            </form>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item mx-2">
-                            <a asp-controller="Account" asp-action="Login" class="nav-link badge">ورود</a>
-                        </li>
-                        <li class="nav-item mx-2">
-                            <a asp-controller="Account" asp-action="Register" class="nav-link badge badge-light text-dark p-2 menu-item">ثبت نام</a>
-                        </li>
-                    }
-                </ul>
-                <partial name="_LoginPartial" />
-            </div>
-        </nav>
-        <!-- End of navbar -->
-        <!-- Banner -->
-        <div class="banner mt-3" style="text-align: center;">
-            <h3 class="display-5 text-white">مسابقات هنرهای رزمی</h3>
-            <a href="#" class="btn btn-success banner-link">مشاهده جدول مسابقات</a>
-        </div>
-        <!-- End of banner --> *@
+        
 
         <div class="banner" style="text-align: center; margin-top: 20%;">
         <h3 class="display-5 text-white">مسابقات هنرهای رزمی</h3>

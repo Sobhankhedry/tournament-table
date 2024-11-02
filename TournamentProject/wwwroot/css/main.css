@@ -128,8 +128,31 @@ header {
 
     .myinput::placeholder {
         color: black !important;
-        opacity: 1 !important; 
+        opacity: 1 !important;
+        color : white !important;
     }
+
+.mycomment {
+    background-color: rgba(0, 0, 0, 0.272) !important;
+}
+
+    .mycomment:focus {
+        border: none !important;
+        border-color: transparent !important;
+        box-shadow: none !important;
+        border: 2px solid black !important;
+    }
+
+    .mycomment::placeholder {
+        color: rgba(255, 255, 255, 0.454) !important;
+    }
+
+.myinput::placeholder {
+    color: black !important;
+    opacity: 1 !important;
+    color: white !important;
+}
+
 
 .label {
     color: black !important;
@@ -160,6 +183,7 @@ header {
 }
 
 
+
 .hide {
     display: none;
 }
@@ -171,4 +195,17 @@ header {
     border-radius: 5px;
 }
 
+
+
+.rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Specific to the contact section */
+.contact h3,
+.contact .form-label {
+    direction: rtl;
+    text-align: right;
+}
 /* end of contact */
