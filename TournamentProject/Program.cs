@@ -27,7 +27,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(
         options.Lockout.AllowedForNewUsers = false;
         options.User.RequireUniqueEmail = true;
     })
-    .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders()
+    ;
 
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddTransient<EmailService>();
@@ -53,7 +54,7 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+
     app.UseHsts();
 }
 

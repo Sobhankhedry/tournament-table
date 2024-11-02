@@ -5,4 +5,11 @@ $(window).scroll(function(){
     }else{
         $('.nav-menu').removeClass('custom-navbar')
     }
-}) 
+})
+
+
+$(document).ready(function () {
+    $('form').on('submit', function () {
+        $('.input-validation-error').css('border-color', 'red');
+    });
+});

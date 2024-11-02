@@ -18,18 +18,20 @@
 </head>
 <body>
     <div class="wrapper">
+       
         <form asp-action="Login" method="post">
-            <div asp-validation-summary="ModelOnly"></div>
+            <div asp-validation-summary="All" class="validation-summary-errors" hidden></div>
+
             <h1>ورود</h1>
             <div class="input-box">
                 <input asp-for=Email type="text" placeholder="ایمیل" dir="rtl">
                 <i class="fa-solid fa-envelope"></i>
-                <span asp-validation-for="Email" class="validation-message"></span>
+                <span asp-validation-for="Email" class="field-validation-error"></span>
             </div>
             <div class="input-box">
                 <input asp-for="Password" type="password" placeholder="رمز عبور" dir="rtl">
                 <i class="fa-solid fa-lock"></i>
-                <span asp-validation-for="Password" class="validation-message"></span>
+                <span asp-validation-for="Password" class="field-validation-error"></span>
             </div>
             <div class="remember-forgot">
                 <label class="form-check-label" for="">
@@ -47,7 +49,9 @@
 @section Scripts{
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
     }
+
 }
 
 

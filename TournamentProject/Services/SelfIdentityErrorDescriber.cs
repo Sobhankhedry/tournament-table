@@ -3,7 +3,7 @@
 namespace TournamentProject.Services
 {
 
-    public class CustomIdentityErrorDescriber : IdentityErrorDescriber
+    public class SelfIdentityErrorDescriber : IdentityErrorDescriber
     {
         public override IdentityError PasswordTooShort(int length)
         {

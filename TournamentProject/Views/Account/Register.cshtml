@@ -5,14 +5,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.rtl.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
+    <title>Login</title>
     <link rel="stylesheet" href="~/css/validation.css">
-    <link href="~/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/9682b0efe9.js" crossorigin="anonymous"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 </head>
 <body>
     <div class="wrapper">
@@ -22,23 +25,23 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <input asp-for="Name" type="text" placeholder="نام و نام خانوادگی" dir="rtl">
                 <i class="fa-solid fa-envelope"></i>
-                <span asp-validation-for="Name" class="validation-message"></span>
+                <span asp-validation-for="Name" class="field-validation-error"></span>
             </div>
             <div class="input-box">
                 <input asp-for="Email" type="text" placeholder="ایمیل"  dir="rtl">
                 <i class="fa-solid fa-envelope"></i>
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <span asp-validation-for="Email" class="field-validation-error"></span>
             </div>
             <div class="input-box">
 
                 <input asp-for="Password" type="password" placeholder="رمز عبور"  dir="rtl">
                 <i class="fa-solid fa-lock"></i>
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <span asp-validation-for="Password" class="field-validation-error"></span>
             </div>
             <div class="input-box">
                 <input asp-for="ConfirmPassword" type="password" placeholder="تکرار رمز عبور"  dir="rtl">
                 <i class="fa-solid fa-lock"></i>
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                <span asp-validation-for="ConfirmPassword" class="field-validation-error"></span>
             </div>
             <button type="submit" class="btn">ثبت نام</button>
             <div class="register-link">
