@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" /> 
     <link href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
     <link href="~/lib/bootstrap/dist/css/bootstrap.rtl.css" rel="stylesheet" />
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
@@ -20,13 +20,14 @@
     <div class="wrapper">
        
         <form asp-action="Login" method="post">
-            <div asp-validation-summary="All" class="validation-summary-errors" hidden></div>
-
+           @*  fixing this *@
+            <div asp-validation-summary="ModelOnly" class="validation-summary-errors " dir="rtl" ></div>
             <h1>ورود</h1>
             <div class="input-box">
                 <input asp-for=Email type="text" placeholder="ایمیل" dir="rtl">
                 <i class="fa-solid fa-envelope"></i>
                 <span asp-validation-for="Email" class="field-validation-error"></span>
+                
             </div>
             <div class="input-box">
                 <input asp-for="Password" type="password" placeholder="رمز عبور" dir="rtl">
@@ -45,14 +46,15 @@
         </form>
         
     </div>
-</body>
-@section Scripts{
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+        }
 
     }
+</body>
 
-}
 
 
 </html>

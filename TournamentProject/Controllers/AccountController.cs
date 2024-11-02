@@ -74,8 +74,14 @@ namespace TournamentProject.Controllers
                 {
                     return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "رمز عبور یا نام کاربری اشتباه است");
+                    return View(model);
+                }
+
             }
+
             return View(model);
         }
 

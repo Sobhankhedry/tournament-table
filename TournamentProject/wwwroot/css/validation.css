@@ -144,3 +144,20 @@ body{
     border: 1px solid red !important; 
     background-color: #f8d7da; 
 }
+
+.validation-summary-errors {
+    color: #b94a48; /* Subtle red for error text */
+    font-size: 0.9em;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+    .validation-summary-errors i {
+        color: #b94a48; /* Icon color matches text */
+    }

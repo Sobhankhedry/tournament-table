@@ -17,13 +17,18 @@
                 <a href="" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">مشاهده جدول مسابقات</a>
                 <ul class="navbar-nav list-unstyled mr-auto mx-5">
                     @if (User.Identity.IsAuthenticated)
-                    {
+                    {           
+                    
                         <li class="nav-item mx-2">
-                            <a asp-controller="Account" asp-action="Login" class="nav-link badge badge-light text-dark mb-1 p-2 menu-item">ورود</a>
+                            <span class="nav-link text-white">Welcome back, @User.Identity.Name!</span>
                         </li>
                         <li class="nav-item mx-2">
-                            <a asp-controller="Account" asp-action="Register" class="nav-link badge badge-light text-dark p-2 menu-item">ثبت نام</a>
+                            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                                <button type="submit" class="nav-link badge badge-light text-dark mb-1 p-2 menu-item">Logout</button>
+                            </form>
                         </li>
+                    
+                       
                     }
                     else
                     {
