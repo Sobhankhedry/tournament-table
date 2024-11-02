@@ -146,8 +146,8 @@ body{
 }
 
 .validation-summary-errors {
-    color: #b94a48; /* Subtle red for error text */
-    font-size: 0.9em;
+    color: #b94a48; 
+    font-size: 1.2em;
     margin: 0;
     padding: 0;
     background: none;
@@ -159,5 +159,5 @@ body{
 }
 
     .validation-summary-errors i {
-        color: #b94a48; /* Icon color matches text */
+        color: #b94a48; 
     }
