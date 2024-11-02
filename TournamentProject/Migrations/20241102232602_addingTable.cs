@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TournamentProject.Migrations
 {
     /// <inheritdoc />
-    public partial class AddContactUsTable : Migration
+    public partial class addingTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

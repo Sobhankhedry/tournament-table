@@ -39,11 +39,11 @@ namespace TournamentProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                _dbContext.Add(contactUs);
+                _dbContext.ContactUs.Add(contactUs);
                 _dbContext.SaveChanges();
 
             }
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
     }

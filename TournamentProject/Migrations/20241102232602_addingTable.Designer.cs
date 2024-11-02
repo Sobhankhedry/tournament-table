@@ -12,8 +12,8 @@ using TournamentProject.Data;
 namespace TournamentProject.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241102225826_AddContactUsTable")]
-    partial class AddContactUsTable
+    [Migration("20241102232602_addingTable")]
+    partial class addingTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

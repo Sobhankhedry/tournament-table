@@ -41,7 +41,7 @@ namespace TournamentProject.Controllers
             {
                 var user = new AppUser
                 {
-                    Name = model.Email,
+                    Name = model.Name,
                     UserName = model.Email,
                     Email = model.Email
                 };
@@ -52,6 +52,7 @@ namespace TournamentProject.Controllers
                     //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Scheme);
                     // await _emailService.SendEmailAsync(model.Email, "Confirm your email",
                     //$"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.");
+                    return RedirectToAction("Index", "Home");
                 }
                 foreach (var error in result.Errors)
                 {
