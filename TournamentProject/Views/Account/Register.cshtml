@@ -19,11 +19,12 @@
 </head>
 <body>
     <div class="wrapper">
+        <div asp-validation-summary="ModelOnly" class="validation-summary-errors " dir="rtl" ></div>
         <form asp-action="Register" , method="post">
-            
+           
             <h1>ثبت نام</h1>
             <div class="input-box">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                
                 <input asp-for="Name" type="text" placeholder="نام و نام خانوادگی" dir="rtl">
                 <i class="fa-solid fa-envelope"></i>
                 <span asp-validation-for="Name" class="field-validation-error"></span>

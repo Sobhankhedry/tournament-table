@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
+using TournamentProject.Data;
 using TournamentProject.Models;
 using TournamentProject.ViewModels; // Make sure to include this for your view models
 
@@ -7,16 +9,21 @@ namespace TournamentProject.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly ApplicationDBContext _dbContext;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly EmailService _emailService;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, EmailService emailService)
+
+        public AccountController(ApplicationDBContext dbContext, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
+            _dbContext = dbContext;
             _userManager = userManager;
             _signInManager = signInManager;
-            _emailService = emailService;
+
         }
+
+
+
 
         // GET: Account/Register
         [HttpGet]
@@ -35,22 +42,22 @@ namespace TournamentProject.Controllers
                 var user = new AppUser
                 {
                     Name = model.Email,
-                    UserName = model.Email
- ,
+                    UserName = model.Email,
                     Email = model.Email
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Scheme);
-                    await _emailService.SendEmailAsync(model.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.");
+                    // var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Scheme);
+                    // await _emailService.SendEmailAsync(model.Email, "Confirm your email",
+                    //$"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.");
                 }
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+
             }
             return View(model);
         }
@@ -94,22 +101,6 @@ namespace TournamentProject.Controllers
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
-        {
-            if (userId == null || code == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
 
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{userId}'.");
-            }
-
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
-        }
     }
 }

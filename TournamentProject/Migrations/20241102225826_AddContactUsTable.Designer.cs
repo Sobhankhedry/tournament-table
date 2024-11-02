@@ -7,14 +7,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TournamentProject.Data;
 
-
 #nullable disable
 
 namespace TournamentProject.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241101092409_updatetable")]
-    partial class updatetable
+    [Migration("20241102225826_AddContactUsTable")]
+    partial class AddContactUsTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -227,6 +226,26 @@ namespace TournamentProject.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("TournamentProject.Models.ContactUs", b =>
+                {
+                    b.Property<string>("Email")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.HasKey("Email");
+
+                    b.ToTable("ContactUs");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

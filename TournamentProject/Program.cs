@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 using TournamentProject.Data;
 using TournamentProject.Models;
-using TournamentProject.Services;
 
 
 
@@ -29,24 +29,14 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(
     })
     .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders()
     ;
+builder.Services.AddRazorPages();
 
-builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
-builder.Services.AddTransient<EmailService>();
 
-builder.Services.AddRazorPages()
-    .AddRazorPagesOptions(options =>
-    {
-        options.Conventions.AuthorizeAreaFolder("Identity", "/Account");
-        options.Conventions.AddAreaPageRoute("Identity", "/Account/Login", "Identity/Account/Login");
-    });
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.LoginPath = "/Identity/Account/Login";
-    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
 
 var app = builder.Build();
 

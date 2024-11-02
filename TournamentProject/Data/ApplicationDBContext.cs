@@ -6,14 +6,14 @@ namespace TournamentProject.Data
 {
     public class ApplicationDBContext : IdentityDbContext<AppUser>
     {
-        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
-        {
 
-        }
+        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-        }
+        public DbSet<ContactUs> ContactUs { get; set; }
     }
+    //protected override void OnModelCreating(ModelBuilder builder)
+    //    {
+    //        base.OnModelCreating(builder);
+    //    }
+    //}
 }

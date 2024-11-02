@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using TournamentProject.Data;
+using TournamentProject.Models;
 
 namespace TournamentProject.Controllers
 {
@@ -6,11 +8,15 @@ namespace TournamentProject.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDBContext _dbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ApplicationDBContext dbContext, ILogger<HomeController> logger)
         {
+            _dbContext = dbContext;
             _logger = logger;
         }
+
 
         public IActionResult Index()
         {
@@ -28,5 +34,17 @@ namespace TournamentProject.Controllers
             return View();
             //return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        [HttpPost]
+        public IActionResult ContactUs(ContactUs contactUs)
+        {
+            if (ModelState.IsValid)
+            {
+                _dbContext.Add(contactUs);
+                _dbContext.SaveChanges();
+
+            }
+            return View();
+        }
+
     }
 }
