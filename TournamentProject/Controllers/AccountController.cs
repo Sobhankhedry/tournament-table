@@ -9,11 +9,13 @@ namespace TournamentProject.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly EmailService _emailService;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, EmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailService = emailService;
         }
 
         // GET: Account/Register
@@ -34,14 +36,16 @@ namespace TournamentProject.Controllers
                 {
                     Name = model.Email,
                     UserName = model.Email
-                    ,
+ ,
                     Email = model.Email
-                }; // Ensure using AppUser here
+                };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home"); // Redirect to the home page
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Scheme);
+                    await _emailService.SendEmailAsync(model.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.");
                 }
                 foreach (var error in result.Errors)
                 {
@@ -68,7 +72,7 @@ namespace TournamentProject.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home"); // Redirect to the home page
+                    return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
@@ -81,6 +85,25 @@ namespace TournamentProject.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{userId}'.");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
     }
 }

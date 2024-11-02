@@ -15,6 +15,11 @@ namespace TournamentProject.Services
         }
 
 
+        public override IdentityError DuplicateEmail(string email)
+        {
+            return base.DuplicateEmail(email);
+        }
+
 
 
 

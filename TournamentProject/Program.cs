@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TournamentProject.Data;
 using TournamentProject.Models;
+using TournamentProject.Services;
 
 
 
@@ -28,6 +29,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(
     })
     .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
 
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<EmailService>();
 
 builder.Services.AddRazorPages()
     .AddRazorPagesOptions(options =>
