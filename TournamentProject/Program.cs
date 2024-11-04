@@ -24,7 +24,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(
         options.Password.RequireLowercase = false;
         options.Password.RequireUppercase = false;
         options.Password.RequiredLength = 3;
-        options.SignIn.RequireConfirmedEmail = false;
+        options.SignIn.RequireConfirmedEmail = true;
         options.Lockout.AllowedForNewUsers = false;
         options.User.RequireUniqueEmail = true;
     })

@@ -52,7 +52,16 @@ namespace TournamentProject.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password!);
                 if (result.Succeeded)
                 {
-                    _emailService.SendEmail(user.Email!, "Welcome!", "<p>Thank you for registering!</p>");
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink = Url.Action(
+                        "ConfirmEmail",
+                        "Account",
+                        new { userId = user.Id, token = token },
+                        Request.Scheme);
+
+
+                    var emailBody = $"<p>Please confirm your email by clicking <a href='{confirmationLink}'>here</a>.</p>";
+                    _emailService.SendEmail(user.Email!, "Email Confirmation", emailBody);
                     return RedirectToAction("Index", "Home");
                 }
                 foreach (var error in result.Errors)
@@ -78,9 +87,19 @@ namespace TournamentProject.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.FindByNameAsync(model.Email);
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+                if (!await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    // Custom error message
+                    ModelState.AddModelError(string.Empty, "لطفا ایمیل خود را تایید کنید");
+                    return View(model);
+                }
+
                 if (result.Succeeded)
                 {
+
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -100,6 +119,28 @@ namespace TournamentProject.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (userId == null || token == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                return View("ConfirmEmail");
+            }
+
+            return View("ConfirmEmailFailure");
         }
 
 
