@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 using TournamentProject.Data;
 using TournamentProject.Models;
+using TournamentProject.Services;
 
 
 
@@ -30,7 +31,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(
     .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders()
     ;
 builder.Services.AddRazorPages();
-
+builder.Services.AddTransient<EmailService>();
 
 
 // Add services to the container.

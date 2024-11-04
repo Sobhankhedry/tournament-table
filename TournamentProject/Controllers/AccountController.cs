@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using TournamentProject.Data;
 using TournamentProject.Models;
+using TournamentProject.Services;
 using TournamentProject.ViewModels; // Make sure to include this for your view models
 
 namespace TournamentProject.Controllers
@@ -12,13 +13,16 @@ namespace TournamentProject.Controllers
         private readonly ApplicationDBContext _dbContext;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly EmailService _emailService;
 
 
-        public AccountController(ApplicationDBContext dbContext, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AccountController(ApplicationDBContext dbContext, UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager, EmailService emailService)
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailService = emailService;
 
         }
 
@@ -45,13 +49,10 @@ namespace TournamentProject.Controllers
                     UserName = model.Email,
                     Email = model.Email
                 };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password!);
                 if (result.Succeeded)
                 {
-                    // var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Scheme);
-                    // await _emailService.SendEmailAsync(model.Email, "Confirm your email",
-                    //$"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.");
+                    _emailService.SendEmail(user.Email!, "Welcome!", "<p>Thank you for registering!</p>");
                     return RedirectToAction("Index", "Home");
                 }
                 foreach (var error in result.Errors)
