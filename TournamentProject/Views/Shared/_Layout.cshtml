@@ -5,7 +5,8 @@
     var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
 }
 
-@if (!(currentController == "Account" && (currentAction == "Login" || currentAction == "Register")))
+@if (!(currentController == "Account" && (currentAction == "Login" || currentAction == "Register" || currentAction == "RessetPassword"||
+       currentAction == "GetResetPass" || currentAction == "ConfirmEmail" || currentAction=="PasswordChanged")))
 {
     <header>
 
@@ -16,7 +17,7 @@
             <div class="collapse navbar-collapse" id="mynav">
                 <a href="" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">مشاهده جدول مسابقات</a>
                 <ul class="navbar-nav list-unstyled mr-auto mx-5">
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity!.IsAuthenticated)
                     {           
                     
                         <li class="nav-item mx-2">
@@ -40,13 +41,7 @@
                         </li>
                     }
 
-                    @* <li class="nav-item mx-2">
-                        <a asp-controller="Account" asp-action="Login" class="nav-link badge">ورود</a>
-                    </li>
-                    <li class="nav-item mx-2">
-                        <a asp-controller="Account" asp-action="Register" class="nav-link badge badge-light text-dark p-2 menu-item">ثبت نام</a>
-                    </li>
-                    } *@
+                    
                 </ul>
                 <a href="" class="navbar-brand text-dark ">
                     <i class="fa-solid fa-yin-yang" style="color: #ffffff; font-size: 25px; margin-left: 10px;"></i>

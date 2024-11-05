@@ -1,10 +1,59 @@
 ﻿@using TournamentProject.ViewModels
 @model GetResetPassVM
-<h2>ٍEnter Confirmed</h2>
+@* <h2>ٍEnter Confirmed</h2>
 <form method="post" asp-action="GetResetPass">
-    <input type="hidden" asp-for="UserId" />
-    <input type="hidden" asp-for="Token" />
+   
     <input asp-for="Password" type="text" placeholder="پسورد" dir="rtl">
     <input asp-for="ConfirmPassword" type="text" placeholder="تکرار پسورد" dir="rtl">
     <button type="submit" class="btn">ثبت</button>
 </form>
+ *@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.rtl.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="~/css/validation.css">
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/9682b0efe9.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="wrapper">
+        
+        <form asp-action="GetResetPass" , method="post">
+            <div asp-validation-summary="ModelOnly" class="validation-summary-errors " dir="rtl"></div>
+            <h1>بازیابی ایمیل</h1>
+            <input asp-for="UserId" hidden />
+            <input asp-for="Token" hidden />
+            <div class="input-box">
+                <input asp-for="Password" type="password" placeholder="رمز عبور" dir="rtl">
+                <i class="fa-solid fa-lock"></i>
+                <span asp-validation-for="Password" class="field-validation-error"></span>
+            </div>
+            <div class="input-box">
+                <input asp-for="ConfirmPassword" type="password" placeholder="تکرار رمز عبور" dir="rtl">
+                <i class="fa-solid fa-lock"></i>
+                <span asp-validation-for="ConfirmPassword" class="field-validation-error"></span>
+            </div>
+            <button type="submit" class="btn">ثبت </button>
+            
+        </form>
+    </div>
+</body>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
+</html>

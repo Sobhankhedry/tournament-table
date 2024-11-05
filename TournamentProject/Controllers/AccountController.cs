@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TournamentProject.Data;
 using TournamentProject.Models;
 using TournamentProject.Services;
-using TournamentProject.ViewModels; // Make sure to include this for your view models
+using TournamentProject.ViewModels;
 
 namespace TournamentProject.Controllers
 {
@@ -143,19 +143,23 @@ namespace TournamentProject.Controllers
             return View("ConfirmEmailFailure");
         }
 
-        [HttpGet]
-        public IActionResult RessetPassword(LoginVM model)
+
+        public IActionResult RessetPassword()
         {
             return View();
         }
 
         [HttpPost]
-        [ActionName("RessetPass")]
-        public async Task<IActionResult> RessetPssword(RessetEmailVM model)
+        public async Task<IActionResult> RessetPassword(RessetEmailVM model)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email!);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "ایمیل وارد شده موجود نیست");
+                    return View(model);
+                }
                 if (user!.EmailConfirmed)
                 {
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -166,12 +170,15 @@ namespace TournamentProject.Controllers
                         Request.Scheme);
 
 
-                    var emailBody = $"<p>برای بازیابی به لینک کلیک کنید\n<a href='{confirmationLink}'>لینک</a>.</p>";
+                    var emailBody = $"<p>برای بازیابی به لینک کلیک کنید. <a href = '{confirmationLink}' > لینک </ a > </p>";
                     _emailService.SendEmail(user.Email!, "Resset password", emailBody);
                     return RedirectToAction("Index", "Home");
                 }
+
+                return View();
             }
-            return RedirectToAction("Index", "Home");
+            ModelState.AddModelError(string.Empty, "hdldg");
+            return View();
 
         }
 
@@ -200,12 +207,16 @@ namespace TournamentProject.Controllers
                     var result = await _userManager.ResetPasswordAsync(user, model.Token!, model.ConfirmPassword!);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("PasswordChanged");
                     }
                 }
 
             }
-            return RedirectToAction("Index", "Home");
+            return View(model);
+        }
+        public IActionResult PasswordChanged()
+        {
+            return View();
         }
 
     }
