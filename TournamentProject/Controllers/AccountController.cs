@@ -177,7 +177,7 @@ namespace TournamentProject.Controllers
 
                 return View();
             }
-            ModelState.AddModelError(string.Empty, "hdldg");
+
             return View();
 
         }
