@@ -87,10 +87,10 @@ namespace TournamentProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(model.Email);
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var user = await _userManager.FindByNameAsync(model.Email!);
+                var result = await _signInManager.PasswordSignInAsync(model.Email!, model.Password!, model.RememberMe, lockoutOnFailure: false);
 
-                if (!await _userManager.IsEmailConfirmedAsync(user))
+                if (!await _userManager.IsEmailConfirmedAsync(user!))
                 {
                     // Custom error message
                     ModelState.AddModelError(string.Empty, "لطفا ایمیل خود را تایید کنید");
@@ -143,7 +143,70 @@ namespace TournamentProject.Controllers
             return View("ConfirmEmailFailure");
         }
 
+        [HttpGet]
+        public IActionResult RessetPassword(LoginVM model)
+        {
+            return View();
+        }
 
+        [HttpPost]
+        [ActionName("RessetPass")]
+        public async Task<IActionResult> RessetPssword(RessetEmailVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email!);
+                if (user!.EmailConfirmed)
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var confirmationLink = Url.Action(
+                        "GetResetPass",
+                        "Account",
+                        new { userId = user.Id, token = token },
+                        Request.Scheme);
+
+
+                    var emailBody = $"<p>برای بازیابی به لینک کلیک کنید\n<a href='{confirmationLink}'>لینک</a>.</p>";
+                    _emailService.SendEmail(user.Email!, "Resset password", emailBody);
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            return RedirectToAction("Index", "Home");
+
+        }
+
+
+        public IActionResult GetResetPass(string userId, string token)
+        {
+            if (userId == null || token == null)
+            {
+
+                return RedirectToAction("Error", "Home");
+            }
+
+
+            var model = new GetResetPassVM { UserId = userId, Token = token };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetResetPass(GetResetPassVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(model.UserId);
+                if (user != null)
+                {
+                    var result = await _userManager.ResetPasswordAsync(user, model.Token!, model.ConfirmPassword!);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+            }
+            return RedirectToAction("Index", "Home");
+        }
 
     }
 }
