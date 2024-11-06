@@ -52,6 +52,7 @@ namespace TournamentProject.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password!);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, "User");
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var confirmationLink = Url.Action(
                         "ConfirmEmail",
@@ -100,7 +101,16 @@ namespace TournamentProject.Controllers
                 if (result.Succeeded)
                 {
 
-                    return RedirectToAction("Index", "Home");
+                    if (await _userManager.IsInRoleAsync(user!, "Admin"))
+                    {
+
+                        return RedirectToAction("AdminPanel", "Admin");
+                    }
+                    else if (await _userManager.IsInRoleAsync(user, "User"))
+                    {
+
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
                 else
                 {
@@ -215,6 +225,11 @@ namespace TournamentProject.Controllers
             return View(model);
         }
         public IActionResult PasswordChanged()
+        {
+            return View();
+        }
+
+        public IActionResult AdminPanel()
         {
             return View();
         }

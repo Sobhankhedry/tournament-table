@@ -27,9 +27,11 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(
         options.SignIn.RequireConfirmedEmail = true;
         options.Lockout.AllowedForNewUsers = false;
         options.User.RequireUniqueEmail = true;
-    })
+    }).AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders()
     ;
+
+
 builder.Services.AddRazorPages();
 builder.Services.AddTransient<EmailService>();
 
@@ -40,6 +42,12 @@ builder.Services.AddControllersWithViews();
 
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    await CreateRoles(serviceProvider);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -64,4 +72,18 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+
+async Task CreateRoles(IServiceProvider serviceProvider)
+{
+    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    string[] roleNames = { "Admin", "User" };
+
+    foreach (var roleName in roleNames)
+    {
+        if (!await roleManager.RoleExistsAsync(roleName))
+        {
+            await roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+    }
+}
 
