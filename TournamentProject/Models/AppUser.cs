@@ -8,5 +8,6 @@ namespace TournamentProject.Models
         [Required(ErrorMessage = " وارد کردن این فیلد الزامی است")]
         [MaxLength(30)]
         public string? Name { get; set; }
+        public DateTime ExpiredDate { get; set; }
     }
 }

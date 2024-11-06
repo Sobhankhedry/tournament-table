@@ -5,7 +5,6 @@ namespace TournamentProject.Models
     public class ContactUs
     {
         [Required]
-
         [MaxLength(15)]
         public string? Name { get; set; }
         [Required]

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Net;
+using System.Net.Mail;
 using TournamentProject.Data;
 using TournamentProject.Models;
 using TournamentProject.Services;
@@ -47,23 +48,43 @@ namespace TournamentProject.Controllers
                 {
                     Name = model.Name,
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+                    ExpiredDate = DateTime.Now.AddMinutes(1),
                 };
+
                 var result = await _userManager.CreateAsync(user, model.Password!);
                 if (result.Succeeded)
                 {
 
-                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var confirmationLink = Url.Action(
+
+
+                    TempData["message"] = "شما با موفقیت در سایت ثبت نام شده اید";
+
+                    MailMessage mailMessage = new MailMessage("Sob.kh121@gmail.com", user.Email);
+                    mailMessage.Subject = "تایید حساب کاربری";
+                    mailMessage.IsBodyHtml = true;
+                    string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    string address = Url.Action(
                         "ConfirmEmail",
                         "Account",
-                        new { userId = user.Id, token = token },
-                        Request.Scheme);
+                        new
+                        {
+                            userId = user.Id,
+                            token = token
+                        },
+                            Request.Scheme)!;
 
 
-                    var emailBody = $"<p>Please confirm your email by clicking <a href='{confirmationLink}'>here</a>.</p>";
-                    _emailService.SendEmail(user.Email!, "Email Confirmation", emailBody);
+                    mailMessage.Body = $"Hi <b>{user.Name}<b>" +
+                      $"Please click this <a href='{address}'>LINK</a> to confirm your account";
+
+
+                    SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+                    smtpClient.EnableSsl = true;
+                    smtpClient.Credentials = new NetworkCredential("Sob.kh121@gmail.com", "ionj kruy xgum ditk");
+                    smtpClient.Send(mailMessage);
                     return RedirectToAction("PleaseConfrim", "Account");
+
                 }
                 foreach (var error in result.Errors)
                 {
@@ -145,7 +166,7 @@ namespace TournamentProject.Controllers
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
-            if (result.Succeeded)
+            if (result.Succeeded && user.ExpiredDate >= DateTime.Now)
             {
                 await _userManager.AddToRoleAsync(user, "User");
                 return View("ConfirmEmail");

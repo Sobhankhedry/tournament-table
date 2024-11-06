@@ -12,8 +12,8 @@ using TournamentProject.Data;
 namespace TournamentProject.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241102232602_addingTable")]
-    partial class addingTable
+    [Migration("20241106173402_RestructuringTables")]
+    partial class RestructuringTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -176,6 +176,9 @@ namespace TournamentProject.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("ExpiredDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
