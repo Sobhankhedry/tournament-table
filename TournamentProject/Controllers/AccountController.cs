@@ -52,7 +52,7 @@ namespace TournamentProject.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password!);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "User");
+
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var confirmationLink = Url.Action(
                         "ConfirmEmail",
@@ -63,7 +63,7 @@ namespace TournamentProject.Controllers
 
                     var emailBody = $"<p>Please confirm your email by clicking <a href='{confirmationLink}'>here</a>.</p>";
                     _emailService.SendEmail(user.Email!, "Email Confirmation", emailBody);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("PleaseConfrim", "Account");
                 }
                 foreach (var error in result.Errors)
                 {
@@ -106,7 +106,7 @@ namespace TournamentProject.Controllers
 
                         return RedirectToAction("AdminPanel", "Admin");
                     }
-                    else if (await _userManager.IsInRoleAsync(user, "User"))
+                    else if (await _userManager.IsInRoleAsync(user!, "User"))
                     {
 
                         return RedirectToAction("Index", "Home");
@@ -147,6 +147,7 @@ namespace TournamentProject.Controllers
             var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, "User");
                 return View("ConfirmEmail");
             }
 
@@ -229,9 +230,21 @@ namespace TournamentProject.Controllers
             return View();
         }
 
-        public IActionResult AdminPanel()
+        public IActionResult PleaseConfrim()
         {
             return View();
+        }
+        public async Task AssignAdminRole(IServiceProvider serviceProvider, string email)
+        {
+            var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var user = await userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                if (!await userManager.IsInRoleAsync(user, "Admin"))
+                {
+                    await userManager.AddToRoleAsync(user, "Admin");
+                }
+            }
         }
 
     }

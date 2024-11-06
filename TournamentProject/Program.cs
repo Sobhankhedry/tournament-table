@@ -47,7 +47,9 @@ using (var scope = app.Services.CreateScope())
 {
     var serviceProvider = scope.ServiceProvider;
     await CreateRoles(serviceProvider);
+    await AssignAdminRole(serviceProvider, "Admin@gmail.com");
 }
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -76,7 +78,7 @@ app.Run();
 async Task CreateRoles(IServiceProvider serviceProvider)
 {
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    string[] roleNames = { "Admin", "User" };
+    string[] roleNames = { "Admin", "User" }; // Define your roles
 
     foreach (var roleName in roleNames)
     {
@@ -86,4 +88,20 @@ async Task CreateRoles(IServiceProvider serviceProvider)
         }
     }
 }
+
+async Task AssignAdminRole(IServiceProvider serviceProvider, string email)
+{
+    var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+    var user = await userManager.FindByEmailAsync(email);
+
+    if (user != null)
+    {
+        // Check if the user already has the Admin role
+        if (!await userManager.IsInRoleAsync(user, "Admin"))
+        {
+            await userManager.AddToRoleAsync(user, "Admin");
+        }
+    }
+}
+
 
