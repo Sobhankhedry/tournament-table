@@ -4,7 +4,6 @@ using System.Net;
 using System.Net.Mail;
 using TournamentProject.Data;
 using TournamentProject.Models;
-using TournamentProject.Services;
 using TournamentProject.ViewModels;
 
 namespace TournamentProject.Controllers
@@ -14,16 +13,16 @@ namespace TournamentProject.Controllers
         private readonly ApplicationDBContext _dbContext;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly EmailService _emailService;
+        //private readonly EmailService _emailService;
 
 
         public AccountController(ApplicationDBContext dbContext, UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager, EmailService emailService)
+            SignInManager<AppUser> signInManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _signInManager = signInManager;
-            _emailService = emailService;
+
 
         }
 
@@ -194,16 +193,27 @@ namespace TournamentProject.Controllers
                 }
                 if (user!.EmailConfirmed)
                 {
+                    MailMessage mailMessage = new MailMessage("Sob.kh121@gmail.com", user.Email!);
+                    mailMessage.Subject = "بازیابی رمز عبور";
+                    mailMessage.IsBodyHtml = true;
+
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                     var confirmationLink = Url.Action(
                         "GetResetPass",
                         "Account",
                         new { userId = user.Id, token = token },
                         Request.Scheme);
+                    mailMessage.Body = $"سلام <b>{user.Name}<b>" +
+                     $"لطفا روی لینک کلیک کنید برای بازیابی رمز عبور <a href='{confirmationLink}'>LINK</a>";
 
 
-                    var emailBody = $"<p>برای بازیابی به لینک کلیک کنید. <a href = '{confirmationLink}' > لینک </ a > </p>";
-                    _emailService.SendEmail(user.Email!, "Resset password", emailBody);
+                    SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+                    smtpClient.EnableSsl = true;
+                    smtpClient.Credentials = new NetworkCredential("Sob.kh121@gmail.com", "ionj kruy xgum ditk");
+                    smtpClient.Send(mailMessage);
+
+
+
                     return RedirectToAction("Index", "Home");
                 }
 
