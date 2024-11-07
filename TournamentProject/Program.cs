@@ -47,7 +47,7 @@ using (var scope = app.Services.CreateScope())
 {
     var serviceProvider = scope.ServiceProvider;
     await CreateRoles(serviceProvider);
-    await AssignAdminRole(serviceProvider, "Admin@gmail.com");
+    await AssignAdminRole(serviceProvider, "Sobh6n@gmail.com");
 }
 
 
