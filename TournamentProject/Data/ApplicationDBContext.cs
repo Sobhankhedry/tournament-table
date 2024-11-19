@@ -10,6 +10,7 @@ namespace TournamentProject.Data
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }
 
         public DbSet<ContactUs> ContactUs { get; set; }
+        public DbSet<Coach> Coaches { get; set; }
     }
 
 }

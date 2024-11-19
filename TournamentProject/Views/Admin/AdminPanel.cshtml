@@ -470,8 +470,8 @@
                             </tbody>
                         </table>
                         <button class="btn btn-primary" onclick="addRow('coachesTable')">افزودن</button>
-                        <div class="text-center mt-3">
-                            <button class="btn btn-success" onclick="saveChanges('coaches')">ثبت تغییرات</button>
+                        <div class="text-center mt-3 modal-footer">
+                            <button class="btn btn-success" onclick="saveTableData('coachesTable', '/Coaches/SaveCoaches')">ثبت تغییرات</button>
                         </div>
                     </div>
                 </div>
@@ -524,6 +524,48 @@
             row.parentNode.removeChild(row);
             updateMainPage();
         }
+        function saveTableData(tableId, endpoint) {
+            const table = document.getElementById(tableId);
+            const rows = table.rows;
+            const data = [];
+
+            // Collect data from each row
+            for (let i = 0; i < rows.length; i++) {
+                const input = rows[i].cells[0].querySelector("input");
+                if (input) {
+                    const value = input.value.trim();
+                    if (value) {
+                        data.push(value); // Collect only non-empty values
+                    }
+                }
+            }
+
+            if (data.length === 0) {
+                alert("هیچ داده‌ای برای ذخیره وجود ندارد.");
+                return;
+            }
+
+            console.log(data);
+            
+            fetch('/Admin/SaveCoaches', {  // Correct URL for AdminController
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+                
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert("داده‌ها با موفقیت ذخیره شدند!");
+                        location.reload(); // Reload to reflect changes (optional)
+                    } else {
+                        alert("خطا: " + result.message);
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+        }
 
         function updateMainPage(input) {
             // This function would update the content on the main page
@@ -534,6 +576,26 @@
                 console.log('Row deleted, update main page');
             }
         }
+
+        document.getElementById("coachesModal").addEventListener("shown.bs.modal", function () {
+            fetch('/Admin/GetCoaches')
+                .then(response => response.json())
+                .then(coaches => {
+                    const tableBody = document.getElementById("coachesTable");
+                    tableBody.innerHTML = ""; // Clear the table before populating
+
+                    coaches.forEach(coach => {
+                        const newRow = tableBody.insertRow();
+                        const cell1 = newRow.insertCell(0);
+                        const cell2 = newRow.insertCell(1);
+
+                        cell1.innerHTML = `<input type="text" class="form-control bg-dark text-white" value="${coach}">`;
+                        cell2.innerHTML = '<button class="btn btn-danger btn-sm" onclick="deleteRow(this)">حذف</button>';
+                    });
+                })
+                .catch(error => console.error("Error fetching coaches:", error));
+        });
+
 
     </script>
 
