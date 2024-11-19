@@ -1,4 +1,4 @@
-﻿<head>
+﻿@* <head>
     <title>Title</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,6 +22,536 @@
 
 
 
-</head>
+</head> *@
 
-<h1>Admin Panel</h1>
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Admin</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/bootstrap.fa.min.css">
+    <script src="https://kit.fontawesome.com/9682b0efe9.js" crossorigin="anonymous"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="./js/jquery-3.7.1.min.js"></script>
+    <script src="./js/popper.min.js"></script>
+    <script src="./js/main.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.esm.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.esm.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/bootstrap.fa.min.css">
+    <script src="https://kit.fontawesome.com/9682b0efe9.js" crossorigin="anonymous"></script>
+    <style>
+        .card {
+        position: relative;
+        width: 190px;
+        height: 254px;
+        background-color: #000;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        padding: 12px;
+        gap: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        color: white;
+        border: 2px solid transparent;
+        background-image: linear-gradient(#000, #000),
+        linear-gradient(135deg, #e81cff 0%, #40c9ff 100%);
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+        }
+
+        .card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        left: -5px;
+        margin: auto;
+        width: 200px;
+        height: 264px;
+        border-radius: 10px;
+        background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100% );
+        z-index: -10;
+        pointer-events: none;
+        transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .card::after {
+        content: "";
+        z-index: -1;
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100% );
+        transform: translate3d(0, 0, 0) scale(0.95);
+        filter: blur(20px);
+        }
+
+        .heading {
+        font-size: 20px;
+        text-transform: capitalize;
+        font-weight: 700;
+        }
+
+        .card p:not(.heading) {
+        font-size: 14px;
+        }
+
+        .card p:last-child {
+        color: #e81cff;
+        font-weight: 600;
+        }
+
+        .card:hover::after {
+        filter: blur(30px);
+        }
+
+        .card:hover::before {
+        transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
+        }
+        html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+        }
+
+        .full-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #121212;
+        background: linear-gradient(
+            135deg,
+            #121212 25%,
+            #1a1a1a 25%,
+            #1a1a1a 50%,
+            #121212 50%,
+            #121212 75%,
+            #1a1a1a 75%,
+            #1a1a1a
+        );
+        background-size: 40px 40px;
+
+        /* Animation */
+        animation: move 4s linear infinite;
+        }
+        
+        @@keyframes move {
+        0% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: 40px 40px;
+        }
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- anvbar -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm nav-menu">
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#mynav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mynav">
+            <a href="" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">مشاهده جدول مسابقات</a>
+            <ul class="navbar-nav list-unstyled mr-auto mx-5">
+                <li class="nav-item mx-2">
+                    <a href="./index.html" class="nav-link badge badge-light text-dark p-2 menu-item">خروج</a>
+                </li>
+            </ul>
+            <a href="" class="navbar-brand text-dark ">
+                <i class="fa-solid fa-yin-yang" style="color: #ffffff; font-size: 25px; margin-left: 10px;"></i>
+            </a>
+        </div>
+    </nav>
+    <!-- end of navbar -->
+    <!-- cards -->
+    <div class="full-container">
+        <div class="container mt-5">
+            <h1 class="text-center mb-5 pb-5 text-white">پنل ادمین</h1>
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <div class="card text-center" data-bs-toggle="modal" data-bs-target="#championshipModal">
+                        <div class="card-body">
+                            <i class="bi bi-trophy fs-1"></i>
+                            <h5 class="card-title m-4">قهرمانی</h5>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#championshipModal">ویرایش</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card text-center" data-bs-toggle="modal" data-bs-target="#medalsModal">
+                        <div class="card-body">
+                            <i class="bi bi-award fs-1"></i>
+                            <h5 class="card-title m-4">مدال</h5>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#medalsModal">ویرایش</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card text-center" data-bs-toggle="modal" data-bs-target="#coachesModal">
+                        <div class="card-body">
+                            <i class="bi bi-person-badge fs-1"></i>
+                            <h5 class="card-title m-4">مربیان</h5>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#coachesModal">ویرایش</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card text-center" data-bs-toggle="modal" data-bs-target="#refereesModal">
+                        <div class="card-body">
+                            <i class="bi bi-whistle fs-1"></i>
+                            <h5 class="card-title m-4">داوران</h5>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#refereesModal">ویرایش</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end of cards -->
+        <!-- Modal for Championship -->
+        <div class="modal fade" id="championshipModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">قهرمانی</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-dark table-striped text-center">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">مقام</th>
+                                    <th class="text-center">تیم‌ها</th>
+                                </tr>
+                            </thead>
+                            <tbody id="championshipTable">
+                                <tr>
+                                    <td>اول</td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'championship', 'first')"></td>
+                                </tr>
+                                <tr>
+                                    <td>دوم</td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'championship', 'second')"></td>
+                                </tr>
+                                <tr>
+                                    <td>سوم</td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'championship', 'third')"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-success" onclick="saveChanges('championship')">ثبت تغییرات</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Medals -->
+        <div class="modal fade" id="medalsModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">مدال</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-dark table-striped mb-5 text-center">
+                            <thead>
+                                <tr>
+                                    <th colspan="6" class="text-center">نونهالان</th>
+                                </tr>
+                                <tr>
+                                    <th>مقام</th>
+                                    <th>وزن اول</th>
+                                    <th>وزن دوم</th>
+                                    <th>وزن سوم</th>
+                                    <th>وزن چهارم</th>
+                                    <th>وزن پنجم</th>
+                                </tr>
+                            </thead>
+                            <tbody id="juniorMedalTable">
+                                <tr>
+                                    <td>اول</td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'juniorMedal', 'first', 'weight1')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'juniorMedal', 'first', 'weight2')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'juniorMedal', 'first', 'weight3')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'juniorMedal', 'first', 'weight4')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'juniorMedal', 'first', 'weight5')"></td>
+                                </tr>
+                                <tr>
+                                    <td>دوم</td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'juniorMedal', 'second', 'weight1')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'juniorMedal', 'second', 'weight2')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'juniorMedal', 'second', 'weight3')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'juniorMedal', 'second', 'weight4')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'juniorMedal', 'second', 'weight5')"></td>
+                                </tr>
+                                <tr>
+                                    <td>سوم</td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'juniorMedal', 'third', 'weight1')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'juniorMedal', 'third', 'weight2')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'juniorMedal', 'third', 'weight3')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'juniorMedal', 'third', 'weight4')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'juniorMedal', 'third', 'weight5')"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-dark table-striped mb-5 text-center">
+                            <thead>
+                                <tr>
+                                    <th colspan="6" class="text-center">نوجوانان</th>
+                                </tr>
+                                <tr>
+                                    <th>مقام</th>
+                                    <th>وزن اول</th>
+                                    <th>وزن دوم</th>
+                                    <th>وزن سوم</th>
+                                    <th>وزن چهارم</th>
+                                    <th>وزن پنجم</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teenMedalTable">
+                                <tr>
+                                    <td>اول</td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'teenMedal', 'first', 'weight1')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'teenMedal', 'first', 'weight2')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'teenMedal', 'first', 'weight3')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'teenMedal', 'first', 'weight4')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'teenMedal', 'first', 'weight5')"></td>
+                                </tr>
+                                <tr>
+                                    <td>دوم</td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'teenMedal', 'second', 'weight1')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'teenMedal', 'second', 'weight2')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'teenMedal', 'second', 'weight3')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'teenMedal', 'second', 'weight4')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'teenMedal', 'second', 'weight5')"></td>
+                                </tr>
+                                <tr>
+                                    <td>سوم</td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'teenMedal', 'third', 'weight1')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'teenMedal', 'third', 'weight2')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'teenMedal', 'third', 'weight3')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'teenMedal', 'third', 'weight4')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'teenMedal', 'third', 'weight5')"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-dark table-striped mb-5 text-center">
+                            <thead>
+                                <tr>
+                                    <th colspan="6" class="text-center">جوانان</th>
+                                </tr>
+                                <tr>
+                                    <th>مقام</th>
+                                    <th>وزن اول</th>
+                                    <th>وزن دوم</th>
+                                    <th>وزن سوم</th>
+                                    <th>وزن چهارم</th>
+                                    <th>وزن پنجم</th>
+                                </tr>
+                            </thead>
+                            <tbody id="youthMedalTable">
+                                <tr>
+                                    <td>اول</td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'youthMedal', 'first', 'weight1')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'youthMedal', 'first', 'weight2')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'youthMedal', 'first', 'weight3')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'youthMedal', 'first', 'weight4')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'youthMedal', 'first', 'weight5')"></td>
+                                </tr>
+                                <tr>
+                                    <td>دوم</td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'youthMedal', 'second', 'weight1')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'youthMedal', 'second', 'weight2')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'youthMedal', 'second', 'weight3')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'youthMedal', 'second', 'weight4')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'youthMedal', 'second', 'weight5')"></td>
+                                </tr>
+                                <tr>
+                                    <td>سوم</td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'youthMedal', 'third', 'weight1')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'youthMedal', 'third', 'weight2')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'youthMedal', 'third', 'weight3')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'youthMedal', 'third', 'weight4')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'youthMedal', 'third', 'weight5')"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-dark table-striped text-center">
+                            <thead>
+                                <tr>
+                                    <th colspan="6" class="text-center">بزرگسالان</th>
+                                </tr>
+                                <tr>
+                                    <th>مقام</th>
+                                    <th>وزن اول</th>
+                                    <th>وزن دوم</th>
+                                    <th>وزن سوم</th>
+                                    <th>وزن چهارم</th>
+                                    <th>وزن پنجم</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adultMedalTable">
+                                <tr>
+                                    <td>اول</td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'adultMedal', 'first', 'weight1')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'adultMedal', 'first', 'weight2')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'adultMedal', 'first', 'weight3')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'adultMedal', 'first', 'weight4')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'adultMedal', 'first', 'weight5')"></td>
+                                </tr>
+                                <tr>
+                                    <td>دوم</td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'adultMedal', 'second', 'weight1')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'adultMedal', 'second', 'weight2')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'adultMedal', 'second', 'weight3')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'adultMedal', 'second', 'weight4')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'adultMedal', 'second', 'weight5')"></td>
+                                </tr>
+                                <tr>
+                                    <td>سوم</td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'adultMedal', 'third', 'weight1')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'adultMedal', 'third', 'weight2')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'adultMedal', 'third', 'weight3')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'adultMedal', 'third', 'weight4')"></td>
+                                    <td><input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this, 'adultMedal', 'third', 'weight5')"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-success" onclick="saveChanges('medals')">ثبت تغییرات</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Coaches -->
+        <div class="modal fade" id="coachesModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">مربیان</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-dark table-striped text-center">
+                            <thead>
+                                <tr>
+                                    <th>اسامی مربیان</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="coachesTable">
+                                <!-- Table rows will be added here dynamically -->
+                            </tbody>
+                        </table>
+                        <button class="btn btn-primary" onclick="addRow('coachesTable')">افزودن</button>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-success" onclick="saveChanges('coaches')">ثبت تغییرات</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Referees -->
+        <div class="modal fade" id="refereesModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">داوران</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-dark table-striped text-center">
+                            <thead>
+                                <tr>
+                                    <th>اسامی داوران</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="refereesTable">
+                                <!-- Table rows will be added here dynamically -->
+                            </tbody>
+                        </table>
+                        <button class="btn btn-primary" onclick="addRow('refereesTable')">افزودن</button>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-success" onclick="saveChanges('referees')">ثبت تغییرات</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addRow(tableId) {
+            const table = document.getElementById(tableId);
+            const newRow = table.insertRow();
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+
+            cell1.innerHTML = '<input type="text" class="form-control bg-dark text-white" onchange="updateMainPage(this)">';
+            cell2.innerHTML = '<button class="btn btn-danger btn-sm" onclick="deleteRow(this)">حذف</button>';
+        }
+
+        function deleteRow(btn) {
+            const row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+            updateMainPage();
+        }
+
+        function updateMainPage(input) {
+            // This function would update the content on the main page
+            // For demonstration, we'll just log the changes
+            if (input) {
+                console.log('Updated value:', input.value);
+            } else {
+                console.log('Row deleted, update main page');
+            }
+        }
+
+    </script>
+
+    @* <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+    <script src="./js/jquery-3.7.1.min.js"></script>
+    <script src="./js/popper.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/main.js"></script> *@
+</body>
+</html>

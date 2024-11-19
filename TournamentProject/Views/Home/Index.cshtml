@@ -29,7 +29,54 @@
 
 </head>
 <body >
-    
+   
+    <header>
+
+        <nav class="navbar navbar-expand-lg  bg-dark navbar-dark  shadow-sm nav-menu">
+            <button class="navbar-toggler" data-toggle="collapse" data-target="#mynav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mynav">
+                <a href="" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">مشاهده جدول مسابقات</a>
+                <ul class="navbar-nav list-unstyled mr-auto mx-5">
+                    @if (User.Identity!.IsAuthenticated)
+                    {           
+                    
+                        <li class="nav-item mx-2">
+                            <span class="nav-link text-white">Welcome back, @User.Identity.Name!</span>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                                <button type="submit" class="nav-link badge badge-light text-dark mb-1 p-2 menu-item">خروج</button>
+                            </form>
+                        </li>                   
+                       
+                    }
+                    else
+                    {
+                        <li class="nav-item mx-2">
+                            <a asp-controller="Account" asp-action="Login" class="nav-link badge badge-light text-dark p-2 menu-item">ورود</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a asp-controller="Account" asp-action="Register" class="nav-link badge badge-light text-dark p-2 menu-item">ثبت نام</a>
+                        </li>
+                    }
+
+                    
+                </ul>
+                <a href="" class="navbar-brand text-dark ">
+                    <i class="fa-solid fa-yin-yang" style="color: #ffffff; font-size: 25px; margin-left: 10px;"></i>
+                </a>
+            </div>
+        </nav>
+        
+
+        <div class="banner" style="text-align: center; margin-top: 20%;">
+        <h3 class="display-5 text-white">مسابقات هنرهای رزمی</h3>
+        <h3 class="display-4 text-white banner-link">کونگ فو</h3>
+
+    </div>
+    </header>
     <!-- header  -->
     <!-- Tournament banner -->
     <section class="announcements-section p-5 bg-dark accordion">
