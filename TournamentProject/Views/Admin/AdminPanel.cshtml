@@ -165,7 +165,7 @@
             <a href="" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">مشاهده جدول مسابقات</a>
             <ul class="navbar-nav list-unstyled mr-auto mx-5">
                 <li class="nav-item mx-2">
-                    <a href="./index.html" class="nav-link badge badge-light text-dark p-2 menu-item">خروج</a>
+                    <a asp-controller="Admin" asp-action="Logout" class="nav-link badge badge-light text-dark p-2 menu-item">خروج</a>
                 </li>
             </ul>
             <a href="" class="navbar-brand text-dark ">
@@ -471,7 +471,7 @@
                         </table>
                         <button class="btn btn-primary" onclick="addRow('coachesTable')">افزودن</button>
                         <div class="text-center mt-3 modal-footer">
-                            <button class="btn btn-success" onclick="saveTableData('coachesTable', '/Coaches/SaveCoaches')">ثبت تغییرات</button>
+                            <button class="btn btn-success" onclick="saveTableData('coachesTable', '/Admin/SaveCoaches')">ثبت تغییرات</button>
                         </div>
                     </div>
                 </div>
@@ -500,7 +500,7 @@
                         </table>
                         <button class="btn btn-primary" onclick="addRow('refereesTable')">افزودن</button>
                         <div class="text-center mt-3">
-                            <button class="btn btn-success" onclick="saveChanges('referees')">ثبت تغییرات</button>
+                            <button class="btn btn-success" onclick="saveTableData('refereesTable' , '/Admin/SaveReferees')">ثبت تغییرات</button>
                         </div>
                     </div>
                 </div>
@@ -510,6 +510,7 @@
 
     <script>
         function addRow(tableId) {
+            
             const table = document.getElementById(tableId);
             const newRow = table.insertRow();
             const cell1 = newRow.insertCell(0);
@@ -524,6 +525,8 @@
             row.parentNode.removeChild(row);
             updateMainPage();
         }
+
+
         function saveTableData(tableId, endpoint) {
             const table = document.getElementById(tableId);
             const rows = table.rows;
@@ -535,25 +538,23 @@
                 if (input) {
                     const value = input.value.trim();
                     if (value) {
+                        
                         data.push(value); // Collect only non-empty values
                     }
                 }
             }
 
             if (data.length === 0) {
-                alert("هیچ داده‌ای برای ذخیره وجود ندارد.");
+                alert("هیچ داده‌ای برای ذخیره وجود ندارد."); // No data to save
                 return;
             }
 
-            console.log(data);
-            
-            fetch('/Admin/SaveCoaches', {  // Correct URL for AdminController
+            fetch(endpoint, { // Use the dynamic endpoint
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
-                
             })
                 .then(response => response.json())
                 .then(result => {
@@ -574,7 +575,6 @@
                 console.log('Row deleted, update main page');
             }
         }
-
         document.getElementById("coachesModal").addEventListener("shown.bs.modal", function () {
             fetch('/Admin/GetCoaches')
                 .then(response => response.json())
@@ -586,7 +586,6 @@
                         const newRow = tableBody.insertRow();
                         const cell1 = newRow.insertCell(0);
                         const cell2 = newRow.insertCell(1);
-
                         cell1.innerHTML = `<input type="text" class="form-control bg-dark text-white" value="${coach}">`;
                         cell2.innerHTML = '<button class="btn btn-danger btn-sm" onclick="deleteRow(this)">حذف</button>';
                     });
@@ -594,9 +593,24 @@
                 .catch(error => console.error("Error fetching coaches:", error));
         });
 
+        document.getElementById("refereesModal").addEventListener("shown.bs.modal", function () {
+            fetch('/Admin/GetReferees')
+                .then(response => response.json())
+                .then(referees => {
+                    const tableBody = document.getElementById("refereesTable");
+                    tableBody.innerHTML = ""; 
 
-    </script>
+                    referees.forEach(referee => {
+                        const newRow = tableBody.insertRow();
+                        const cell1 = newRow.insertCell(0);
+                        const cell2 = newRow.insertCell(1);
 
-   
+                        cell1.innerHTML = `<input type="text" class="form-control bg-dark text-white" value="${referee}">`;
+                        cell2.innerHTML = '<button class="btn btn-danger btn-sm" onclick="deleteRow(this)">حذف</button>';
+                    });
+                })
+                .catch(error => console.error("Error fetching referees:", error));
+        });
+    </script>  
 </body>
 </html>
