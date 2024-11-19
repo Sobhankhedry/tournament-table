@@ -568,8 +568,6 @@
         }
 
         function updateMainPage(input) {
-            // This function would update the content on the main page
-            // For demonstration, we'll just log the changes
             if (input) {
                 console.log('Updated value:', input.value);
             } else {
@@ -582,7 +580,7 @@
                 .then(response => response.json())
                 .then(coaches => {
                     const tableBody = document.getElementById("coachesTable");
-                    tableBody.innerHTML = ""; // Clear the table before populating
+                    tableBody.innerHTML = ""; 
 
                     coaches.forEach(coach => {
                         const newRow = tableBody.insertRow();

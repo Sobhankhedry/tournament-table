@@ -27,6 +27,12 @@ namespace TournamentProject.Controllers
 
             try
             {
+                if (_dbContext!.Coaches.Any())
+                {
+                    var all = _dbContext.Coaches.ToList();
+                    _dbContext.Coaches.RemoveRange(all);
+                    _dbContext.SaveChanges();
+                }
                 foreach (var name in items)
                 {
                     var newCoach = new Coach { Name = name };
