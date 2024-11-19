@@ -28,8 +28,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(
         options.Lockout.AllowedForNewUsers = false;
         options.User.RequireUniqueEmail = true;
     }).AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders()
-    ;
+    .AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders().AddErrorDescriber<CustomIdentityErrorDescriber>();
+
 
 
 builder.Services.AddRazorPages();
