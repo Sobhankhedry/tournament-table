@@ -119,12 +119,14 @@ body {
 }
 
 .validation-message {
-    text-align: right; 
-    margin-top: 5px; 
-    font-size: 0.875em; 
-    width: 100%; 
-    direction: rtl; 
+    text-align: right;
+    margin-top: 5px;
+    font-size: 0.875em;
+    width: 100%;
+    direction: rtl;
+    display: block; /* Ensure it behaves like a block element */
 }
+
 
 
 .validation-summary-errors {
@@ -142,8 +144,9 @@ body {
 
 .input-validation-error {
     border: 1px solid red !important;
-    background-color: #f8d7da;
+    background-color: #f8d7da; 
 }
+
 
 .validation-summary-errors {
     color: red;

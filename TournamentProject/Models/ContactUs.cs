@@ -4,10 +4,10 @@ namespace TournamentProject.Models
 {
     public class ContactUs
     {
-        [Required]
+        [Required(ErrorMessage = "وارد کردن این فیلد الزامی است")]
         [MaxLength(15)]
         public string? Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "وارد کردن این فیلد الزامی است")]
         [Key]
         [MaxLength(30)]
         public string? Email { get; set; }
