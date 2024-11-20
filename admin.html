@@ -195,7 +195,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">قهرمانی</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <table class="table table-dark table-striped text-center">
@@ -234,7 +236,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">مدال</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <table class="table table-dark table-striped mb-5 text-center">
@@ -418,7 +422,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">مربیان</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <table class="table table-dark table-striped text-center">
@@ -447,7 +453,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">داوران</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <table class="table table-dark table-striped text-center">
@@ -473,6 +481,11 @@
 
     <script>
         function addRow(tableId) {
+            if (checkEmptyFields(tableId)) {
+                alert('لطفاً ابتدا فیلد قبلی را پر کنید.');
+                return;
+            }
+            
             const table = document.getElementById(tableId);
             const newRow = table.insertRow();
             const cell1 = newRow.insertCell(0);
@@ -482,6 +495,17 @@
             cell2.innerHTML = '<button class="btn btn-danger btn-sm" onclick="deleteRow(this)">حذف</button>';
         }
 
+        function checkEmptyFields(tableId) {
+            const table = document.getElementById(tableId);
+            const inputs = table.getElementsByTagName('input');
+            for (let i = 0; i < inputs.length; i++) {
+                if (inputs[i].value.trim() === '') {
+                    return true; 
+                }
+            }
+            return false;
+        }
+
         function deleteRow(btn) {
             const row = btn.parentNode.parentNode;
             row.parentNode.removeChild(row);
@@ -489,15 +513,12 @@
         }
 
         function updateMainPage(input) {
-            // This function would update the content on the main page
-            // For demonstration, we'll just log the changes
             if (input) {
                 console.log('Updated value:', input.value);
             } else {
                 console.log('Row deleted, update main page');
             }
         }
-
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
