@@ -6,6 +6,7 @@ using TournamentProject.Models;
 
 namespace TournamentProject.Controllers
 {
+
     public class AdminController : Controller
     {
         private readonly ApplicationDBContext? _dbContext;
@@ -163,18 +164,54 @@ namespace TournamentProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveMedals([FromBody] List<Medals> medals)
+        public IActionResult SaveMedals([FromBody] List<Medals> medalsData)
         {
-            if (medals == null || medals.Count == 0)
+            // Check if medalsData is null or empty
+            if (medalsData == null || !medalsData.Any())
             {
-                return BadRequest("No data received.");
+                return BadRequest(new { success = false, message = "No medal data provided." });
             }
 
-            await _dbContext!.Medals.AddRangeAsync(medals);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                // Process each medal and add it to the database
+                foreach (var medal in medalsData)
+                {
+                    // Example: Validate medal data before saving
+                    if (string.IsNullOrEmpty(medal.Name) || string.IsNullOrEmpty(medal.Place) || string.IsNullOrEmpty(medal.Age))
+                    {
+                        return BadRequest(new { success = false, message = $"Invalid medal data. Missing fields: {string.Join(", ", GetMissingFields(medal))}" });
+                    }
 
-            return Ok("Data saved successfully.");
+                    // Add the medal to the database
+                    _dbContext.Medals.Add(medal); // Add your medal object to the DbContext
+                }
+
+                // Save all medals to the database
+                _dbContext.SaveChanges();
+
+                // Return success response
+                return Ok(new { success = true, message = "Medals saved successfully." });
+            }
+            catch (System.Exception ex)
+            {
+                // Log the exception (you can use a logging framework like Serilog, NLog, etc.)
+                return StatusCode(500, new { success = false, message = $"An error occurred while saving medals: {ex.Message}" });
+            }
         }
+
+        // Helper method to get missing fields from the medal
+        private IEnumerable<string> GetMissingFields(Medals medal)
+        {
+            var missingFields = new List<string>();
+
+            if (string.IsNullOrEmpty(medal.Name)) missingFields.Add("Name");
+            if (string.IsNullOrEmpty(medal.Place)) missingFields.Add("Place");
+            if (string.IsNullOrEmpty(medal.Age)) missingFields.Add("Age");
+
+            return missingFields;
+        }
+
 
     }
 }
