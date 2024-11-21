@@ -106,6 +106,11 @@ namespace TournamentProject.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.Email!);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "حساب کاربری وجود ندارد،لطفا ثبت نام کنید");
+                    return View(model);
+                }
                 var result = await _signInManager.PasswordSignInAsync(model.Email!, model.Password!, model.RememberMe, lockoutOnFailure: false);
 
                 if (!await _userManager.IsEmailConfirmedAsync(user!))
