@@ -27,16 +27,13 @@ namespace TournamentProject.Controllers
         }
 
 
-
-
-        // GET: Account/Register
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
-        // POST: Account/Register
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterVM model)
@@ -94,14 +91,14 @@ namespace TournamentProject.Controllers
             return View(model);
         }
 
-        // GET: Account/Login
+
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-        // POST: Account/Login
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginVM model)
@@ -113,7 +110,7 @@ namespace TournamentProject.Controllers
 
                 if (!await _userManager.IsEmailConfirmedAsync(user!))
                 {
-                    // Custom error message
+
                     ModelState.AddModelError(string.Empty, "لطفا ایمیل خود را تایید کنید");
                     return View(model);
                 }
@@ -143,7 +140,7 @@ namespace TournamentProject.Controllers
             return View(model);
         }
 
-        // POST: Account/Logout
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
@@ -243,7 +240,7 @@ namespace TournamentProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByIdAsync(model.UserId);
+                var user = await _userManager.FindByIdAsync(model.UserId!);
                 if (user != null)
                 {
                     var result = await _userManager.ResetPasswordAsync(user, model.Token!, model.ConfirmPassword!);

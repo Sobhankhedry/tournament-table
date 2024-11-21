@@ -165,7 +165,9 @@
             <a href="" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">مشاهده جدول مسابقات</a>
             <ul class="navbar-nav list-unstyled mr-auto mx-5">
                 <li class="nav-item mx-2">
-                    <a asp-controller="Admin" asp-action="Logout" class="nav-link badge badge-light text-dark p-2 menu-item">خروج</a>
+                     <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                    <button  method="post" class="nav-link badge badge-light text-dark p-2 menu-item" type="submit">خروج</button>
+                    </form>
                 </li>
             </ul>
             <a href="" class="navbar-brand text-dark ">
