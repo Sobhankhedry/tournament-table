@@ -109,6 +109,60 @@ namespace TournamentProject.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult SaveTeams([FromBody] List<string> teams)
+        {
+            if (teams == null || !teams.Any())
+            {
+                return Json(new { success = false, message = "هیچ تیمی دریافت نشد" });
+            }
+            if (teams.Count < 3)
+            {
+                return Json(new { success = false, message = "تعداد تیم‌ها کافی نیست. همه را وارد کن" });
+            }
+            try
+            {
+                if (_dbContext!.Teams.Any())
+                {
+                    var all = _dbContext!.Teams.ToList();
+                    _dbContext.Teams.RemoveRange(all);
+                    _dbContext.SaveChanges();
+                }
+
+                var newTeam = new Team { First = teams[0], Second = teams[1], Third = teams[2] };
+                _dbContext!.Teams.Add(newTeam);
+                _dbContext!.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+            return Json(new { success = true, message = "داده‌ها با موفقیت ذخیره شدند." });
+        }
+
+        [HttpGet]
+        public IActionResult GetTeams()
+        {
+            try
+            {
+                // Retrieve the latest record (if applicable)
+                var team = _dbContext.Teams.FirstOrDefault();
+                if (team == null)
+                {
+                    return Json(new { success = true, data = new { First = "", Second = "", Third = "" } });
+                }
+
+                // Return the data as JSON
+                return Json(new { success = true, data = new { team.First, team.Second, team.Third } });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
 
     }
 }
