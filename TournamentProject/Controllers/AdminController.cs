@@ -86,10 +86,10 @@ namespace TournamentProject.Controllers
 
             try
             {
-                if (_dbContext!.Coaches.Any())
+                if (_dbContext!.Referees.Any())
                 {
-                    var all = _dbContext.Coaches.ToList();
-                    _dbContext.Coaches.RemoveRange(all);
+                    var all = _dbContext.Referees.ToList();
+                    _dbContext.Referees.RemoveRange(all);
                     _dbContext.SaveChanges();
                 }
                 foreach (var name in items)
@@ -146,14 +146,14 @@ namespace TournamentProject.Controllers
         {
             try
             {
-                // Retrieve the latest record (if applicable)
+
                 var team = _dbContext.Teams.FirstOrDefault();
                 if (team == null)
                 {
                     return Json(new { success = true, data = new { First = "", Second = "", Third = "" } });
                 }
 
-                // Return the data as JSON
+
                 return Json(new { success = true, data = new { team.First, team.Second, team.Third } });
             }
             catch (Exception ex)
