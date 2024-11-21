@@ -630,6 +630,52 @@
             }
         }
 
+        function saveChanges(type) {
+            if (type === 'medals') {
+                const medalData = {};
+
+                // Collect data from tables (juniorMedalTable, teenMedalTable, etc.)
+                ['juniorMedalTable', 'teenMedalTable', 'youthMedalTable', 'adultMedalTable'].forEach((tableId) => {
+                    const rows = document.querySelectorAll(`#${tableId} tr`);
+                    const category = tableId.replace('MedalTable', ''); // e.g., 'junior'
+
+                    medalData[category] = [];
+                    rows.forEach((row, index) => {
+                        const cells = row.querySelectorAll('input');
+                        if (cells.length) {
+                            const rowData = {
+                                position: row.querySelector('td:first-child').innerText,
+                                weights: Array.from(cells).map((cell) => cell.value),
+                            };
+                            medalData[category].push(rowData);
+                        }
+                    });
+                });
+
+                // Debug: log medalData
+                console.log('Collected medal data:', medalData);
+
+                // Send to server (if required)
+                fetch('/Admin/SaveMedals', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(medalData),
+                })
+                    .then((response) => {
+                        if (response.ok) {
+                            alert('Changes saved successfully!');
+                        } else {
+                            throw new Error('Server error');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error saving changes:', error);
+                        alert('Failed to save changes.');
+                    });
+            }
+        }
 
         document.getElementById("coachesModal").addEventListener("shown.bs.modal", function () {
             fetch('/Admin/GetCoaches')

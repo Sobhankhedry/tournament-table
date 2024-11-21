@@ -39,11 +39,16 @@
             <div class="collapse navbar-collapse" id="mynav">
                 <a href="" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">مشاهده جدول مسابقات</a>
                 <ul class="navbar-nav list-unstyled mr-auto mx-5">
-                    @if (User.Identity!.IsAuthenticated)
+                    @if (User.Identity!.IsAuthenticated && User.IsInRole("Admin"))
                     {           
                     
                         <li class="nav-item mx-2">
                             <span class="nav-link text-white">Welcome back, @User.Identity.Name!</span>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <form asp-controller="Admin" asp-action="AdminPanel" method="post" style="display:inline;">
+                                <button type="submit" class="nav-link badge badge-light text-dark mb-1 p-2 menu-item">داشبورد</button>
+                            </form>
                         </li>
                         <li class="nav-item mx-2">
                             <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
