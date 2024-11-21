@@ -264,6 +264,31 @@ namespace TournamentProject.Migrations
                     b.ToTable("ContactUs");
                 });
 
+            modelBuilder.Entity("TournamentProject.Models.Medals", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Age")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Place")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Weight")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Medals");
+                });
+
             modelBuilder.Entity("TournamentProject.Models.Referee", b =>
                 {
                     b.Property<int>("Id")

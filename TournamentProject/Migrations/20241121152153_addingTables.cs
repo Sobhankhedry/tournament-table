@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TournamentProject.Migrations
 {
     /// <inheritdoc />
-    public partial class RestructuringTables : Migration
+    public partial class addingTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,6 +53,19 @@ namespace TournamentProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Coaches",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Coaches", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ContactUs",
                 columns: table => new
                 {
@@ -63,6 +76,50 @@ namespace TournamentProject.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ContactUs", x => x.Email);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Medals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Weight = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Age = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Place = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Medals", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Referees",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Referees", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Teams",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    First = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Second = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Third = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Teams", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -230,7 +287,19 @@ namespace TournamentProject.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Coaches");
+
+            migrationBuilder.DropTable(
                 name: "ContactUs");
+
+            migrationBuilder.DropTable(
+                name: "Medals");
+
+            migrationBuilder.DropTable(
+                name: "Referees");
+
+            migrationBuilder.DropTable(
+                name: "Teams");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

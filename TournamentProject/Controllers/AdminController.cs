@@ -162,7 +162,34 @@ namespace TournamentProject.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult SaveAllMedals([FromBody] Dictionary<string, List<string>> allMedals)
+        {
+            try
+            {
+                foreach (var category in allMedals)
+                {
+                    var categoryName = category.Key; // Example: juniorMedalTable
+                    var medals = category.Value; // List of medals for this category
 
+                    // Save each medal to the database
+                    foreach (var medal in medals)
+                    {
+                        if (categoryName == "juniorMedalTable")
+                        {
+                            //_dbContext.Medals.Add(new Medals { Name = medal });
+                        }
+                        // _dbContext.Medals.Add(new Medals { Name = medal });
+                    }
+                }
+                _dbContext!.SaveChanges();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
 
     }
 }

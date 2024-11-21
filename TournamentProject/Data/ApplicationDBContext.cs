@@ -13,6 +13,7 @@ namespace TournamentProject.Data
         public DbSet<Coach> Coaches { get; set; }
         public DbSet<Referee> Referees { get; set; }
         public DbSet<Team> Teams { get; set; }
+        public DbSet<Medals> Medals { get; set; }
     }
 
 }
