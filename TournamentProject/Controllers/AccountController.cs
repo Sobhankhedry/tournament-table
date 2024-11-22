@@ -49,12 +49,9 @@ namespace TournamentProject.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password!);
                 if (result.Succeeded)
                 {
-
-
-
                     TempData["message"] = "شما با موفقیت در سایت ثبت نام شده اید";
 
-                    MailMessage mailMessage = new MailMessage("Sob.kh121@gmail.com", user.Email);
+                    MailMessage mailMessage = new MailMessage("Sob.kh121@gmail.com", user.Email!);
                     mailMessage.Subject = "تایید حساب کاربری";
                     mailMessage.IsBodyHtml = true;
                     string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -191,6 +188,11 @@ namespace TournamentProject.Controllers
                     ModelState.AddModelError(string.Empty, "ایمیل وارد شده موجود نیست");
                     return View(model);
                 }
+                if (user.EmailConfirmed == false)
+                {
+                    ModelState.AddModelError(string.Empty, "ایمیل وارد شده تایید نشده ابتدا تایید کنید");
+                    return View(model);
+                }
                 if (user!.EmailConfirmed)
                 {
                     MailMessage mailMessage = new MailMessage("Sob.kh121@gmail.com", user.Email!);
@@ -277,8 +279,6 @@ namespace TournamentProject.Controllers
                 }
             }
         }
-
-
 
 
     }

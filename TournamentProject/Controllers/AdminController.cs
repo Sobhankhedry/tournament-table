@@ -169,7 +169,7 @@ namespace TournamentProject.Controllers
         [HttpPost]
         public IActionResult SaveMedals([FromBody] List<Medals> medalsData)
         {
-            // Check if medalsData is null or empty
+
             if (medalsData == null || !medalsData.Any())
             {
                 return BadRequest(new { success = false, message = "No medal data provided." });
@@ -190,18 +190,16 @@ namespace TournamentProject.Controllers
                         _dbContext!.SaveChanges();
                     }
 
-                    _dbContext.Medals.Add(medal); // Add your medal object to the DbContext
+                    _dbContext.Medals.Add(medal);
                 }
-
-                // Save all medals to the database
                 _dbContext!.SaveChanges();
 
-                // Return success response
+
                 return Ok(new { success = true, message = "Medals saved successfully." });
             }
             catch (System.Exception ex)
             {
-                // Log the exception (you can use a logging framework like Serilog, NLog, etc.)
+
                 return StatusCode(500, new { success = false, message = $"An error occurred while saving medals: {ex.Message}" });
             }
         }
