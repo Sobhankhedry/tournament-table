@@ -174,21 +174,24 @@ namespace TournamentProject.Controllers
 
             try
             {
-                // Process each medal and add it to the database
                 foreach (var medal in medalsData)
                 {
-                    // Example: Validate medal data before saving
                     if (string.IsNullOrEmpty(medal.Name) || string.IsNullOrEmpty(medal.Place) || string.IsNullOrEmpty(medal.Age))
                     {
-                        return BadRequest(new { success = false, message = $"Invalid medal data. Missing fields: {string.Join(", ", GetMissingFields(medal))}" });
+                        return BadRequest(new { success = false, message = "Invalid medal data. Missing fields" });
+                    }
+                    if (_dbContext!.Medals.Any())
+                    {
+                        var all = _dbContext!.Medals.ToList();
+                        _dbContext.Medals.RemoveRange(all);
+                        _dbContext!.SaveChanges();
                     }
 
-                    // Add the medal to the database
                     _dbContext.Medals.Add(medal); // Add your medal object to the DbContext
                 }
 
                 // Save all medals to the database
-                _dbContext.SaveChanges();
+                _dbContext!.SaveChanges();
 
                 // Return success response
                 return Ok(new { success = true, message = "Medals saved successfully." });
@@ -200,17 +203,22 @@ namespace TournamentProject.Controllers
             }
         }
 
-        // Helper method to get missing fields from the medal
-        private IEnumerable<string> GetMissingFields(Medals medal)
+        [HttpGet]
+        public IActionResult GetMedals()
         {
-            var missingFields = new List<string>();
-
-            if (string.IsNullOrEmpty(medal.Name)) missingFields.Add("Name");
-            if (string.IsNullOrEmpty(medal.Place)) missingFields.Add("Place");
-            if (string.IsNullOrEmpty(medal.Age)) missingFields.Add("Age");
-
-            return missingFields;
+            try
+            {
+                // Replace this with your actual database logic to fetch the data
+                var medals = _dbContext!.Medals.ToList(); // Assuming "Medals" is your DbSet
+                return Json(new { success = true, data = medals });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
+
+
 
 
     }

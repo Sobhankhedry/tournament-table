@@ -636,51 +636,44 @@
         }
 
         function saveAllTableData(tableId, url) {
-            console.log("Button clicked");
-            // Create an empty array to hold the medal data
-
-            const medalsData = [];
-
-            // Loop through all the inputs in the table and extract data based on the ID
+            const medalsData = [];            
             const inputs = document.querySelectorAll('input[id^="teenMedal-"], input[id^="juniorMedal-"], input[id^="youthMedal-"], input[id^="adultMedal-"]'); // Select all inputs starting with the category identifiers
-
             inputs.forEach(input => {
-                // Extract the components of the ID (e.g., "teenMedal-third-weight1")
-                const idParts = input.id.split('-'); // Split by '-'
-                const age = idParts[0].replace('Medal', ''); // 'teenMedal', 'juniorMedal', etc.
-                const place = idParts[1]; // 'third', 'first', etc.
-                const weight = idParts[2]; // 'weight'
+                
+                const idParts = input.id.split('-'); 
+                const age = idParts[0].replace('Medal', ''); 
+                const place = idParts[1];
+                const weight = idParts[2]; 
                 if(!input.value.trim())
                 {
                     console.warn('Empty value for input:', input.id);
                     return;
                 }
-               
-
-                // Create a Medals object and fill it
                 const medalData = {
-                    Weight: weight, // The value of the input field
-                    Name: input.value, // Name is the category (e.g., 'teen Medal')
-                    Age: age, // 'teen', 'junior', etc.
-                    Place: place // 'third', 'first', etc.
+                    Weight: weight, 
+                    Name: input.value, 
+                    Age: age, 
+                    Place: place 
                 };
-
-                // Add the medal data to the array
                 medalsData.push(medalData);
             });
 
-            // Send the data to the backend
-            sendMedalDataToBackend(medalsData);
+            if(medalsData.length==0){
+                alert('nothing to send')
+                return;
+            }else{
+                sendMedalDataToBackend(medalsData);
+            }
+            
         }
 
-        // Function to send data to the backend
         function sendMedalDataToBackend(medalsData) {
             fetch('/Admin/SaveMedals', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(medalsData), // Send the array of medals data
+                body: JSON.stringify(medalsData), 
             })
                 .then(response => {
           if (!response.ok) {
@@ -691,6 +684,7 @@
                 .then(data => {
                     if (data.success) {
                         alert('Medal data saved successfully!');
+                        location.reload();
                     } else {
                         alert('Error saving medal data.');
                     }
@@ -699,8 +693,55 @@
                     console.error('Error:', error);
                     alert('An error occurred while saving medal data.');
                 });
+            
         }
 
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/Admin/GetMedals', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('HTTP error! Status: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        populateInputs(data.data);
+                    } else {
+                        alert('Error retrieving medal data.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while retrieving medal data.');
+                });
+        });
+
+        function populateInputs(medalsData) {
+            medalsData.forEach(medal => {
+                console.log('Medal Data:', medal); // Log the entire object
+                const inputId = `${medal.age}Medal-${medal.place}-${medal.weight}`;
+                console.log('Generated Input ID:', inputId); // Log the generated ID
+
+                const inputElement = document.getElementById(inputId);
+                if (inputElement) {
+                    inputElement.value = medal.name; // Populate the input with the correct value
+                    console.log(`Input ${inputId} found and updated with value: ${medal.name}`);
+                } else {
+                    console.warn('Input element not found for:', inputId);
+                }
+            });
+        }
+
+        
+
+
+        
 
         document.getElementById("coachesModal").addEventListener("shown.bs.modal", function () {
             fetch('/Admin/GetCoaches')
