@@ -76,20 +76,12 @@
         .card:hover::before {
         transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
         }
+
         html, body {
+        overflow: visible;
         margin: 0;
         padding: 0;
         height: 100%;
-        overflow: hidden;
-        }
-
-        .full-container {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #121212;
         background: linear-gradient(
             135deg,
             #121212 25%,
@@ -101,8 +93,7 @@
             #1a1a1a
         );
         background-size: 40px 40px;
-
-        /* Animation */
+        background-attachment: fixed; 
         animation: move 4s linear infinite;
         }
 
@@ -141,7 +132,7 @@
         <div class="container mt-5">
             <h1 class="text-center mb-5 pb-5 text-white">پنل ادمین</h1>
             <div class="row">
-                <div class="col-md-3 mb-4">
+                <div class="col-md-3 mb-5">
                     <div class="card text-center" data-bs-toggle="modal" data-bs-target="#championshipModal">
                         <div class="card-body">
                             <i class="bi bi-trophy fs-1"></i>
@@ -152,7 +143,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-4">
+                <div class="col-md-3 mb-5">
                     <div class="card text-center" data-bs-toggle="modal" data-bs-target="#medalsModal">
                         <div class="card-body">
                             <i class="bi bi-award fs-1"></i>
@@ -163,7 +154,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-4">
+                <div class="col-md-3 mb-5">
                     <div class="card text-center" data-bs-toggle="modal" data-bs-target="#coachesModal">
                         <div class="card-body">
                             <i class="bi bi-person-badge fs-1"></i>
@@ -174,7 +165,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-4">
+                <div class="col-md-3 mb-5">
                     <div class="card text-center" data-bs-toggle="modal" data-bs-target="#refereesModal">
                         <div class="card-body">
                             <i class="bi bi-whistle fs-1"></i>
@@ -478,6 +469,43 @@
             </div>
         </div>
  </div>
+
+    <!-- feedback table -->
+        <div class="table-section">
+            <h2 class="text-center mt-5 mb-3 pb-5 text-white">نظرات و پیشنهادات</h2>
+            <div class="table-responsive">
+                <table class="table table-dark text-center table-striped">
+                    <thead>
+                        <tr>
+                            <th>نام</th>
+                            <th>ایمیل</th>
+                            <th>نظرات و پیشنهادات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="feedbackTableBody">
+                        <!-- Table will be completed by js -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Modal for feedback -->
+    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="feedbackModalLabel">نظر کامل</h5>
+                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+                <div class="modal-body" id="modalFeedbackContent">
+                    <!-- comments -->
+                </div>
+            </div>
+        </div>
+</div>
 
     <script>
         function addRow(tableId) {
