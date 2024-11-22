@@ -13,8 +13,6 @@ namespace TournamentProject.Controllers
         private readonly ApplicationDBContext _dbContext;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        //private readonly EmailService _emailService;
-
 
         public AccountController(ApplicationDBContext dbContext, UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager)

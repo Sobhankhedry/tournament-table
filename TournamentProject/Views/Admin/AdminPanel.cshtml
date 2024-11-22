@@ -659,7 +659,7 @@
             });
 
             if(medalsData.length==0){
-                alert('nothing to send')
+                alert('هیج فیلدی برای دریافت اطلاعات وجود ندارد')
                 return;
             }else{
                 sendMedalDataToBackend(medalsData);
@@ -683,10 +683,10 @@
             })
                 .then(data => {
                     if (data.success) {
-                        alert('Medal data saved successfully!');
+                        alert('اطلاعات با موفقیت ذخیره شدند');
                         location.reload();
                     } else {
-                        alert('Error saving medal data.');
+                        alert('خطایی در ذخیره پیش آمد');
                     }
                 })
                 .catch(error => {
@@ -724,13 +724,12 @@
 
         function populateInputs(medalsData) {
             medalsData.forEach(medal => {
-                console.log('Medal Data:', medal); // Log the entire object
+                console.log('Medal Data:', medal); 
                 const inputId = `${medal.age}Medal-${medal.place}-${medal.weight}`;
-                console.log('Generated Input ID:', inputId); // Log the generated ID
-
+                console.log('Generated Input ID:', inputId); 
                 const inputElement = document.getElementById(inputId);
                 if (inputElement) {
-                    inputElement.value = medal.name; // Populate the input with the correct value
+                    inputElement.value = medal.name; 
                     console.log(`Input ${inputId} found and updated with value: ${medal.name}`);
                 } else {
                     console.warn('Input element not found for:', inputId);
@@ -782,7 +781,7 @@
 
      $('#championshipModal').on('show.bs.modal', function () {
     $.get('/Admin/GetTeams', function (response) {
-        console.log(response); // Check if the response is correct
+        console.log(response); 
         
         if (response.success) {
            

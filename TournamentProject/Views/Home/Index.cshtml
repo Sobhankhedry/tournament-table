@@ -1,5 +1,5 @@
-﻿@model ContactUs
-
+﻿
+@model MultipleVM
 
 <!doctype html>
 <html lang="en">
@@ -181,20 +181,24 @@
         </div>
         </section>
         <!-- Modals -->
-        <div class="modal fade" id="infoModal1" tabindex="-1" aria-labelledby="infoModalLabel1" aria-hidden="true">
+        <div class="modal fade" id="infoModal1" tabindex="-1" aria-labelledby="infoModalLabel1" aria-hidden="true" >
             <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="infoModalLabel1">قهرمانی</h5>
                     </div>
-                    <div class="modal-body">
-                        <h2>مقام اول</h2>
-                        <br>
-                        <h3>مقام دوم</h3>
-                        <br>
-                        <h3>مقام سوم</h3>
-                        <br>
-                        <img src="./images/p1.jpg" alt="Placeholder Image" class="img-fluid mt-3">
+                    <div class="modal-body" style="text-align : right">
+                        @if (Model.Teams != null && Model.Teams.Count > 0) 
+                        {
+                            var firstTeam = Model.Teams[0]; 
+
+                            <h2 >مقام اول: @firstTeam.First</h2>
+                            <br>
+                            <h3>مقام دوم : @firstTeam.Second</h3>
+                            <br>
+                            <h3>مقام سوم : @firstTeam.Third</h3>
+                            
+                        }
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
@@ -209,7 +213,13 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="infoModalLabel2">مدال ها</h5>
                     </div>
-                    <div class="modal-body">
+                <div class="modal-body" style="text-align : right">
+                    @* <ul>
+                        @foreach (var referee in Model.Referees)
+                        {
+                            <li>@referee.Name</li>
+                        }
+                    </ul> *@
                         <h2>مدال های طلا</h2>
                         <h2>مدال های نقره</h2>
                         <h2>مدال های برنز</h2>
@@ -223,19 +233,20 @@
         </div>
 
         <div class="modal fade" id="infoModal3" tabindex="-1" aria-labelledby="infoModalLabel3" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-dialog modal-dialog-scrollable" >
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="infoModalLabel3">داوران</h5>
                     </div>
-                    <div class="modal-body">
-                        <h2>لیست داوران</h2>
+                <div class="modal-body" style="text-align : right">
+                    <h2 dir="rtl">لیست داوران</h2>
                         <ul>
-                            <li>داور 1</li>
-                            <li>داور 2</li>
-                            <li>داور 3</li>
+                        @foreach (var referee in Model.Referees!)
+                        {
+                            <li >@referee.Name</li>
+                        }
                         </ul>
-                        <img src="" alt="Placeholder Image" class="img-fluid mt-3">
+                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
@@ -250,12 +261,13 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="infoModalLabel4">مربیان</h5>
                     </div>
-                    <div class="modal-body">
+                <div class="modal-body" style="text-align : right">
                         <h2>لیست مربیان</h2>
                         <ul>
-                            <li>مربی 1</li>
-                            <li>مربی 2</li>
-                            <li>مربی 3</li>
+                        @foreach (var coach in Model.Coaches!)
+                        {
+                            <li>@coach.Name</li>
+                        }
                         </ul>
                         <img src="" alt="Placeholder Image" class="img-fluid mt-3">
                     </div>
@@ -274,18 +286,18 @@
                     <h3 class="mb-5 text-white" dir="rtl">با ما در ارتباط باشید</h3>
                     <form asp-action="ContactUs" class="contact-form rtl" method="post">
                         <div class="form-group py-4">
-                            <input asp-for="Name" type="text" class="form-control myinput text-white" id="name" placeholder="نام و نام خانوادگی">
-                            <span asp-validation-for="Name" class="validation-message"></span>
+                            <input asp-for="ContactUs!.Name" type="text" class="form-control myinput text-white" id="name" placeholder="نام و نام خانوادگی">
+                            <span asp-validation-for="ContactUs!.Name" class="validation-message"></span>
                         </div>
 
                         <div class="form-group py-4">
-                            <input asp-for="Email" type="email" class="form-control myinput text-white" id="email" placeholder="ایمیل">
-                            <span asp-validation-for="Email" class="validation-message"></span>
+                            <input asp-for="ContactUs!.Email" type="email" class="form-control myinput text-white" id="email" placeholder="ایمیل">
+                            <span asp-validation-for="ContactUs!.Email" class="validation-message"></span>
                         </div>
 
                         <div class="form-group py-4">
-                            <textarea asp-for="Description" class="form-control text-white mycomment" id="comments" rows="4" placeholder="نظرات و پیشنهادات خود را اینجا وارد کنید"></textarea>
-                            <span asp-validation-for="Description" class="validation-message"></span>
+                            <textarea asp-for="ContactUs!.Description" class="form-control text-white mycomment" id="comments" rows="4" placeholder="نظرات و پیشنهادات خود را اینجا وارد کنید"></textarea>
+                            <span asp-validation-for="ContactUs!.Description" class="validation-message"></span>
                         </div>
 
                         <button class="btn btn-primary w-100" type="submit">ارسال</button>                       
@@ -352,8 +364,6 @@
                         modal.show()
                     });
                 });
-
-                // Add event listeners for all close buttons
                 const closeButtons = document.querySelectorAll('[data-bs-dismiss="modal"]');
                 closeButtons.forEach(button => {
                     button.addEventListener('click', function () {
@@ -363,13 +373,9 @@
                         }
                     });
                 });
-
-                // Add event listener for when modal is hidden
                 document.querySelectorAll('.modal').forEach(modalElement => {
                     modalElement.addEventListener('hidden.bs.modal', function () {
 
-
-                        // Optionally remove backdrop
                         const modalBackdrops = document.querySelectorAll('.modal-backdrop');
                         modalBackdrops.forEach(backdrop => backdrop.remove());
                     })

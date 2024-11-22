@@ -19,7 +19,9 @@ namespace TournamentProject.Controllers
         }
         public IActionResult AdminPanel()
         {
+
             return View();
+
         }
 
 
@@ -208,8 +210,7 @@ namespace TournamentProject.Controllers
         {
             try
             {
-                // Replace this with your actual database logic to fetch the data
-                var medals = _dbContext!.Medals.ToList(); // Assuming "Medals" is your DbSet
+                var medals = _dbContext!.Medals.ToList();
                 return Json(new { success = true, data = medals });
             }
             catch (Exception ex)
