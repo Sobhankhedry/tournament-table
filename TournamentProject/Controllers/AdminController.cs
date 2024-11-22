@@ -19,8 +19,9 @@ namespace TournamentProject.Controllers
         }
         public IActionResult AdminPanel()
         {
+            var list = _dbContext!.ContactUs.ToList();
 
-            return View();
+            return View(list);
 
         }
 

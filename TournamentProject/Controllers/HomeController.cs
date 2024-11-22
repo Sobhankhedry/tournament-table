@@ -54,7 +54,9 @@ namespace TournamentProject.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 _dbContext.ContactUs.Add(contactUs);
+
                 _dbContext.SaveChanges();
 
             }
