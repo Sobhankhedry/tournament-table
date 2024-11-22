@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TournamentProject.Data;
 using TournamentProject.Models;
-using TournamentProject.ViewModels;
 
 namespace TournamentProject.Controllers
 {
@@ -21,11 +20,7 @@ namespace TournamentProject.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var homeVM = new HomeVM
-            {
 
-
-            };
             var contactUs = new ContactUs();
             var Referees1 = _dbContext.Referees.ToList();
             var Medals1 = _dbContext.Medals.ToList();
@@ -34,7 +29,6 @@ namespace TournamentProject.Controllers
 
             var viewModel = new MultipleVM
             {
-                HomeVM = homeVM,
                 ContactUs = contactUs,
                 Referees = Referees1,
                 Medal = Medals1,
@@ -65,6 +59,19 @@ namespace TournamentProject.Controllers
 
             }
             return RedirectToAction("Index", "Home");
+        }
+        [HttpGet]
+        public IActionResult GetMedals()
+        {
+            try
+            {
+                var medals = _dbContext!.Medals.ToList();
+                return Json(new { success = true, data = medals });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
 
     }
