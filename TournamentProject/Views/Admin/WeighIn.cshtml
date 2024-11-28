@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/weigh-in.css">
+    <title>Weigh In System</title>
+</head>
+<body>
+    <div class="container">
+        <div class="main">
+            <div class="tooltip">
+                وزن کشی
+                <div class="tooltiptext">برای مشاهده جدول بر روی رده سنی مورد نظر کلیک کنید</div>
+            </div>
+
+            <div class="content">
+                <form class="form">
+                    <p class="title">مشخصات </p>
+                    <p class="message">لطفا اطلاعات خود را وارد کنید </p>
+                    <div class="flex">
+                        <label>
+                            <input class="input" type="text" placeholder="" required="">
+                            <span class="name">نام</span>
+                        </label>
+
+
+                        <label>
+                            <input class="input" type="text" placeholder="" required="">
+                            <span class="lastname">نام خانوادگی</span>
+                        </label>
+                    </div>
+                    <label>
+                        <input class="input" type="text" placeholder="" required="">
+                        <span class="weigh">وزن</span>
+                    </label>
+                    <label>
+                        <input class="input" type="text" placeholder="" required="">
+                        <span class="birth">تاریخ تولد</span>
+                    </label>
+                    <label>
+                        <input class="input" type="text" placeholder="" required="">
+                        <span class="coach">نام مربی</span>
+                    </label>
+                    <button class="submit">ثبت</button>
+                </form>
+
+                <div class="cards-and-table">
+                    <div class="cards">
+                        <div class="card red">
+                            <p class="tip">نونهالان</p>
+                        </div>
+                        <div class="card blue">
+                            <p class="tip">نوجوانان</p>
+                        </div>
+                        <div class="card green">
+                            <p class="tip">جوانان</p>
+                        </div>
+                        <div class="card red">
+                            <p class="tip">بزرگسالان</p>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="info-table">
+                            <thead>
+                                <tr>
+                                    <th>نام و نام خانوادگی</th>
+                                    <th>وزن</th>
+                                    <th>نام مربی</th>
+                                    <th>رده سنی</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

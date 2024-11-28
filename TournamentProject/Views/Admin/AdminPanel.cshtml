@@ -142,21 +142,29 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="mynav">
+            
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
-                        <button class="nav-link badge badge-light text-dark p-2 menu-item" type="submit">خروج</button>
-                    </form>
+                                <button type="submit" class="nav-link badge badge-light text-dark mb-1 p-2 menu-item">خروج</button>
+                            </form>
                 </li>
             </ul>   
             <div class="d-flex flex-grow-1 justify-content-end">
+                <form asp-controller="Admin" asp-action="WeighIn" method="get" style="display:inline;">
+                         <button href="" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">وزن کشی</button>
+
+                    </form>
                 <button href="" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">مشاهده جدول مسابقات</button>
                     <form asp-controller="Home" asp-action="Index" method="get" style="display:inline;">
                         <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
                             <i class="fa-solid fa-yin-yang" style="color: #ffffff; font-size: 25px; margin-left: 10px;"></i>
                         </button>
-                    </form>               
+                       
+                    </form> 
+  
             </div>
+            
         </div>
     </nav>
 

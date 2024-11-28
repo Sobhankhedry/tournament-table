@@ -219,6 +219,11 @@ namespace TournamentProject.Controllers
         }
 
 
+        public IActionResult WeighIn()
+        {
+            return View();
+        }
+
 
 
     }
