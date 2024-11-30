@@ -37,16 +37,16 @@
 
                 <div class="cards-and-table">
                     <div class="cards">
-                        <div class="card red">
+                        <div class="card red" data-age-group="نونهالان">
                             <p class="tip">نونهالان</p>
                         </div>
-                        <div class="card blue">
+                        <div class="card blue" data-age-group="نوجوانان">
                             <p class="tip">نوجوانان</p>
                         </div>
-                        <div class="card green">
+                        <div class="card green" data-age-group="جوانان">
                             <p class="tip">جوانان</p>
                         </div>
-                        <div class="card red">
+                        <div class="card red" data-age-group="بزرگسالان">
                             <p class="tip">بزرگسالان</p>
                         </div>
                     </div>
@@ -176,6 +176,39 @@
         </script>
     }
 
+    <script>
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function () {
+                const ageGroup = this.getAttribute('data-age-group');
+
+                // Send an AJAX request to the server to get the players for the clicked age group
+                fetch('/Admin/FetchPlayers?ageGroup=' + encodeURIComponent(ageGroup))
+                    .then(response => response.json())
+                    .then(data => {
+                        // Populate the table with the data received
+                        const tbody = document.querySelector('.info-table tbody');
+                        tbody.innerHTML = ''; // Clear existing rows
+
+                        data.forEach(player => {
+                            console.log(`Player Data:`, player); // Log each player to check properties
+
+
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                            <td>${player.name}</td>
+                                            <td>${player.weigh}</td>
+                                            <td>${player.managerName}</td>
+                                            <td>${player.age}</td>
+                                `;
+                            tbody.appendChild(row);
+                        });
+                        
+
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
 
     
 </body>

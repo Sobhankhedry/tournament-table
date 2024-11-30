@@ -262,7 +262,7 @@ namespace TournamentProject.Controllers
 
                 if (age <= 12)
                 {
-                    player.Age = "کودک";
+                    player.Age = "نونهالان";
                 }
                 else if (age > 12 && age <= 15)
                 {
@@ -289,6 +289,26 @@ namespace TournamentProject.Controllers
             return View();
         }
 
+        public IActionResult FetchPlayers(string ageGroup)
+        {
+            // Replace with your logic to fetch players from the database
+            var players = _dbContext!.Players
+                .Where(p => p.Age == ageGroup)
+                .Select(p => new
+                {
+                    p.Name,
+                    p.Weigh,
+                    p.Age,
+                    p.ManagerName
+                })
+                .ToList();
+            foreach (var player in players)
+            {
+                Console.WriteLine($"Name: {player.Name}, ManagerName: {player.ManagerName}, Age: {player.Age}");
+            }
 
+
+            return Json(players);
+        }
     }
 }
