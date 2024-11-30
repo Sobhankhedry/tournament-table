@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TournamentProject.Data;
 using TournamentProject.Models;
+using TournamentProject.ViewModels;
 
 namespace TournamentProject.Controllers
 {
@@ -224,6 +225,69 @@ namespace TournamentProject.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult WeighIn([FromForm] WeighInVM weighInVM)
+        {
+            if (ModelState.IsValid)
+            {
+                Player player = new Player();
+                player.Name = weighInVM.FirstName;
+                player.LastName = weighInVM.LastName;
+                double weight;
+                if (double.TryParse(weighInVM.Weigh, out weight) && weight <= 48)
+                {
+                    player.Weigh = "وزن اول";
+                }
+                else if (double.TryParse(weighInVM.Weigh, out weight) && weight <= 50)
+                {
+                    player.Weigh = "وزن دوم";
+                }
+                else if (double.TryParse(weighInVM.Weigh, out weight) && weight <= 52)
+                {
+                    player.Weigh = "وزن سوم";
+                }
+                else if (double.TryParse(weighInVM.Weigh, out weight) && weight <= 54)
+                {
+                    player.Weigh = "وزن چهارم";
+                }
+                else
+                {
+                    player.Weigh = "وزن پنجم";
+                }
+
+                int currentYear = 1403;
+
+                int birthYear = weighInVM.Year;
+                int age = currentYear - birthYear;
+
+                if (age <= 12)
+                {
+                    player.Age = "کودک";
+                }
+                else if (age > 12 && age <= 15)
+                {
+                    player.Age = "نوجوانان";
+                }
+                else if (age > 15 && age <= 17)
+                {
+                    player.Age = "جوانان";
+                }
+                else
+                {
+                    player.Age = "بزرگسالان";
+                }
+                player.ManagerName = weighInVM.Coach;
+
+                _dbContext.Players.Add(player);
+                _dbContext.SaveChanges();
+                TempData["SuccessMessage"] = "اطلاعات با موفقیت ذخیره شد";
+
+            }
+
+
+
+            return View();
+        }
 
 
     }

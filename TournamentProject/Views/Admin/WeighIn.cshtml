@@ -4,46 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/css/weigh-in.css">
+    <link rel="stylesheet" href="css/bootstrap.fa.min.css">
+    
+
     <title>Weigh In System</title>
+    <style>
+        .content {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+        }
+        .cards-and-table {
+          flex: 2;
+        }
+        .form {
+          flex: 1;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
+        
+
+         
         <div class="main">
-            <div class="tooltip">
+            <div class="tooltip" dir="rtl">
                 وزن کشی
                 <div class="tooltiptext">برای مشاهده جدول بر روی رده سنی مورد نظر کلیک کنید</div>
             </div>
 
             <div class="content">
-                <form class="form">
-                    <p class="title">مشخصات </p>
-                    <p class="message">لطفا اطلاعات خود را وارد کنید </p>
-                    <div class="flex">
-                        <label>
-                            <input class="input" type="text" placeholder="" required="">
-                            <span class="name">نام</span>
-                        </label>
-
-
-                        <label>
-                            <input class="input" type="text" placeholder="" required="">
-                            <span class="lastname">نام خانوادگی</span>
-                        </label>
-                    </div>
-                    <label>
-                        <input class="input" type="text" placeholder="" required="">
-                        <span class="weigh">وزن</span>
-                    </label>
-                    <label>
-                        <input class="input" type="text" placeholder="" required="">
-                        <span class="birth">تاریخ تولد</span>
-                    </label>
-                    <label>
-                        <input class="input" type="text" placeholder="" required="">
-                        <span class="coach">نام مربی</span>
-                    </label>
-                    <button class="submit">ثبت</button>
-                </form>
 
                 <div class="cards-and-table">
                     <div class="cards">
@@ -72,18 +62,121 @@
                                 </tr>
                             </thead>
                             <tbody>
+
                                 <tr>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
+
                             </tbody>
                         </table>
+
                     </div>
+                    <button class="edit">ویرایش</button>
+
                 </div>
+
+
+                <form class="form" asp-controller="Admin" asp-action="WeighIn" method="post">
+                    <p class="title">مشخصات </p>
+                    <p class="message">لطفا اطلاعات خود را وارد کنید </p>
+                    <div class="flex">
+                        <div class="flex">
+                            <label dir="rtl">
+                                <input class="input" id="FirstName" name="FirstName" type="text" placeholder="نام" required>
+                                <span class="name">نام</span>
+                            </label>
+                            <label>
+                                <input class="input" id="LastName" name="LastName" type="text" placeholder="نام خانوادگی" required>
+                                <span class="lastname">نام خانوادگی</span>
+                            </label>
+                        </div>
+                    </div>
+                    <label>
+                        <input class="input" name="Weigh" type="number" placeholder="وزن" required min="0" max="150" step="0.1">
+                        <span class="weigh">وزن</span>
+                    </label>
+                    <label>
+                        <div class="birth-dropdowns">
+                            <select class="input year" name="Year" required dir="rtl">
+                                <option value="" disabled selected>سال</option>
+                                <script>
+                                    for (let i = 1404; i >= 1360; i--) {
+                                        document.write(`<option value="${i}">${i}</option>`);
+                                    }
+                                </script>
+                            </select>
+                            <select class="input month" name="Month" required dir="rtl">
+                                <option value="" disabled selected>ماه</option>
+                                <option value="1">فروردین</option>
+                                <option value="2">اردیبهشت</option>
+                                <option value="3">خرداد</option>
+                                <option value="4">تیر</option>
+                                <option value="5">مرداد</option>
+                                <option value="6">شهریور</option>
+                                <option value="7">مهر</option>
+                                <option value="8">آبان</option>
+                                <option value="9">آذر</option>
+                                <option value="10">دی</option>
+                                <option value="11">بهمن</option>
+                                <option value="12">اسفند</option>
+                            </select>
+                            <select class="input day" name="Day" required dir="rtl">
+                                <option value="" disabled selected>روز</option>
+                                <script>
+                                    for (let i = 1; i <= 31; i++) {
+                                        document.write(`<option value="${i}">${i}</option>`);
+                                    }
+                                </script>
+                            </select>
+                        </div>
+                        <span class="birth">تاریخ تولد</span>
+                    </label>
+
+                    <!-- Coach Name Field -->
+                    <label>
+                        <input class="input" name="Coach" type="text" placeholder="نام مربی" required>
+                        <span class="coach">نام مربی</span>
+                    </label>
+
+                    
+                    <button class="submit" dir="rtl" type="submit">ثبت</button>
+                </form>
+
             </div>
         </div>
     </div>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Display the alert with the message stored in TempData
+                alert('@Html.Raw(TempData["SuccessMessage"])');
+
+                // Clear all input fields
+                const inputs = document.querySelectorAll('input');
+                inputs.forEach(input => {
+                    input.value = '';
+                });
+
+                // Clear textareas if needed
+                const textareas = document.querySelectorAll('textarea');
+                textareas.forEach(textarea => {
+                    textarea.value = '';
+                });
+
+                // Reset dropdowns (if any)
+                const selects = document.querySelectorAll('select');
+                selects.forEach(select => {
+                    select.selectedIndex = 0;
+                });
+            });
+        </script>
+    }
+
+
+    
 </body>
 </html>
