@@ -105,6 +105,65 @@
             background-position: 40px 40px;
         }
         }
+        .containerc {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .table {
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .btn-confirm {
+            transition: all 0.3s ease;
+        }
+
+        .btn-confirm.confirmed {
+            background-color: #9e0000;
+            border-color: #9e0000;
+        }
+
+        .btn-confirm.confirmed:hover {
+            background-color: #882121;
+            border-color: #7e1e1e;
+        }
+
+        .containerc {
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            border-top: none;
+            border-bottom: none;
+        }
+       
+        .containerc h2 {
+            color: #007bff !important; 
+            background-color: #343a40 !important; 
+            padding: 10px 0;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .containerc h2:not([colspan]) {
+            margin-bottom: 0;
+        }
+
+        .containerc th[colspan="3"] {
+            padding: 0;
+        }
+
+        .containerc th[colspan="3"] h2 {
+            margin-bottom: 0;
+        }
+
     </style>
   </head>
 <body>
@@ -469,27 +528,45 @@
             </div>
         </div>
  </div>
+
+    <!-- confirmation -->
+    <div class="container mt-5 containerc bg-dark">
+        <h2 class="text-center text-white mb-4 bg-dark">لیست کاربران</h1>
+        <table class="table table-striped text-center table-hover table-dark">
+            <thead>
+                <tr>
+                    <th>نام</th>
+                    <th>نام خانوادگی</th>
+                    <th>ایمیل</th>
+                    <th>تاییدیه</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                <!-- اطلاعات کاربران اینجا قرار می‌گیرد -->
+            </tbody>
+        </table>
+    </div>
  
     <!-- feedback table -->
-        <div class="table-section">
-            <h2 class="text-center mt-5 mb-3 pb-5 text-white">نظرات و پیشنهادات</h2>
-            <div class="table-responsive">
-                <table class="table table-dark text-center table-striped">
-                    <thead>
-                        <tr>
-                            <th>نام</th>
-                            <th>ایمیل</th>
-                            <th>نظرات و پیشنهادات</th>
-                        </tr>
-                    </thead>
-                    <tbody id="feedbackTableBody">
-                        <!-- Table will be completed by js -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="container mt-5 containerc bg-dark">
+        <table class="table table-striped text-center table-hover table-dark">
+            <thead>
+                <tr>
+                    <th colspan="3" class="bg-dark">
+                        <h2 class="text-center text-white mb-4">نظرات و پیشنهادات</h2>
+                    </th>
+                </tr>
+                <tr>
+                    <th>نام و نام خانوادگی</th>
+                    <th>ایمیل</th>
+                    <th>نظرات و پیشنهادات</th>
+                </tr>
+            </thead>
+            <tbody id="feedbackTableBody">
+                <!-- Table will be completed by js -->
+            </tbody>
+        </table>
     </div>
-</div>
 
     <!-- Modal for feedback -->
     <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">

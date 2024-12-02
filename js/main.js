@@ -42,3 +42,41 @@ function showFeedback(id) {
 }
 
 document.addEventListener('DOMContentLoaded', populateTable);
+
+
+const users = [
+    { id: 1, firstName: "علی", lastName: "محمدی", email: "ali@example.com", confirmed: false },
+    { id: 2, firstName: "مریم", lastName: "احمدی", email: "maryam@example.com", confirmed: false },
+    { id: 3, firstName: "رضا", lastName: "کریمی", email: "reza@example.com", confirmed: false },
+];
+
+function displayUsers() {
+    const tableBody = document.getElementById('userTableBody');
+    tableBody.innerHTML = '';
+
+    users.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${user.firstName}</td>
+            <td>${user.lastName}</td>
+            <td>${user.email}</td>
+            <td>
+                <button class="btn btn-confirm ${user.confirmed ? 'confirmed btn-danger' : 'btn-primary'}" 
+                        onclick="toggleConfirmUser(${user.id})">
+                    ${user.confirmed ? 'لغو' : 'تایید'}
+                </button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+function toggleConfirmUser(userId) {
+    const user = users.find(u => u.id === userId);
+    if (user) {
+        user.confirmed = !user.confirmed; 
+        displayUsers(); 
+    }
+}
+
+window.onload = displayUsers;
