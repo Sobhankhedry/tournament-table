@@ -63,12 +63,12 @@
                             </thead>
                             <tbody>
 
-                                <tr>
+                                @* <tr>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                </tr>
+                                </tr> *@
 
                             </tbody>
                         </table>
@@ -79,17 +79,17 @@
                 </div>
 
 
-                <form class="form" asp-controller="Admin" asp-action="WeighIn" method="post">
+                <form class="form" asp-controller="Admin" asp-action="WeighIn" method="post" dir="rtl">
                     <p class="title">مشخصات </p>
-                    <p class="message">لطفا اطلاعات خود را وارد کنید </p>
+                    <p class="message" dir="auto">لطفا اطلاعات خود را وارد کنید </p>
                     <div class="flex">
                         <div class="flex">
                             <label dir="rtl">
                                 <input class="input" id="FirstName" name="FirstName" type="text" placeholder="نام" required>
                                 <span class="name">نام</span>
                             </label>
-                            <label>
-                                <input class="input" id="LastName" name="LastName" type="text" placeholder="نام خانوادگی" required>
+                            <label >
+                                <input class="input " id="LastName" name="LastName" type="text" placeholder="نام خانوادگی" required>
                                 <span class="lastname">نام خانوادگی</span>
                             </label>
                         </div>

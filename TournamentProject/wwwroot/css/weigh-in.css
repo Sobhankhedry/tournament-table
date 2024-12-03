@@ -177,7 +177,11 @@ body {
 }
 
 .form label {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 15px; 
+    text-align: right; 
 }
 
     .form label .input {

@@ -568,10 +568,10 @@
             <table class="table table-striped text-center table-hover table-dark">
                 <thead>
                     <tr>
-                        <th>نام</th>
-                        <th>نام خانوادگی</th>
-                        <th>ایمیل</th>
                         <th>تاییدیه</th>
+                        <th>ایمیل</th>
+                        <th>نام خانوادگی</th>
+                        <th>نام</th>
                     </tr>
                 </thead>
                 <tbody id="userTableBody">
@@ -580,8 +580,53 @@
             </table>
     </div>
 
+    <!-- feedback table -->
+    <div class="container mt-5 containerc bg-dark">
+        <table class="table table-striped text-center table-hover table-dark">
+            <thead>
+                <tr>
+                    <th colspan="3" class="bg-dark">
+                        <h2 class="text-center text-white mb-4">نظرات و پیشنهادات</h2>
+                    </th>
+                </tr>
+                <tr>
+                    <th>نظرات و پیشنهادات</th>
+                    <th>ایمیل</th>
+                    <th>نام و نام خانوادگی</th>
+                </tr>
+            </thead>
+            <tbody id="feedbackTableBody">
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var feedback in Model)
+                    {
+                        <tr>
+                            <td>
+                                <button class="btn btn-sm text-white view-feedback-btn"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#feedbackModal"
+                                        data-feedback="@feedback.Description">
+                                    <i class="bi bi-chat-dots-fill"></i>
+                                </button>
+                            </td>    
+                            <td>@feedback.Email</td>
+                            <td>@feedback.Name</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">هیچ نظری ثبت نشده است.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
         <!-- Feedback Table Section -->
-<div class="table-section">
+@* <div class="table-section">
     <h2 class="text-center mt-5 mb-3 pb-5 text-white">نظرات و پیشنهادات</h2>
     <div class="table-responsive">
         <table class="table table-dark text-center table-striped">
@@ -622,7 +667,7 @@
         </table>
     </div>
 </div>
-    
+     *@
 
     <!-- Modal for Feedback -->
 <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
