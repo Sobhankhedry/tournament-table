@@ -152,7 +152,7 @@ namespace TournamentProject.Controllers
             try
             {
 
-                var team = _dbContext.Teams.FirstOrDefault();
+                var team = _dbContext!.Teams.FirstOrDefault();
                 if (team == null)
                 {
                     return Json(new { success = true, data = new { First = "", Second = "", Third = "" } });
@@ -309,6 +309,13 @@ namespace TournamentProject.Controllers
 
 
             return Json(players);
+        }
+
+
+        public IActionResult GetUsers()
+        {
+            var users = _dbContext!.Users.ToList();
+            return Json(users);
         }
     }
 }

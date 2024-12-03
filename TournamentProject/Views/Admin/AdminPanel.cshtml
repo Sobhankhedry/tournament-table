@@ -570,7 +570,6 @@
                     <tr>
                         <th>تاییدیه</th>
                         <th>ایمیل</th>
-                        <th>نام خانوادگی</th>
                         <th>نام</th>
                     </tr>
                 </thead>
@@ -990,6 +989,34 @@
     });
 
 
+        
+            // Add an event listener to fetch and populate the table with user data
+            document.addEventListener('DOMContentLoaded', function () {
+                // Send an AJAX request to the server to fetch all user data
+                fetch('/Admin/GetUsers')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Populate the table with the data received
+                        const tbody = document.querySelector('#userTableBody');
+                        tbody.innerHTML = ''; // Clear existing rows
+
+                        data.forEach(user => {
+                            console.log(`User Data:`, user); // Log each user to verify properties
+
+                            const row = document.createElement('tr');
+                            row.innerHTML = ` 
+                           
+                                <td></td>
+                                <td>${user.email}</td>
+                                <td>${user.name}</td>
+                                        
+                            `;
+                            tbody.appendChild(row);
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+   
 
 
 
