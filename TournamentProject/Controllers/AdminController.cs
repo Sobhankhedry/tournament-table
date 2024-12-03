@@ -317,5 +317,27 @@ namespace TournamentProject.Controllers
             var users = _dbContext!.Users.ToList();
             return Json(users);
         }
+
+
+        [HttpPost]
+        public IActionResult ConfirmUser(int userId)
+        {
+            try
+            {
+                // Logic to update the user status to 'accepted' in the database
+                var user = _dbContext.Users.Find(userId);
+                if (user != null)
+                {
+                    //user.IsConfirmed = true; // Assuming there is a property to indicate confirmation
+                    _dbContext.SaveChanges();
+                    return Json(new { success = true, message = "User confirmed successfully." });
+                }
+                return Json(new { success = false, message = "User not found." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
     }
 }

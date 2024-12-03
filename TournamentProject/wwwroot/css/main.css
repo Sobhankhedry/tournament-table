@@ -209,3 +209,15 @@ header {
     text-align: right;
 }
 /* end of contact */
+
+.confirm-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+    .confirm-button:hover {
+        background-color: #45a049; /* Darker green */
+    }
