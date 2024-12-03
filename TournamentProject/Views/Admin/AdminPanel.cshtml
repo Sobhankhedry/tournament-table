@@ -136,35 +136,21 @@
     </style>
 </head>
 <body>
-    <!-- anvbar -->
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm nav-menu">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm nav-menu" dir="rtl">
         <button class="navbar-toggler" data-toggle="collapse" data-target="#mynav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="mynav">
-            
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
-                                <button type="submit" class="nav-link badge badge-light text-dark mb-1 p-2 menu-item">خروج</button>
-                            </form>
+            <a href="" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">مشاهده جدول مسابقات</a>
+            <a href="" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">وزن کشی</a>
+            <ul class="navbar-nav list-unstyled mr-auto mx-5">
+                <li class="nav-item mx-2">
+                    <a href="./index.html" class="nav-link badge badge-light text-dark p-2 menu-item">خروج</a>
                 </li>
-            </ul>   
-            <div class="d-flex flex-grow-1 justify-content-end">
-                <form asp-controller="Admin" asp-action="WeighIn" method="get" style="display:inline;">
-                         <button href="" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">وزن کشی</button>
-
-                    </form>
-                <button href="" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">مشاهده جدول مسابقات</button>
-                    <form asp-controller="Home" asp-action="Index" method="get" style="display:inline;">
-                        <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
-                            <i class="fa-solid fa-yin-yang" style="color: #ffffff; font-size: 25px; margin-left: 10px;"></i>
-                        </button>
-                       
-                    </form> 
-  
-            </div>
-            
+            </ul>
+            <a href="" class="navbar-brand text-dark ">
+                <i class="fa-solid fa-yin-yang" style="color: #ffffff; font-size: 25px; margin-left: 10px;"></i>
+            </a>
         </div>
     </nav>
 
