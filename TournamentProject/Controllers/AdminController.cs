@@ -312,27 +312,51 @@ namespace TournamentProject.Controllers
         }
 
 
-        public IActionResult GetUsers()
+        public ActionResult GetUsers()
         {
-            var users = _dbContext!.Users.ToList();
+            var users = (from user in _dbContext.Users
+                         join confirm in _dbContext.Comfirm on user.Id equals confirm.ID
+                         select new
+                         {
+                             user.Id,
+                             user.Name,
+                             user.Email,
+                             confirm.IsConfirmed
+                         }).ToList();
+
+
             return Json(users);
         }
 
+        [HttpPost]
+        public ActionResult ToggleConfirmation(string id)
+        {
+            var confirmRecord = _dbContext!.Comfirm.FirstOrDefault(c => c.ID == id);
+
+            if (confirmRecord != null)
+            {
+                confirmRecord.IsConfirmed = !confirmRecord.IsConfirmed;
+                _dbContext!.SaveChanges();
+            }
+            return Json(new { success = true });
+        }
+
+
 
         [HttpPost]
-        public IActionResult ConfirmUser(int userId)
+        public IActionResult ConfirmUser([FromBody] ConfirmUserRequest request)
         {
             try
             {
                 // Logic to update the user status to 'accepted' in the database
-                var user = _dbContext!.Comfirm.Find(userId);
+                var user = _dbContext!.Comfirm.FirstOrDefault(x => x.ID == request.UserId);
                 if (user != null)
                 {
                     user.IsConfirmed = true; // Assuming there is a property to indicate confirmation
                     _dbContext.SaveChanges();
                     return Json(new { success = true, message = "User confirmed successfully." });
                 }
-                return Json(new { success = false, message = "User not found." });
+                return Json(new { success = false, message = $"User not found. with {request}" });
             }
             catch (Exception ex)
             {
@@ -340,5 +364,36 @@ namespace TournamentProject.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult DeactivateUser([FromBody] ConfirmUserRequest request)
+        {
+            try
+            {
+                var user = _dbContext!.Comfirm.FirstOrDefault(x => x.ID == request.UserId);
+                if (user != null)
+                {
+                    if (!user.IsConfirmed)
+                    {
+                        return Json(new { success = false, message = "User is already inactive." });
+                    }
+
+                    user.IsConfirmed = false; // Mark the user as inactive
+                    _dbContext.SaveChanges();
+                    return Json(new { success = true, message = "User deactivated successfully." });
+                }
+                return Json(new { success = false, message = $"User not found with {request.UserId}" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
+    }
+
+    public class ConfirmUserRequest
+    {
+        public string? UserId { get; set; }
     }
 }

@@ -181,7 +181,7 @@
         document.querySelectorAll('.card').forEach(card => {
             card.addEventListener('click', function () {
                 const ageGroup = this.getAttribute('data-age-group');
-
+                
                 // Send an AJAX request to the server to get the players for the clicked age group
                 fetch('/Admin/FetchPlayers?ageGroup=' + encodeURIComponent(ageGroup))
                     .then(response => response.json())

@@ -615,50 +615,7 @@
     </div>
 
 
-        <!-- Feedback Table Section -->
-@* <div class="table-section">
-    <h2 class="text-center mt-5 mb-3 pb-5 text-white">نظرات و پیشنهادات</h2>
-    <div class="table-responsive">
-        <table class="table table-dark text-center table-striped">
-            <thead>
-                <tr>
-                    <th>نام</th>
-                    <th>ایمیل</th>
-                    <th>نظرات و پیشنهادات</th>
-                </tr>
-            </thead>
-            <tbody id="feedbackTableBody">
-                @if (Model != null && Model.Any())
-                {
-                    @foreach (var feedback in Model)
-                    {
-                        <tr>
-                            <td>@feedback.Name</td>
-                            <td>@feedback.Email</td>
-                            
-                            <td>
-                                <button class="btn btn-sm text-white view-feedback-btn" 
-                                        data-bs-toggle="modal" 
-                                        data-bs-target="#feedbackModal" 
-                                        data-feedback="@feedback.Description">
-                                    <i class="bi bi-chat-dots-fill"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="4">هیچ نظری ثبت نشده است.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
-     *@
-
+    
     <!-- Modal for Feedback -->
 <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -979,70 +936,204 @@
         });
     });
 
-
-
-        document.addEventListener('DOMContentLoaded', function () {
-            // Send an AJAX request to the server to fetch all user data
-            fetch('/Admin/GetUsers')
-                .then(response => response.json())
-                .then(data => {
-                    // Populate the table with the data received
-                    const tbody = document.querySelector('#userTableBody');
-                    tbody.innerHTML = ''; // Clear existing rows
-
+        $(document).ready(function () {
+            function loadUsers() {
+                $.get('/Admin/GetUsers', function (data) {
+                    console.log('Loaded users:', data); // Check the data structure
+                    let rows = '';
                     data.forEach(user => {
-                        console.log(`User Data:`, user); // Log each user to verify properties
+                        let userId = user.id; // Ensure this matches the property name in your response
+                        let userConfirm = user.isConfirmed; // Ensure this matches the property name in your response
 
-                        // Create a new table row
-                        const row = document.createElement('tr');
+                        console.log('User ID:', userId);
+                        console.log('IsConfirmed:', userConfirm);
 
-                        // Create a button element
-                        const confirmButton = document.createElement('button');
-                        confirmButton.textContent = 'Confirm';
-                        confirmButton.classList.add('confirm-button'); // Optional class for styling
-                        confirmButton.addEventListener('click', function () {
-                            // Send a POST request to confirm the user
-                            fetch('/Admin/ConfirmUser', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({ userId: user.id }) // Assuming each user has an 'id' property
-                            })
-                                .then(response => response.json())
-                                .then(result => {
-                                    if (result.success) {
-                                        alert('User confirmed successfully.');
-                                        // Optionally, update the UI to reflect the change
-                                    } else {
-                                        alert('Error: ' + result.message);
-                                    }
-                                })
-                                .catch(error => console.error('Error:', error));
-                        });
+                        let buttonClass = userConfirm ? 'btn-danger' : 'btn-success';
+                        let buttonText = userConfirm ? 'لغو' : 'تایید';
 
-                        // Append the button to the first cell
-                        const firstCell = document.createElement('td');
-                        firstCell.appendChild(confirmButton);
-
-                        // Set the content of the rest of the row
-                        row.innerHTML = `
-                            ${firstCell.outerHTML}
-                            <td>${user.email}</td>
-                            <td>${user.name}</td>
-                        `;
-
-                        // Append the row to the tbody
-                        tbody.appendChild(row);
+                        rows += `
+                            <tr>
+                                <td>
+                                    <button class="btn ${buttonClass}"
+                                            onclick="toggleConfirmation('${userId}')">
+                                        ${buttonText}
+                                    </button>
+                                </td>
+                                <td>${user.email}</td>
+                                <td>${user.name}</td>
+                            </tr>`;
                     });
-                })
-                .catch(error => console.error('Error:', error));
+                    $('#userTableBody').html(rows);
+                }).fail(function () {
+                    console.log('Failed to load users');
+                });
+            }
+
+            window.toggleConfirmation = function (id) {
+                console.log('toggleConfirmation function called');
+                console.log('ID passed:', id);
+
+
+                $.post('/Admin/ToggleConfirmation', { id: id }, function (response) {
+                    console.log('Response from server:', response);
+                    if (response.success) {
+                        loadUsers(); // Refresh the table after the status change
+                    } else {
+                        alert('Error updating confirmation status');
+                    }
+                }).fail(function () {
+                    alert('Failed to contact the server. Please try again later.');
+                });
+            };
+
+            // Load users when the document is ready
+            loadUsers();
         });
 
-   
 
 
 
+        // $(document).ready(function () {
+        //     function loadUsers() {
+        //         $.get('/Admin/GetUsers', function (data) {
+        //             console.log('Loaded users:', data); // Check the data structure
+        //             let rows = '';
+        //             data.forEach(user => {
+                        
+        //                 let userId = user.id;
+        //                 alert(userId)
+       
+                           
+        //                 }
+
+        //             );
+        //             $('#userTableBody').html(rows);
+        //         }).fail(function () {
+        //             console.log('Failed to load users');
+        //         });
+        //     }
+
+        //     loadUsers();
+
+        //     window.toggleConfirmation = function (id) {
+        //         alert(id); // Alert to verify the id value
+        //         console.log('Toggling confirmation for user ID:', id); // Log to check the id value
+        //         $.post('/Admin/ToggleConfirmation', { id: id }, function (response) {
+        //             console.log('Response from server:', response);
+        //             if (response.success) {
+        //                 loadUsers(); // Refresh the table after the status change
+        //             } else {
+        //                 alert('Error updating confirmation status');
+        //             }
+        //         }).fail(function () {
+        //             alert('Failed to contact the server. Please try again later.');
+        //         });
+        //     };
+        // });
+
+
+
+
+        // // Wait for the DOM to fully load
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     // Fetch all user data from the server
+        //     fetch('/Admin/GetUsers')
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Failed to fetch users');
+        //             }
+        //             return response.json(); // Parse the JSON response
+        //         })
+        //         .then(data => {
+        //             // Get the table body element where rows will be inserted
+        //             const tbody = document.querySelector('#userTableBody');
+
+        //             // Check if the table body exists
+        //             if (!tbody) {
+        //                 console.error('Table body element with id "userTableBody" not found.');
+        //                 return;
+        //             }
+
+        //             // Clear any existing rows
+        //             tbody.innerHTML = '';
+
+        //             // Iterate over the fetched user data to populate rows
+        //             data.forEach(user => {
+        //                 console.log('User Data:', user); // Debug log to inspect user properties
+
+        //                 // Create a new table row for each user
+        //                 const row = document.createElement('tr');
+
+        //                 // Create a cell with the "Confirm" button
+        //                 const firstCell = document.createElement('td');
+        //                 const confirmButton = document.createElement('button');
+        //                 confirmButton.textContent = user.isConfirmed ? 'Confirmed' : 'Confirm';
+        //                 confirmButton.disabled = user.isConfirmed; // Disable the button if already confirmed
+        //                 confirmButton.classList.add(user.isConfirmed ? 'confirmed' : 'confirm-button'); // Add a class for styling
+
+        //                 // Add a click event listener to the button
+        //                 confirmButton.addEventListener('click', function () {
+        //                     // Alert to indicate button click
+        //                     console.log("Clicked user ID:", user.id);
+
+        //                     // Send a POST request to confirm the user
+        //                     fetch('/Admin/ConfirmUser', {
+        //                         method: 'POST',
+        //                         headers: {
+        //                             'Content-Type': 'application/json'
+        //                         },
+        //                         body: JSON.stringify({ userId: user.id }) // Assuming each user has an 'id' property
+        //                     })
+        //                         .then(response => {
+        //                             if (!response.ok) {
+        //                                 throw new Error('Failed to confirm user');
+        //                             }
+        //                             return response.json();
+        //                         })
+        //                         .then(result => {
+        //                             if (result.success) {
+        //                                 alert('User confirmed successfully.');
+
+        //                                 // Update the button UI to reflect confirmation
+        //                                 confirmButton.disabled = true;
+        //                                 confirmButton.textContent = 'Confirmed';
+        //                                 confirmButton.className = 'confirmed'; // Replace with a new class for styling
+        //                             } else {
+        //                                 alert('Error: ' + result.message);
+        //                             }
+        //                         })
+        //                         .catch(error => {
+        //                             console.error('Error:', error);
+        //                             alert('An error occurred while confirming the user.');
+        //                         });
+        //                 });
+
+        //                 // Append the button to the first cell
+        //                 firstCell.appendChild(confirmButton);
+        //                 row.appendChild(firstCell);
+
+        //                 // Create and append the email cell
+        //                 const emailCell = document.createElement('td');
+        //                 emailCell.textContent = user.email || 'N/A'; // Fallback for missing email
+        //                 row.appendChild(emailCell);
+
+        //                 // Create and append the name cell
+        //                 const nameCell = document.createElement('td');
+        //                 nameCell.textContent = user.name || 'N/A'; // Fallback for missing name
+        //                 row.appendChild(nameCell);
+
+        //                 // Append the row to the table body
+        //                 tbody.appendChild(row);
+        //             });
+        //         })
+        //         .catch(error => {
+        //             // Handle any errors during the fetch or processing
+        //             console.error('Error fetching user data:', error);
+        //             alert('Failed to load user data.');
+        //         });
+        // });
+
+        
     </script>  
 </body>
 </html>
