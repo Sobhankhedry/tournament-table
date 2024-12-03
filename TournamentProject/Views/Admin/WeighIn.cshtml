@@ -55,10 +55,11 @@
                         <table class="info-table">
                             <thead>
                                 <tr>
-                                    <th>نام و نام خانوادگی</th>
-                                    <th>وزن</th>
-                                    <th>نام مربی</th>
                                     <th>رده سنی</th>
+                                    <th>نام مربی</th>
+                                    <th>وزن</th>
+                                    
+                                    <th>نام و نام خانوادگی</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -195,10 +196,10 @@
 
                             const row = document.createElement('tr');
                             row.innerHTML = `
-                                            <td>${player.name}</td>
-                                            <td>${player.weigh}</td>
-                                            <td>${player.managerName}</td>
-                                            <td>${player.age}</td>
+                                                    <td>${player.age}</td>                                           
+                                                    <td>${player.managerName}</td>
+                                                    <td>${player.weigh}</td>
+                                                    <td>${player.name}</td>
                                 `;
                             tbody.appendChild(row);
                         });

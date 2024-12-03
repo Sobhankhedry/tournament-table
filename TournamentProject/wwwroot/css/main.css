@@ -211,7 +211,7 @@ header {
 /* end of contact */
 
 .confirm-button {
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;  Green 
     color: white;
     border: none;
     padding: 5px 10px;
@@ -219,5 +219,5 @@ header {
 }
 
     .confirm-button:hover {
-        background-color: #45a049; /* Darker green */
+        background-color: #45a049;  Darker green 
     }

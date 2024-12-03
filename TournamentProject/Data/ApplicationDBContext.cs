@@ -15,6 +15,7 @@ namespace TournamentProject.Data
         public DbSet<Team> Teams { get; set; }
         public DbSet<Medals> Medals { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<Confirming> Comfirm { get; set; }
     }
 
 }

@@ -325,10 +325,10 @@ namespace TournamentProject.Controllers
             try
             {
                 // Logic to update the user status to 'accepted' in the database
-                var user = _dbContext.Users.Find(userId);
+                var user = _dbContext!.Comfirm.Find(userId);
                 if (user != null)
                 {
-                    //user.IsConfirmed = true; // Assuming there is a property to indicate confirmation
+                    user.IsConfirmed = true; // Assuming there is a property to indicate confirmation
                     _dbContext.SaveChanges();
                     return Json(new { success = true, message = "User confirmed successfully." });
                 }
@@ -339,5 +339,6 @@ namespace TournamentProject.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
     }
 }
