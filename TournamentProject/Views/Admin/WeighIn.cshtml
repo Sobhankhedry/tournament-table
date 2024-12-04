@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/css/weigh-in.css">
     <link rel="stylesheet" href="css/bootstrap.fa.min.css">
-    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
     <title>Weigh In System</title>
     <style>
@@ -169,12 +170,9 @@
                     </label>
 
                     <!-- Coach Name Field -->
-                    <label>
-                        <span class="coach">نام مربی</span>
-                        <input class="input" name="Coach" type="text" placeholder="نام مربی" required>
-                        
-                    </label>
-
+                    <select class="input-coach" id="managersContainer" required="" name="Coach">
+                        <option value="" disabled selected>انتخاب کنید</option>
+                    </select>
                     
                     <button class="submit" dir="rtl" type="submit">ثبت</button>
                 </form>
@@ -244,6 +242,33 @@
                     .catch(error => console.error('Error:', error));
             });
         });
+
+       
+
+        $(document).ready(function () {
+            $.ajax({
+                url: '@Url.Action("GettingManagers", "Admin")',
+                type: 'GET',
+                success: function (data) {
+                    if (data.length > 0) {
+                        // Create options from the list of managers
+                        var options = data.map(function (manager) {
+                            return '<option value="' + manager + '">' + manager + '</option>';
+                        }).join('');
+
+                        // Set the dropdown content
+                        $('#managersContainer').html('<option value="" disabled selected>انتخاب کنید</option>' + options);
+                    } else {
+                        $('#managersContainer').html('<option value="">هیچ مربی موجود نیست</option>');
+                    }
+                },
+                error: function () {
+                    alert('Failed to load managers.');
+                }
+            });
+        });
+
+
     </script>
 
     

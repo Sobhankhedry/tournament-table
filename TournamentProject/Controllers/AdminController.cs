@@ -352,8 +352,31 @@ namespace TournamentProject.Controllers
             return Json(new { success = true });
         }
 
+        [HttpGet]
+        public IActionResult GettingManagers()
+        {
+            // Fetch the managers from the database
+            var managers = (from user in _dbContext!.Users
+                            join confirm in _dbContext.Comfirm
+                            on user.Id equals confirm.ID
+                            where confirm.IsConfirmed == true
+                            select user.Name).ToList();
+
+            // Pass the list to the view
+            ViewBag.Managers = managers;
+            Console.WriteLine(ViewBag.Managers);
 
 
+
+            if (managers.Any())
+            {
+                return Json(managers); // Send data as JSON
+            }
+            else
+            {
+                return Json(new List<string> { "هیچ مربی موجود نیست" }); // No data message
+            }
+        }
 
 
     }
