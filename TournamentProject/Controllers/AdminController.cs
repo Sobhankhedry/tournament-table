@@ -233,6 +233,15 @@ namespace TournamentProject.Controllers
                 Player player = new Player();
                 player.Name = weighInVM.FirstName;
                 player.LastName = weighInVM.LastName;
+                if (weighInVM.Gender == "male")
+                {
+                    player.Gender = "مرد";
+                }
+                else
+                {
+                    player.Gender = "زن";
+                }
+
                 double weight;
                 if (double.TryParse(weighInVM.Weigh, out weight) && weight <= 48)
                 {
@@ -299,6 +308,7 @@ namespace TournamentProject.Controllers
                     p.Name,
                     p.Weigh,
                     p.Age,
+                    p.Gender,
                     p.ManagerName
                 })
                 .ToList();
@@ -314,14 +324,15 @@ namespace TournamentProject.Controllers
 
         public ActionResult GetUsers()
         {
-            var users = (from user in _dbContext.Users
+            var users = (from user in _dbContext!.Users
                          join confirm in _dbContext.Comfirm on user.Id equals confirm.ID
                          select new
                          {
                              user.Id,
                              user.Name,
                              user.Email,
-                             confirm.IsConfirmed
+                             confirm.IsConfirmed,
+
                          }).ToList();
 
 
@@ -343,57 +354,9 @@ namespace TournamentProject.Controllers
 
 
 
-        [HttpPost]
-        public IActionResult ConfirmUser([FromBody] ConfirmUserRequest request)
-        {
-            try
-            {
-                // Logic to update the user status to 'accepted' in the database
-                var user = _dbContext!.Comfirm.FirstOrDefault(x => x.ID == request.UserId);
-                if (user != null)
-                {
-                    user.IsConfirmed = true; // Assuming there is a property to indicate confirmation
-                    _dbContext.SaveChanges();
-                    return Json(new { success = true, message = "User confirmed successfully." });
-                }
-                return Json(new { success = false, message = $"User not found. with {request}" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
-            }
-        }
-
-        [HttpPost]
-        public IActionResult DeactivateUser([FromBody] ConfirmUserRequest request)
-        {
-            try
-            {
-                var user = _dbContext!.Comfirm.FirstOrDefault(x => x.ID == request.UserId);
-                if (user != null)
-                {
-                    if (!user.IsConfirmed)
-                    {
-                        return Json(new { success = false, message = "User is already inactive." });
-                    }
-
-                    user.IsConfirmed = false; // Mark the user as inactive
-                    _dbContext.SaveChanges();
-                    return Json(new { success = true, message = "User deactivated successfully." });
-                }
-                return Json(new { success = false, message = $"User not found with {request.UserId}" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
-            }
-        }
 
 
     }
 
-    public class ConfirmUserRequest
-    {
-        public string? UserId { get; set; }
-    }
+
 }

@@ -73,7 +73,7 @@
                                     <th>رده سنی</th>
                                     <th>نام مربی</th>
                                     <th>وزن</th>
-                                    
+                                    <th>جنسیت</th>
                                     <th>نام و نام خانوادگی</th>
                                 </tr>
                             </thead>
@@ -111,7 +111,7 @@
                             <label for="gender" style="margin-bottom: 8px; font-size: 14px; font-weight: bold; color: #00bfff; text-align: right;">
                                 جنسیت
                             </label>
-                            <select id="gender" style="padding: 10px; font-size: 16px; direction: rtl; background-color: #333; color: white; border: 1px solid rgba(105, 105, 105, 0.397); border-radius: 10px; box-sizing: border-box;">
+                            <select id="gender" name="Gender" style="padding: 10px; font-size: 16px; direction: rtl; background-color: #333; color: white; border: 1px solid rgba(105, 105, 105, 0.397); border-radius: 10px; box-sizing: border-box;">
                                 <option value="">انتخاب کنید</option>
                                 <option value="male">مرد</option>
                                 <option value="female">زن</option>
@@ -232,6 +232,8 @@
                                                     <td>${player.age}</td>                                           
                                                     <td>${player.managerName}</td>
                                                     <td>${player.weigh}</td>
+                                                    <td>${player.gender}</td>
+
                                                     <td>${player.name}</td>
                                 `;
                             tbody.appendChild(row);

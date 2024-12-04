@@ -5,11 +5,16 @@
 namespace TournamentProject.Migrations
 {
     /// <inheritdoc />
-    public partial class addedPlayersTable : Migration
+    public partial class addedColumn : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+
+
+
+
+
             migrationBuilder.CreateTable(
                 name: "Players",
                 columns: table => new
@@ -20,19 +25,30 @@ namespace TournamentProject.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Weigh = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Age = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ManagerName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ManagerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Players", x => x.ID);
                 });
+
+
+
+
+
+
+
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+
             migrationBuilder.DropTable(
                 name: "Players");
+
+
         }
     }
 }

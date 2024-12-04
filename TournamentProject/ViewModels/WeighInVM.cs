@@ -9,5 +9,6 @@
         public int Day { get; set; }
         public string? Coach { get; set; }
         public string? Weigh { get; set; }
+        public string? Gender { get; set; }
     }
 }

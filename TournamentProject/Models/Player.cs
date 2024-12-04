@@ -8,5 +8,6 @@
         public string? Weigh { get; set; }
         public string? Age { get; set; }
         public string? ManagerName { get; set; }
+        public string? Gender { get; set; }
     }
 }
