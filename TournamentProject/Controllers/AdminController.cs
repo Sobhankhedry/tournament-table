@@ -306,6 +306,7 @@ namespace TournamentProject.Controllers
                 .Select(p => new
                 {
                     p.Name,
+                    p.LastName,
                     p.Weigh,
                     p.Age,
                     p.Gender,
