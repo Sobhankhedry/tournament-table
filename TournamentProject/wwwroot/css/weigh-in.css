@@ -1,4 +1,4 @@
-body {
+/*body {
     margin: 0;
     padding: 0;
     width: 100vw;
@@ -249,37 +249,37 @@ body {
         border: 1px solid #555;
         padding: 10px;
         text-align: center;
-    }
+    }*/
 
-.table-container {
-    max-width: 100%; /* Ensure the table does not overflow horizontally */
-    overflow-x: auto; /* Enable horizontal scrolling if necessary */
-}
+/*.table-container {
+    max-width: 100%;*/ /* Ensure the table does not overflow horizontally */
+    /*overflow-x: auto;*/ /* Enable horizontal scrolling if necessary */
+/*}
 
 .table-scroll {
-    max-height: 300px; /* Set the desired height for the scrollable area */
-    overflow-y: auto; /* Enable vertical scrolling */
-    border: 1px solid #ccc; /* Optional: Add a border around the scrollable area */
-}
+    max-height: 300px;*/ /* Set the desired height for the scrollable area */
+    /*overflow-y: auto;*/ /* Enable vertical scrolling */
+    /*border: 1px solid #ccc;*/ /* Optional: Add a border around the scrollable area */
+/*}*/
 
-.info-table {
-    width: 100%; /* Ensure the table takes up full width */
-    border-collapse: collapse; /* Remove space between table cells */
-}
+/*.info-table {
+    width: 100%;*/ /* Ensure the table takes up full width */
+    /*border-collapse: collapse;*/ /* Remove space between table cells */
+/*}
 
     .info-table th,
     .info-table td {
-        padding: 10px; /* Add padding to table cells */
-        text-align: center; /* Center-align text */
-        border: 1px solid #ccc; /* Add a border to table cells */
-    }
+        padding: 10px;*/ /* Add padding to table cells */
+        /*text-align: center;*/ /* Center-align text */
+        /*border: 1px solid #ccc;*/ /* Add a border to table cells */
+    /*}
 
     .info-table thead {
-        position: sticky; /* Keep the header fixed during scroll */
-        top: 0;
-        background-color: #f9f9f9; /* Set a background for the header */
-        z-index: 1; /* Ensure the header stays above table rows */
-    }
+        position: sticky;*/ /* Keep the header fixed during scroll */
+        /*top: 0;
+        background-color: #f9f9f9;*/ /* Set a background for the header */
+        /*z-index: 1;*/ /* Ensure the header stays above table rows */
+    /*}
 
     .info-table th {
         height: 50px;
@@ -328,3 +328,597 @@ body {
         background-position: 40px 40px;
     }
 }
+
+
+.group {
+    margin-left: auto;
+    margin-bottom: 5px;
+    width: 250px;
+    display: flex;
+    line-height: 28px;
+    align-items: center;
+    position: relative;
+    text-align: right;
+    direction: rtl;
+}
+
+.input-search {
+    font-family: "Montserrat", sans-serif;
+    width: 100%;
+    height: 45px;
+    padding-right: 10px;
+    padding-left: 2.5rem;
+    box-shadow: 0 0 0 1.5px #2b2c37, 0 0 25px -17px #000;
+    border: 0;
+    border-radius: 12px;
+    background-color: #16171d;
+    outline: none;
+    color: #bdbecb;
+    transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+    cursor: text;
+    z-index: 0;
+    text-align: right;
+    direction: rtl;
+}
+
+.input::placeholder {
+    color: #bdbecb;
+}
+
+.input:hover {
+    box-shadow: 0 0 0 2.5px #2f303d, 0px 0px 25px -15px #000;
+}
+
+.input:active {
+    transform: scale(0.95);
+}
+
+.input:focus {
+    box-shadow: 0 0 0 2.5px #2f303d;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    fill: #bdbecb;
+    width: 1rem;
+    height: 1rem;
+    pointer-events: none;
+    z-index: 1;
+    text-align: right;
+    direction: rtl;
+}*/
+
+
+label {
+    display: flex;
+    flex-direction: column; /* Stacks the label text above the input */
+    align-items: flex-start;
+    gap: 5px; /* Adds space between the label text and input */
+}
+
+    label span {
+        font-size: 14px;
+        font-weight: bold;
+        color: #00bfff; /* Label color */
+        text-align: right;
+        margin-right: 5px;
+    }
+
+.input {
+    background-color: #333;
+    color: #fff;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(105, 105, 105, 0.397);
+    border-radius: 10px;
+    font-size: 16px;
+    direction: rtl; /* Ensures RTL input alignment */
+}
+
+.birth-dropdowns label span,
+.gender-weigh label span {
+    margin: 0; /* Remove extra margin */
+}
+
+.select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 10px;
+    background-color: #333;
+    color: #fff;
+    border: 1px solid rgba(105, 105, 105, 0.397);
+}
+
+button.submit {
+    margin: 20px auto 0;
+    display: block; /* Centers the submit button */
+}
+
+
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    overflow-x: hidden;
+    font-family: Vazirmatn;
+    background: linear-gradient(135deg, #0f0f0f 40%, #121212);
+    color: white;
+}
+
+.header {
+    background-color: #0f0f0f;
+    width: 100%;
+    display: fixed;
+    justify-content: flex-end;
+    padding: 10px 20px;
+}
+
+.nav-button {
+    margin-left: 0%;
+    margin-right: 10px;
+    padding: 5px 15px;
+    background-color: #00bfff;
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+    .nav-button:hover {
+        background-color: #00bfff96;
+    }
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+    padding: 20px;
+}
+
+.tooltip {
+    margin-left: 1220px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    background-color: #288;
+    color: #f1f1f1;
+    padding: 1em 3em;
+    border-radius: 1em;
+    margin-bottom: 20px;
+}
+
+    .tooltip .tooltiptext {
+        width: 200px;
+        background-color: #ffffff;
+        color: #000000;
+        text-align: center;
+        border-radius: 5px;
+        padding: 10px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .tooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        border-width: 8px;
+        border-style: solid;
+        border-color: #28282817 transparent transparent transparent;
+        transform: translateX(-50%);
+    }
+
+.content {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.cards-and-table {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form {
+    margin-right: 60px;
+    margin-left: 100px;
+    flex: 0 0 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: #1a1a1a;
+    color: #fff;
+    border: 1px solid #333;
+}
+
+    .form .title {
+        margin-left: 110px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        font-size: 28px;
+        font-weight: 600;
+        color: #00bfff;
+    }
+
+.weigh {
+    margin-left: 270px;
+}
+
+.message {
+    margin-left: 110px;
+    margin-top: 0px;
+}
+
+.name {
+    margin-left: 280PX;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.lastname {
+    margin-left: 220px;
+}
+
+.birth {
+    margin-left: 235px;
+}
+
+.coach {
+    margin-left: 245px;
+}
+
+.submit {
+    margin-left: 50px;
+    font-size: 18px;
+    padding: 15px 30px;
+    width: 200px;
+    height: 50px;
+    background-color: #1336b1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.gender-weigh {
+    display: flex;
+    margin-right: 10px;
+    gap: 10px;
+    align-items: center;
+}
+
+.input-coach {
+    display: flex;
+    margin-right: 10px;
+    gap: 10px;
+    align-items: center;
+    background-color: #333;
+    color: #ffffff;
+    width: 95%;
+    padding: 10px;
+    border: 1px solid rgba(105, 105, 105, 0.397);
+    border-radius: 10px;
+}
+
+.birth-dropdowns {
+    display: flex;
+    margin-right: 10px;
+    gap: 10px;
+    align-items: center;
+}
+
+.search-container {
+    text-align: right;
+}
+
+.input-gender {
+    display: flex;
+    margin-right: 10px;
+    gap: 10px;
+    align-items: center;
+    background-color: #333;
+    color: #ffffff;
+    width: 95%;
+    padding: 10px;
+    border: 1px solid rgba(105, 105, 105, 0.397);
+    border-radius: 10px;
+}
+
+.input-weigh {
+    display: flex;
+    margin-right: 10px;
+    gap: 10px;
+    align-items: center;
+    background-color: #333;
+    color: #ffffff;
+    width: 95%;
+    padding: 10px;
+    border: 1px solid rgba(105, 105, 105, 0.397);
+    border-radius: 10px;
+}
+
+.search-input {
+    width: 200px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    text-align: right;
+    direction: rtl;
+    color: #fff;
+    background-color: #555;
+}
+
+    .search-input::placeholder {
+        color: #fefefe;
+        font-style: italic;
+        opacity: 1;
+    }
+
+
+
+.birth-dropdowns .input {
+    width: auto;
+    padding: 5px;
+    font-size: 14px;
+}
+
+
+.form .flex {
+    gap: 15px;
+}
+
+.form label {
+    position: relative;
+}
+
+
+    .form label .input {
+        background-color: #333;
+        color: #ffffff;
+        width: 90%;
+        padding: 10px;
+        border: 1px solid rgba(105, 105, 105, 0.397);
+        border-radius: 10px;
+    }
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.cards-and-table {
+    flex: 2;
+}
+
+.form {
+    flex: 1;
+}
+
+.cards {
+    margin-left: 280px;
+    display: flex;
+    gap: 10px;
+}
+
+    .cards .red {
+        background-color: #0339a4;
+    }
+
+    .cards .blue {
+        background-color: #0339a4;
+    }
+
+    .cards .green {
+        background-color: #0339a4;
+    }
+
+    .cards .card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        height: 90px;
+        width: 146px;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        transition: transform 0.4s;
+    }
+
+        .cards .card:hover {
+            transform: scale(1.1);
+        }
+
+    .cards:hover > .card:not(:hover) {
+        filter: blur(10px);
+    }
+
+.table tr {
+    padding: 3px;
+}
+
+.table-container {
+    padding: 3px;
+    margin-top: 70px;
+    width: 800px;
+    margin-left: 200px;
+}
+
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .info-table th,
+    .info-table td {
+        height: 10px;
+        border: 1px solid #555;
+        padding: 10px;
+        text-align: center;
+    }
+/*.table-container {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  
+  .table-scroll {
+    max-height: 300px; 
+    overflow-y: auto; 
+    border: 1px solid #ccc; 
+  }*/
+
+.info-table {
+    width: 100%; /* Ensure the table takes up full width */
+    border-collapse: collapse; /* Remove space between table cells */
+}
+
+    .info-table th,
+    .info-table td {
+        padding: 3px; /* Add padding to table cells */
+        text-align: center; /* Center-align text */
+        border: 1px solid #ccc; /* Add a border to table cells */
+    }
+
+    .info-table thead {
+        position: sticky; /* Keep the header fixed during scroll */
+        top: 0;
+        background-color: #f9f9f9; /* Set a background for the header */
+        z-index: 1; /* Ensure the header stays above table rows */
+    }
+
+    .info-table th {
+        height: 50px;
+        background-color: #333;
+        color: #fff;
+    }
+
+    .info-table td {
+        padding: 10px;
+        height: auto;
+        background-color: #1a1a1a;
+        color: #fff;
+    }
+
+.edit {
+    margin-left: 850px;
+    padding: 15px 30px;
+    width: 130px;
+    height: 50px;
+    background-color: #1336b1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.container {
+    margin: 0%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #121212;
+    background: linear-gradient( 135deg, #121212 25%, #1a1a1a 25%, #1a1a1a 50%, #121212 50%, #121212 75%, #1a1a1a 75%, #1a1a1a );
+    background-size: 40px 40px;
+    animation: move 4s linear infinite;
+}
+
+@keyframes move {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 40px 40px;
+    }
+}
+
+.group {
+    margin-left: auto;
+    margin-bottom: 5px;
+    width: 250px;
+    display: flex;
+    line-height: 28px;
+    align-items: center;
+    position: relative;
+    text-align: right;
+    direction: rtl;
+}
+
+.input-search {
+    font-family: "Montserrat", sans-serif;
+    width: 100%;
+    height: 45px;
+    padding-right: 10px;
+    padding-left: 2.5rem;
+    box-shadow: 0 0 0 1.5px #2b2c37, 0 0 25px -17px #000;
+    border: 0;
+    border-radius: 12px;
+    background-color: #16171d;
+    outline: none;
+    color: #bdbecb;
+    transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+    cursor: text;
+    z-index: 0;
+    text-align: right;
+    direction: rtl;
+}
+
+.input::placeholder {
+    color: #bdbecb;
+}
+
+.input:hover {
+    box-shadow: 0 0 0 2.5px #2f303d, 0px 0px 25px -15px #000;
+}
+
+.input:active {
+    transform: scale(0.95);
+}
+
+.input:focus {
+    box-shadow: 0 0 0 2.5px #2f303d;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    fill: #bdbecb;
+    width: 1rem;
+    height: 1rem;
+    pointer-events: none;
+    z-index: 1;
+    text-align: right;
+    direction: rtl;
+}
+
+
+
+
+
+  
+  
+
