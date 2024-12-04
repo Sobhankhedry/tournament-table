@@ -269,6 +269,26 @@
         });
 
 
+        document.getElementById('query').addEventListener('input', function () {
+            const query = this.value.toLowerCase();
+            const rows = document.querySelectorAll('.info-table tbody tr');
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                let rowText = '';
+                cells.forEach(cell => {
+                    rowText += cell.textContent.toLowerCase() + ' ';
+                });
+
+                if (rowText.includes(query)) {
+                    row.style.display = ''; // Show the row
+                } else {
+                    row.style.display = 'none'; // Hide the row
+                }
+            });
+        });
+
+
     </script>
 
     
