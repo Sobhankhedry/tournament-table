@@ -120,7 +120,6 @@ namespace TournamentProject.Controllers
 
                     if (await _userManager.IsInRoleAsync(user!, "Admin"))
                     {
-
                         return RedirectToAction("AdminPanel", "Admin");
                     }
                     else if (await _userManager.IsInRoleAsync(user!, "User"))
@@ -141,7 +140,7 @@ namespace TournamentProject.Controllers
         }
 
 
-        [HttpPost]
+
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
@@ -165,6 +164,13 @@ namespace TournamentProject.Controllers
             if (result.Succeeded && user.ExpiredDate >= DateTime.Now)
             {
                 await _userManager.AddToRoleAsync(user, "User");
+                Confirming con = new Confirming();
+                con.ID = userId;
+                con.IsConfirmed = false;
+
+                _dbContext.Comfirm.Add(con);
+
+                _dbContext.SaveChanges();
                 return View("ConfirmEmail");
             }
 

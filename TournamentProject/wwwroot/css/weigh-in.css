@@ -400,7 +400,7 @@ label {
     label span {
         font-size: 14px;
         font-weight: bold;
-        color: #00bfff; /* Label color */
+        color: #fff; /* Label color */
         text-align: right;
         margin-right: 5px;
     }
