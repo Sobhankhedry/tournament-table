@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مربی</title>
+    <style>
+        :root {
+            --primary-color: #40c9ff;
+            --secondary-color: #e81cff;
+            --accent-color: #00dbde;
+            --background-color: #121212;
+            --surface-color: #000000;
+            --on-surface-color: #ffffff;
+            --on-background-color: #e0e0e0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+            color: var(--on-background-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: linear-gradient(
+                135deg,
+                #121212 25%,
+                #1a1a1a 25%,
+                #1a1a1a 50%,
+                #121212 50%,
+                #121212 75%,
+                #1a1a1a 75%,
+                #1a1a1a
+            );
+            background-size: 40px 40px;
+            background-attachment: fixed;
+            animation: move 4s linear infinite;
+        }
+
+        @keyframes move {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 40px 40px;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            margin-bottom: 30px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: var(--surface-color);
+            color: var(--on-surface-color);
+            border: 2px solid transparent;
+            background-image: linear-gradient(var(--surface-color), var(--surface-color)),
+                linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-section {
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            display: flex;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        #search {
+            flex-grow: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            background-color: var(--surface-color);
+            color: var(--on-surface-color);
+        }
+
+        .btn-search {
+            background-color: var(--primary-color);
+            border-radius: 0 5px 5px 0;
+            padding: 10px;
+        }
+
+        .btn-search svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--on-surface-color);
+        }
+
+        .content {
+            display: flex;
+            gap: 30px;
+        }
+
+        .table-container {
+            flex-grow: 1;
+            overflow-x: auto;
+            background-color: var(--surface-color);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border: 2px solid transparent;
+            background-image: linear-gradient(var(--surface-color), var(--surface-color)),
+                linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            color: var(--on-surface-color);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: right;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: var(--on-surface-color);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        th:first-child {
+            border-top-right-radius: 10px;
+        }
+
+        th:last-child {
+            border-top-left-radius: 10px;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            width: 300px;
+            height: 254px;
+            border-radius: 4px;
+            background: var(--surface-color);
+            display: flex;
+            gap: 5px;
+            padding: 0.4em;
+            border: 2px solid transparent;
+            background-image: linear-gradient(var(--surface-color), var(--surface-color)),
+                linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+
+        .card p {
+            height: 100%;
+            flex: 1;
+            overflow: hidden;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.5s;
+            background: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card p:hover {
+            flex: 4;
+        }
+
+        .card p span {
+            min-width: 14em;
+            padding: 0.5em;
+            text-align: center;
+            transform: rotate(-90deg);
+            transition: all 0.5s;
+            text-transform: uppercase;
+            color: var(--on-surface-color);
+            letter-spacing: 0.1em;
+            font-size: 0.8em;
+        }
+
+        .card p:hover span {
+            transform: rotate(0);
+        }
+
+        .button2 {
+            margin-bottom: 20px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            color: var(--on-surface-color);
+            padding: 0.7em 1.7em;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+            background: var(--surface-color);
+            border: 2px solid transparent;
+            background-image: linear-gradient(var(--surface-color), var(--surface-color)),
+                linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+
+        .button2:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .button2:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .button2::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .button2:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .card {
+                max-width: 300px;
+                margin: 0 auto;
+            }
+
+            .table-container {
+                margin-bottom: 20px;
+            }
+        }
+        .search-container {
+            position: relative;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            background: #000;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            background-image: linear-gradient(#000, #000),
+                linear-gradient(135deg, #e81cff 0%, #40c9ff 100%);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+
+        .search-container .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #e81cff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <button class="btn">بازگشت</button>
+                <button class="btn">جدول مسابقات</button>
+            </nav>
+        </header>
+        
+        <main>
+            <section class="search-section">
+                <div class="search-container">
+                    <input type="search" id="search" placeholder="جستجو...">
+                    <button class="btn btn-search">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </section>
+
+            <section class="content">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>نام مربی</th>
+                                <th>وزن</th>
+                                <th>نام</th>
+                                <th>نام خانوادگی</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>علی محمدی</td>
+                                <td>75</td>
+                                <td>علی</td>
+                                <td>محمدی</td>
+                            </tr>
+                            <tr>
+                                <td>رضا احمدی</td>
+                                <td>80</td>
+                                <td>رضا</td>
+                                <td>احمدی</td>
+                            </tr>
+                            <tr>
+                                <td>محمد حسینی</td>
+                                <td>70</td>
+                                <td>محمد</td>
+                                <td>حسینی</td>
+                            </tr>
+                            <tr>
+                                <td>سارا کریمی</td>
+                                <td>65</td>
+                                <td>سارا</td>
+                                <td>کریمی</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="sidebar">
+                    <button class="button2">نام مربی</button>
+                    <div class="card">
+                        <p><span>نونهالان</span></p>
+                        <p><span>نوجوانان</span></p>
+                        <p><span>جوانان</span></p>
+                        <p><span>بزرگسالان</span></p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
