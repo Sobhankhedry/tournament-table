@@ -1,0 +1,248 @@
+﻿/* Background */
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background: #121212;
+    background: linear-gradient( 135deg, #121212 25%, #1a1a1a 25%, #1a1a1a 50%, #121212 50%, #121212 75%, #1a1a1a 75%, #1a1a1a );
+    background-size: 40px 40px;
+    animation: move 4s linear infinite;
+}
+
+@keyframes move {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 40px 40px;
+    }
+}
+
+/* Top Buttons */
+.top-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+.button3 {
+    background-color: #202020;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.auth-buttons button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.login {
+    background-color: #0177ff;
+    color: white;
+}
+
+.register {
+    background-color: #28a745;
+    color: white;
+}
+
+/* Main Content */
+.main-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    width: 90%;
+    margin-top: 50px;
+}
+
+.table-container {
+    width: 90%;
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+/* Table Styling */
+.table {
+    margin-top: 80px;
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+    .table thead {
+        background-color: #030303;
+        color: white;
+    }
+
+    .table th {
+        padding: 15px;
+        text-align: center;
+        font-size: 16px;
+        text-transform: uppercase;
+    }
+
+    .table tbody tr {
+        background-color: #ffffff;
+        transition: background-color 0.3s ease;
+    }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #efefef;
+        }
+
+    .table td {
+        padding: 15px;
+        text-align: center;
+        font-size: 14px;
+        color: #333;
+    }
+
+.pricing-table tbody tr:hover {
+    background-color: #eef2ff;
+}
+
+/* Button Styling */
+.delete-button {
+    background-color: #d92828;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .delete-button:hover {
+        background-color: #d11111;
+    }
+
+/* Green Button */
+.button2 {
+    margin-left: 50px;
+    display: inline-block;
+    transition: all 0.2s ease-in;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    color: #090909;
+    padding: 0.7em 1.7em;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 0.5em;
+    background: #e8e8e8;
+    border: 1px solid #e8e8e8;
+    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+}
+
+    .button2:active {
+        color: #666;
+        box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+    }
+
+    .button2:before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%) scaleY(1) scaleX(1.25);
+        top: 100%;
+        width: 140%;
+        height: 180%;
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 50%;
+        display: block;
+        transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+        z-index: -1;
+    }
+
+    .button2:after {
+        content: "";
+        position: absolute;
+        left: 55%;
+        transform: translateX(-50%) scaleY(1) scaleX(1.45);
+        top: 180%;
+        width: 160%;
+        height: 190%;
+        background-color: #009087;
+        border-radius: 50%;
+        display: block;
+        transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+        z-index: -1;
+    }
+
+    .button2:hover {
+        color: #ffffff;
+        border: 1px solid #009087;
+    }
+
+        .button2:hover:before {
+            top: -35%;
+            background-color: #009087;
+            transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+        }
+
+        .button2:hover:after {
+            top: -45%;
+            background-color: #009087;
+            transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+        }
+
+/* Cards */
+.card {
+    margin-top: 50px;
+    width: 210px;
+    height: 254px;
+    border-radius: 4px;
+    background: none;
+    display: flex;
+    gap: 5px;
+    padding: 0.4em;
+}
+
+    .card p {
+        height: 100%;
+        flex: 1;
+        overflow: hidden;
+        cursor: pointer;
+        border-radius: 2px;
+        transition: all 0.5s;
+        background: #212121;
+        border: 3px solid #600abc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .card p:hover {
+            flex: 4;
+        }
+
+        .card p span {
+            font: 10px;
+            min-width: 14em;
+            padding: 0.5em;
+            text-align: center;
+            transform: rotate(-90deg);
+            transition: all 0.5s;
+            text-transform: uppercase;
+            color: #600abc;
+            letter-spacing: 0.1em;
+        }
+
+        .card p:hover span {
+            transform: rotate(0);
+        }

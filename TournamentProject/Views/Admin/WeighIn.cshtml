@@ -29,10 +29,7 @@
 
          
         <div class="main">
-            <div class="tooltip" dir="rtl">
-                وزن کشی
-                <div class="tooltiptext">برای مشاهده جدول بر روی رده سنی مورد نظر کلیک کنید</div>
-            </div>
+            
 
             <div class="content">
 
@@ -121,10 +118,10 @@
 
                         <!-- Weight -->
                         <div style="flex: 1; display: flex; flex-direction: column;">
-                            <label for="weight" style="margin-bottom: 8px; font-size: 14px; font-weight: bold; color: #fff; text-align: right;">
+                            <label for="weigh" style="margin-bottom: 8px; font-size: 14px; font-weight: bold; color: #fff; text-align: right;">
                                 وزن
                             </label>
-                            <input type="number" id="weight" placeholder="وزن خود را وارد کنید"
+                            <input id="Weigh" name="Weigh" type="number" placeholder="وزن خود را وارد کنید"
                                    style="padding: 10px; font-size: 16px; direction: rtl; background-color: #333; color: white; border: 1px solid rgba(105, 105, 105, 0.397); border-radius: 10px; box-sizing: border-box;">
                         </div>
                     </div>
@@ -170,12 +167,15 @@
                     </label>
 
                     <!-- Coach Name Field -->
+                    <span class="coach">نام مربی</span>
                     <select class="input-coach" id="managersContainer" required="" name="Coach">
+                        
                         <option value="" disabled selected>انتخاب کنید</option>
                     </select>
                     
                     <button class="submit" dir="rtl" type="submit">ثبت</button>
                 </form>
+
 
             </div>
         </div>
@@ -212,7 +212,7 @@
         document.querySelectorAll('.card').forEach(card => {
             card.addEventListener('click', function () {
                 const ageGroup = this.getAttribute('data-age-group');
-                
+
                 // Send an AJAX request to the server to get the players for the clicked age group
                 fetch('/Admin/FetchPlayers?ageGroup=' + encodeURIComponent(ageGroup))
                     .then(response => response.json())
@@ -221,28 +221,33 @@
                         const tbody = document.querySelector('.info-table tbody');
                         tbody.innerHTML = ''; // Clear existing rows
 
-                        data.forEach(player => {
+                        data.forEach((player, index) => {
                             console.log(`Player Data:`, player); // Log each player to check properties
-
 
                             const row = document.createElement('tr');
                             row.innerHTML = `
-                                                    <td>${player.age}</td>                                           
-                                                    <td>${player.managerName}</td>
-                                                    <td>${player.weigh}</td>
-                                                    <td>${player.gender}</td>
-
-                                                    <td>${player.name + " " + player.lastName}</td>
-                                `;
+                                <td>${player.age}</td>
+                                <td>${player.managerName}</td>
+                                <td>${player.weigh}</td>
+                                <td>${player.gender}</td>
+                                <td>${player.name + " " + player.lastName}</td>
+                                <td>
+                                    <button class="edit-button"
+                                        data-index="${index}"
+                                        data-group="${ageGroup}">
+                                        ویرایش
+                                    </button>
+                                </td>
+                            `;
                             tbody.appendChild(row);
                         });
-                        
 
+                        // Add edit button functionality after adding rows
+                        addEditListeners();
                     })
                     .catch(error => console.error('Error:', error));
             });
-        });
-
+        })
        
 
         $(document).ready(function () {
@@ -288,6 +293,81 @@
             });
         });
 
+
+        function addEditListeners() {
+            document.querySelectorAll(".edit-button").forEach((button) => {
+                button.addEventListener("click", (e) => {
+                    const index = button.getAttribute("data-index");
+                    const group = button.getAttribute("data-group");
+
+                    // Fetch the row details (assuming data is still accessible globally)      
+                    const row = button.closest('tr');
+
+                    // Display the modal with row information
+                    const modal = createEditModal({
+                        name: row.querySelector('td:nth-child(5)').innerText.split(' ')[0],
+                        lastName: row.querySelector('td:nth-child(5)').innerText.split(' ')[1],
+                        weight: row.querySelector('td:nth-child(3)').innerText,
+                        gender: row.querySelector('td:nth-child(4)').innerText,
+                        coach: row.querySelector('td:nth-child(2)').innerText,
+                    }, group, index);
+                    document.body.appendChild(modal);
+                });
+            });
+        }
+
+        // Create an edit modal
+        function createEditModal(row, group, index) {
+            const modal = document.createElement("div");
+            modal.classList.add("modal");
+            modal.innerHTML = `
+                        <div class="modal-content">
+                          <h3>ویرایش اطلاعات</h3>
+                          <label>نام: <input type="text" id="edit-name" value="${row.name}" /></label>
+                          <label>نام خانوادگی: <input type="text" id="edit-lastName" value="${row.lastName}" /></label>
+                          <label>وزن: <input type="number" id="edit-weight" value="${row.weight}" /></label>
+                          <label>جنسیت:
+                            <select id="edit-gender">
+                              <option value="مرد" ${row.gender === "مرد" ? "selected" : ""}>مرد</option>
+                              <option value="زن" ${row.gender === "زن" ? "selected" : ""}>زن</option>
+                            </select>
+                          </label>
+                          <label>نام مربی: <input type="text" id="edit-coach" value="${row.coach}" /></label>
+                          <button id="save-button">ذخیره</button>
+                          <button id="delete-button">حذف</button>
+                          <button id="close-button">بستن</button>
+                        </div>
+                    `;
+
+            // Close button event
+            modal.querySelector("#close-button").addEventListener("click", () => {
+                modal.remove();
+            });
+
+            // Save button event
+            modal.querySelector("#save-button").addEventListener("click", () => {
+                const updatedRow = {
+                    name: modal.querySelector("#edit-name").value,
+                    lastName: modal.querySelector("#edit-lastName").value,
+                    weight: modal.querySelector("#edit-weight").value,
+                    gender: modal.querySelector("#edit-gender").value,
+                    coach: modal.querySelector("#edit-coach").value,
+                };
+                console.log("Updated Row Data:", updatedRow);
+                // Add logic to update the row and send data to server if needed
+                modal.remove();
+            });
+
+            // Delete button event
+            modal.querySelector("#delete-button").addEventListener("click", () => {
+                console.log("Delete row:", index, group);
+                // Add logic for delete operation
+                modal.remove();
+            });
+
+            return modal;
+        }
+        
 
     </script>
 

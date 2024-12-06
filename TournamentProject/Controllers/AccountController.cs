@@ -125,7 +125,7 @@ namespace TournamentProject.Controllers
                     else if (await _userManager.IsInRoleAsync(user!, "User"))
                     {
 
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("ManagerPanel", "Admin");
                     }
                 }
                 else

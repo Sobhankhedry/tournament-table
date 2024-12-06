@@ -380,6 +380,11 @@ namespace TournamentProject.Controllers
         }
 
 
+        public IActionResult ManagerPanel()
+        {
+            return View();
+        }
+
     }
 
 

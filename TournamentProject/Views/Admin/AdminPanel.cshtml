@@ -924,13 +924,13 @@
 });
 
     document.addEventListener('DOMContentLoaded', function () {
-        // Add click event listeners to all feedback buttons
+        
         document.querySelectorAll('.view-feedback-btn').forEach(button => {
             button.addEventListener('click', function () {
-                // Retrieve the feedback description from the button's data-feedback attribute
+                
                 const feedbackMessage = this.getAttribute('data-feedback');
 
-                // Set the modal content
+                
                 document.getElementById('modalFeedbackContent').textContent = feedbackMessage;
             });
         });
@@ -939,11 +939,11 @@
         $(document).ready(function () {
             function loadUsers() {
                 $.get('/Admin/GetUsers', function (data) {
-                    console.log('Loaded users:', data); // Check the data structure
+                    console.log('Loaded users:', data); 
                     let rows = '';
                     data.forEach(user => {
-                        let userId = user.id; // Ensure this matches the property name in your response
-                        let userConfirm = user.isConfirmed; // Ensure this matches the property name in your response
+                        let userId = user.id; 
+                        let userConfirm = user.isConfirmed; 
 
                         console.log('User ID:', userId);
                         console.log('IsConfirmed:', userConfirm);
