@@ -245,23 +245,23 @@ namespace TournamentProject.Controllers
                 double weight;
                 if (double.TryParse(weighInVM.Weigh, out weight) && weight <= 48)
                 {
-                    player.Weigh = "وزن اول";
+                    player.Weigh = weight.ToString();
                 }
                 else if (double.TryParse(weighInVM.Weigh, out weight) && weight <= 50)
                 {
-                    player.Weigh = "وزن دوم";
+                    player.Weigh = weight.ToString();
                 }
                 else if (double.TryParse(weighInVM.Weigh, out weight) && weight <= 52)
                 {
-                    player.Weigh = "وزن سوم";
+                    player.Weigh = weight.ToString();
                 }
                 else if (double.TryParse(weighInVM.Weigh, out weight) && weight <= 54)
                 {
-                    player.Weigh = "وزن چهارم";
+                    player.Weigh = weight.ToString();
                 }
                 else
                 {
-                    player.Weigh = "وزن پنجم";
+                    player.Weigh = weight.ToString();
                 }
 
                 int currentYear = 1403;
@@ -287,7 +287,7 @@ namespace TournamentProject.Controllers
                 }
                 player.ManagerName = weighInVM.Coach;
 
-                _dbContext.Players.Add(player);
+                _dbContext!.Players.Add(player);
                 _dbContext.SaveChanges();
                 TempData["SuccessMessage"] = "اطلاعات با موفقیت ذخیره شد";
 
@@ -305,6 +305,7 @@ namespace TournamentProject.Controllers
                 .Where(p => p.Age == ageGroup)
                 .Select(p => new
                 {
+                    p.ID,
                     p.Name,
                     p.LastName,
                     p.Weigh,
@@ -384,6 +385,45 @@ namespace TournamentProject.Controllers
         {
             return View();
         }
+
+
+        [HttpPost]
+        [Route("Admin/UpdatePlayer")]
+        public IActionResult UpdatePlayer([FromBody] PlayerDto playerDto)
+        {
+            try
+            {
+                // Validate input
+                if (playerDto == null || playerDto.ID <= 0)
+                {
+                    return BadRequest("Invalid player data.");
+                }
+
+                // Find the player in the database
+                var player = _dbContext!.Players.FirstOrDefault(p => p.ID == playerDto.ID);
+                if (player == null)
+                {
+                    return NotFound("Player not found.");
+                }
+
+                // Update player details
+                player.Name = playerDto.Name;
+                player.LastName = playerDto.LastName;
+                player.Weigh = playerDto.Weigh;
+                player.Gender = playerDto.Gender;
+                player.ManagerName = playerDto.ManagerName;
+
+                // Save changes to the database
+                _dbContext.SaveChanges();
+
+                return Ok(new { success = true, message = "Player updated successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred: " + ex.Message);
+            }
+        }
+
 
     }
 

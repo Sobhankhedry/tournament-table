@@ -168,7 +168,7 @@
 
                     <!-- Coach Name Field -->
                     <span class="coach">نام مربی</span>
-                    <select class="input-coach" id="managersContainer" required="" name="Coach">
+                    <select class="input-coach" id="managersContainer" required="" name="Coach" onfocus="loadManagers(this)">
                         
                         <option value="" disabled selected>انتخاب کنید</option>
                     </select>
@@ -213,18 +213,19 @@
             card.addEventListener('click', function () {
                 const ageGroup = this.getAttribute('data-age-group');
 
-                // Send an AJAX request to the server to get the players for the clicked age group
+               
                 fetch('/Admin/FetchPlayers?ageGroup=' + encodeURIComponent(ageGroup))
                     .then(response => response.json())
                     .then(data => {
-                        // Populate the table with the data received
+                        
                         const tbody = document.querySelector('.info-table tbody');
-                        tbody.innerHTML = ''; // Clear existing rows
+                        tbody.innerHTML = ''; 
 
                         data.forEach((player, index) => {
-                            console.log(`Player Data:`, player); // Log each player to check properties
-
+                            console.log(player);
+                            
                             const row = document.createElement('tr');
+                            row.setAttribute('data-id', player.id);
                             row.innerHTML = `
                                 <td>${player.age}</td>
                                 <td>${player.managerName}</td>
@@ -242,7 +243,7 @@
                             tbody.appendChild(row);
                         });
 
-                        // Add edit button functionality after adding rows
+                        
                         addEditListeners();
                     })
                     .catch(error => console.error('Error:', error));
@@ -250,28 +251,32 @@
         })
        
 
-        $(document).ready(function () {
+        function loadManagers(selectElement) {
+           
+            if (selectElement.options.length > 2) {
+                return; 
+            }
+
+            
             $.ajax({
                 url: '@Url.Action("GettingManagers", "Admin")',
                 type: 'GET',
                 success: function (data) {
                     if (data.length > 0) {
-                        // Create options from the list of managers
-                        var options = data.map(function (manager) {
-                            return '<option value="' + manager + '">' + manager + '</option>';
-                        }).join('');
-
-                        // Set the dropdown content
-                        $('#managersContainer').html('<option value="" disabled selected>انتخاب کنید</option>' + options);
+                       
+                        const options = data.map(manager => `<option value="${manager}">${manager}</option>`).join('');
+                        selectElement.innerHTML = '<option value="" disabled>انتخاب کنید</option>' + options;
                     } else {
-                        $('#managersContainer').html('<option value="">هیچ مربی موجود نیست</option>');
+                        selectElement.innerHTML = '<option value="" disabled>هیچ مربی موجود نیست</option>';
                     }
                 },
                 error: function () {
                     alert('Failed to load managers.');
+                    selectElement.innerHTML = '<option value="" disabled>خطا در بارگذاری</option>';
                 }
             });
-        });
+        }
+
 
 
         document.getElementById('query').addEventListener('input', function () {
@@ -286,9 +291,9 @@
                 });
 
                 if (rowText.includes(query)) {
-                    row.style.display = ''; // Show the row
+                    row.style.display = ''; 
                 } else {
-                    row.style.display = 'none'; // Hide the row
+                    row.style.display = 'none'; 
                 }
             });
         });
@@ -299,18 +304,19 @@
                 button.addEventListener("click", (e) => {
                     const index = button.getAttribute("data-index");
                     const group = button.getAttribute("data-group");
-
-                    // Fetch the row details (assuming data is still accessible globally)      
+                    
                     const row = button.closest('tr');
-
-                    // Display the modal with row information
+                    const id = row.getAttribute('data-id');
+                    
                     const modal = createEditModal({
+                        id: id,
                         name: row.querySelector('td:nth-child(5)').innerText.split(' ')[0],
                         lastName: row.querySelector('td:nth-child(5)').innerText.split(' ')[1],
-                        weight: row.querySelector('td:nth-child(3)').innerText,
+                        weigh: row.querySelector('td:nth-child(3)').innerText,
                         gender: row.querySelector('td:nth-child(4)').innerText,
                         coach: row.querySelector('td:nth-child(2)').innerText,
                     }, group, index);
+                    
                     document.body.appendChild(modal);
                 });
             });
@@ -318,6 +324,7 @@
 
         // Create an edit modal
         function createEditModal(row, group, index) {
+            
             const modal = document.createElement("div");
             modal.classList.add("modal");
             modal.innerHTML = `
@@ -325,49 +332,88 @@
                           <h3>ویرایش اطلاعات</h3>
                           <label>نام: <input type="text" id="edit-name" value="${row.name}" /></label>
                           <label>نام خانوادگی: <input type="text" id="edit-lastName" value="${row.lastName}" /></label>
-                          <label>وزن: <input type="number" id="edit-weight" value="${row.weight}" /></label>
+                          <label>وزن: <input type="number" id="edit-weight" value="${row.weigh}" /></label>
                           <label>جنسیت:
                             <select id="edit-gender">
                               <option value="مرد" ${row.gender === "مرد" ? "selected" : ""}>مرد</option>
                               <option value="زن" ${row.gender === "زن" ? "selected" : ""}>زن</option>
                             </select>
                           </label>
-                          <label>نام مربی: <input type="text" id="edit-coach" value="${row.coach}" /></label>
+                                  <label>نام مربی:
+                                <select id="edit-coach" onfocus="loadManagers(this)">
+                            <option value="" disabled selected>انتخاب کنید</option>
+                        </select>
+                    </label>
+
                           <button id="save-button">ذخیره</button>
                           <button id="delete-button">حذف</button>
                           <button id="close-button">بستن</button>
                         </div>
                     `;
 
-            // Close button event
+            
             modal.querySelector("#close-button").addEventListener("click", () => {
                 modal.remove();
             });
 
-            // Save button event
+            
             modal.querySelector("#save-button").addEventListener("click", () => {
                 const updatedRow = {
+                    id: row.id,
                     name: modal.querySelector("#edit-name").value,
                     lastName: modal.querySelector("#edit-lastName").value,
-                    weight: modal.querySelector("#edit-weight").value,
+                    weigh: modal.querySelector("#edit-weight").value,
                     gender: modal.querySelector("#edit-gender").value,
-                    coach: modal.querySelector("#edit-coach").value,
+                    managerName: modal.querySelector("#edit-coach").value,
                 };
+                alert("before fetch")
                 console.log("Updated Row Data:", updatedRow);
-                // Add logic to update the row and send data to server if needed
-                modal.remove();
+                
+                fetch('/Admin/UpdatePlayer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json', // Specify JSON as the content type
+                    },
+                    body: JSON.stringify(updatedRow),
+                    // Convert the updatedRow object to a JSON string
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Update Successful:", data);
+                        alert('Player updated successfully!');
+
+                        // Optionally update the table row here if needed
+                        modal.remove(); // Close the modal
+                    })
+                    .catch(error => {
+                        console.error("Update Failed:", error);
+                        alert('Failed to update player. Please try again.');
+                    });
             });
 
-            // Delete button event
+
+            
             modal.querySelector("#delete-button").addEventListener("click", () => {
                 console.log("Delete row:", index, group);
-                // Add logic for delete operation
+                
                 modal.remove();
             });
 
             return modal;
         }
         
+        document.addEventListener('DOMContentLoaded', function () {
+            const selectElement = document.getElementById('edit-coach');
+            loadManagers(selectElement);
+        });
+
+        
+
 
     </script>
 
