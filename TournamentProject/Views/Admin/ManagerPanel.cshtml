@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Styled Page</title>
-    <link rel="stylesheet" href="~/css/coach.css">
+    <link rel="stylesheet" href="/css/coach.css">
 </head>
 <body>
+
     <!-- Background -->
     <div class="container">
         <!-- Top Buttons -->
         <div class="top-buttons">
-            <button class="register">بازگشت</button>
+            <a asp-controller="Home" asp-action="Index" class="register text-decoration-none">بازگشت</a>
             <div class="auth-buttons">
                 <button class="button3">جدول مسابقات</button>
 
@@ -21,68 +22,138 @@
         <!-- Main Content -->
         <div class="main-content">
             <!-- Table -->
-            <div class="custom-table">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>ردیف</th>
-                            <th>نام</th>
-                            <th>نام خانوادگی</th>
-                            <th>نام مربی</th>
-                            <th>وزن</th>
-                            <th>وضعیت نهایی</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><button class="delete-button">حذف </button></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><button class="delete-button">حذف</button></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><button class="delete-button">حذف</button></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><button class="delete-button">حذف</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="content">
+                <div class="custom-table">
+                    <div class="group">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" class="search-icon">
+                            <g>
+                                <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
+                            </g>
+                        </svg>
+
+                        <input id="query" class="input-search" type="search" placeholder="جستجو " name="searchbar">
+                    </div>
+                    <table class="table">
+
+                        <thead>
+                            <tr>
+                                <th>نام مربی</th>
+                                <th>وزن</th>
+                                <th>نام</th>
+                                <th>نام خانوادگی</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                           
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <!-- Cards with Green Button on Top -->
             <div class="card-container">
                 <div class="button-container">
                     <button class="button2">نام مربی</button>
                 </div>
                 <div class="card">
-                    <p><span>نونهالان</span></p>
-                    <p><span>نوجوانان</span></p>
-                    <p><span>جوانان</span></p>
-                    <p><span>بزرگسالان</span></p>
+                    <p><span data-age-group="نو نهالان">نونهالان</span></p>
+                    <p><span data-age-group="نوجوانان">نوجوانان</span></p>
+                    <p><span data-age-group="جوانان">جوانان</span></p>
+                    <p><span data-age-group="بزرگسالان">بزرگسالان</span></p>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        document.querySelectorAll('.card span').forEach(category => {
+            category.addEventListener('click', function () {
+                const ageGroup = this.getAttribute('data-age-group'); // Get clicked age group
+                const managerName = document.querySelector('.button2').innerText; // Get manager's name
+                alert("here baby")
+                console.log(`Fetching players for ${managerName}, Age Group: ${ageGroup}`);
+
+                // Fetch players for the selected manager and age group
+                fetch(`/Admin/GetPlayersByManagerAndAgeGroup?managerName=${encodeURIComponent(managerName)}&ageGroup=${encodeURIComponent(ageGroup)}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Players fetched successfully:", data);
+
+                        // Clear existing table rows
+                        const tbody = document.querySelector('.table tbody');
+                        tbody.innerHTML = '';
+
+                        // Populate table with new player data
+                        data.forEach(player => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${player.managerName}</td>
+                                <td>${player.weight}</td>
+                                <td>${player.name}</td>
+                                <td>${player.lastName}</td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+                    })
+                    .catch(error => {
+                        console.error("Failed to fetch players:", error);
+                        alert('Failed to fetch players. Please try again.');
+                    });
+            });
+        });
+
+
+
+        window.addEventListener('DOMContentLoaded', () => {
+            fetch('/Admin/GetLoggedInManagerName')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json(); // Parse JSON response
+                })
+                .then(data => {
+                    console.log("Response Data:", data); // Debug the response data
+                    const managerButton = document.querySelector('.button2');
+                    managerButton.innerText = data.name || "نام نامشخص"; // Update button with manager's name
+                })
+                .catch(error => {
+                    console.error("Failed to fetch manager's name:", error);
+                    const managerButton = document.querySelector('.button2');
+                    managerButton.innerText = "نام نامشخص"; // Fallback in case of an error
+                });
+
+        });
+
+
+        document.getElementById("query").addEventListener("input", function () {
+            const query = this.value.toLowerCase(); // Get the search query in lowercase
+            const rows = document.querySelectorAll("tbody tr"); // Select all rows in the tbody
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll("td"); // Get all cells in the row
+                let rowText = ""; // Concatenate all cell texts in the row
+
+                cells.forEach(cell => {
+                    rowText += cell.textContent.toLowerCase() + " "; // Convert to lowercase for case-insensitive comparison
+                });
+
+                // Check if the row matches the query
+                if (rowText.includes(query)) {
+                    row.style.display = ""; // Show the row
+                } else {
+                    row.style.display = "none"; // Hide the row
+                }
+            });
+        });
+
+        
+
+
+    </script>
 </body>
 </html>

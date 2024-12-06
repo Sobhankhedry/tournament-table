@@ -424,6 +424,43 @@ namespace TournamentProject.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult GetPlayersByManagerAndAgeGroup(string managerName, string ageGroup)
+        {
+            try
+            {
+                // Fetch players based on managerName and ageGroup
+                var players = _dbContext!.Players
+                    .Where(p => p.ManagerName == managerName && p.Age == ageGroup)
+                    .Select(p => new
+                    {
+                        p.ManagerName,
+                        p.Weigh,
+                        p.Name,
+                        p.LastName
+                    })
+                    .ToList();
+
+                return Ok(players);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while fetching players.");
+            }
+        }
+
+        [HttpGet]
+
+        public IActionResult GetLoggedInManagerName()
+        {
+            // Replace this with the actual logic to get the logged-in manager's name
+            var managerName = User.Identity!.Name ?? "Unknown Manager";
+            var findOne = _dbContext!.Users.FirstOrDefault(p => p.UserName == managerName);
+            var name = findOne!.Name;
+            return Ok(new { name });
+        }
+
+
 
     }
 

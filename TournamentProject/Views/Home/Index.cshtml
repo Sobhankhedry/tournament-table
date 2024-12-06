@@ -51,6 +51,7 @@
                             </form>
                         </li>
                         <li class="nav-item mx-2">
+                           
                             <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
                                 <button type="submit" class="nav-link badge badge-light text-dark mb-1 p-2 menu-item">خروج</button>
                             </form>
@@ -62,6 +63,7 @@
                         <li class="nav-item mx-2">
                             <span class="nav-link text-white">Welcome back, @User.Identity.Name!</span>
                         </li>
+                        <a asp-controller="Admin" asp-action="ManagerPanel" class="nav-link badge badge-light text-dark mb-1 p-2 menu-item">داشبورد</a>
                         <li class="nav-item mx-2">
                             <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
                                 <button type="submit" class="nav-link badge badge-light text-dark mb-1 p-2 menu-item">خروج</button>

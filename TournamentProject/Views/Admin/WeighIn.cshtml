@@ -364,12 +364,12 @@
                 inputs.forEach((input) => {
                     if (!input.checkValidity()) {
                         isValid = false;
-                        input.reportValidity(); // Show validation message
+                        input.reportValidity(); 
                     }
                 });
 
                 if (!isValid) {
-                    return; // Stop execution if validation fails
+                    return;
                 }
 
                 const updatedRow = {
@@ -404,14 +404,14 @@
 
                         const rowElement = document.querySelector(`tr[data-id="${updatedRow.id}"]`);
                         if (rowElement) {
-                            rowElement.querySelector('td:nth-child(2)').innerText = updatedRow.managerName; // Manager Name
-                            rowElement.querySelector('td:nth-child(3)').innerText = updatedRow.weigh;       // Weight
-                            rowElement.querySelector('td:nth-child(4)').innerText = updatedRow.gender;      // Gender
-                            rowElement.querySelector('td:nth-child(5)').innerText = `${updatedRow.name} ${updatedRow.lastName}`; // Full Name
+                            rowElement.querySelector('td:nth-child(2)').innerText = updatedRow.managerName; 
+                            rowElement.querySelector('td:nth-child(3)').innerText = updatedRow.weigh;       
+                            rowElement.querySelector('td:nth-child(4)').innerText = updatedRow.gender;      
+                            rowElement.querySelector('td:nth-child(5)').innerText = `${updatedRow.name} ${updatedRow.lastName}`; 
                         }
 
                         
-                        modal.remove(); // Close the modal
+                        modal.remove(); 
                     })
                     .catch(error => {
                         console.error("Update Failed:", error);

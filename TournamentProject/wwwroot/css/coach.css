@@ -1,7 +1,9 @@
 ﻿/* Background */
 .container {
     width: 100%;
-    height: 100vh;
+    min-height: 100%;
+    overflow-x: hidden;
+    height: 700px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -22,6 +24,12 @@
     }
 }
 
+html, body {
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    height: 100%; /* Ensure full height */
+    width: 100%; /* Ensure full width */
+}
 /* Top Buttons */
 .top-buttons {
     width: 100%;
@@ -66,16 +74,16 @@
     margin-top: 50px;
 }
 
-.table-container {
+.custom-table {
     width: 90%;
     max-width: 900px;
-    margin: 20px auto;
 }
 
 /* Table Styling */
 .table {
-    margin-top: 80px;
-    width: 100%;
+    border-collapse: collapse;
+    margin-left: 150px;
+    width: 500px;
     border-collapse: collapse;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
@@ -95,24 +103,24 @@
     }
 
     .table tbody tr {
-        background-color: #ffffff;
+        background-color: #1c1a1a;
+        border-color: rgb(255, 255, 255);
         transition: background-color 0.3s ease;
     }
 
         .table tbody tr:nth-child(even) {
-            background-color: #efefef;
+            background-color: #1c1a1a;
+            border-color: rgb(255, 255, 255);
         }
 
     .table td {
+        border: 0.2px solid white;
         padding: 15px;
         text-align: center;
         font-size: 14px;
         color: #333;
+        border-color: rgb(255, 255, 255);
     }
-
-.pricing-table tbody tr:hover {
-    background-color: #eef2ff;
-}
 
 /* Button Styling */
 .delete-button {
@@ -220,8 +228,8 @@
         cursor: pointer;
         border-radius: 2px;
         transition: all 0.5s;
-        background: #212121;
-        border: 3px solid #600abc;
+        background: #7709c6;
+        border: 3px solid #ffffff;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -239,10 +247,127 @@
             transform: rotate(-90deg);
             transition: all 0.5s;
             text-transform: uppercase;
-            color: #600abc;
+            color: #ffffff;
             letter-spacing: 0.1em;
         }
 
         .card p:hover span {
             transform: rotate(0);
         }
+
+.group {
+    margin-bottom: 2px;
+    margin-top: 120px;
+    margin-left: 450px;
+    width: 200px;
+    display: flex;
+    line-height: 28px;
+    align-items: center;
+    position: relative;
+    text-align: right;
+    direction: rtl;
+}
+
+.input-search {
+    font-family: "Montserrat", sans-serif;
+    width: 100%;
+    height: 45px;
+    padding-right: 10px;
+    padding-left: 2.5rem;
+    box-shadow: 0 0 0 1.5px #2b2c37, 0 0 25px -17px #000;
+    border: 0;
+    border-radius: 12px;
+    background-color: #16171d;
+    outline: none;
+    color: #bdbecb;
+    transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+    cursor: text;
+    z-index: 0;
+    text-align: right;
+    direction: rtl;
+}
+
+.input::placeholder {
+    color: #bdbecb;
+}
+
+.input:hover {
+    box-shadow: 0 0 0 2.5px #2f303d, 0px 0px 25px -15px #000;
+}
+
+.input:active {
+    transform: scale(0.95);
+}
+
+.input:focus {
+    box-shadow: 0 0 0 2.5px #2f303d;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    fill: #bdbecb;
+    width: 1rem;
+    height: 1rem;
+    pointer-events: none;
+    z-index: 1;
+    text-align: right;
+    direction: rtl;
+}
+
+.cssbuttons-io {
+    --scale: 0.77;
+    position: relative;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: calc(18px * var(--scale));
+    letter-spacing: 0.05em;
+    border-radius: calc(0.8em * var(--scale));
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(to right, #9839eb, #4a00e0);
+    color: ghostwhite;
+    overflow: hidden;
+}
+
+    .cssbuttons-io span {
+        position: relative;
+        z-index: 10;
+        transition: color 0.4s;
+        display: inline-flex;
+        align-items: center;
+        padding: calc(0.8em * var(--scale)) calc(1.2em * var(--scale)) calc(0.8em * var(--scale)) calc(1.05em * var(--scale));
+    }
+
+    .cssbuttons-io::before,
+    .cssbuttons-io::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+    }
+
+    .cssbuttons-io::before {
+        content: "";
+        background: #000;
+        width: 120%;
+        left: -10%;
+        transform: skew(30deg);
+        transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+    }
+
+    .cssbuttons-io:hover::before {
+        transform: translate3d(100%, 0, 0);
+    }
+
+    .cssbuttons-io:active {
+        transform: scale(0.95);
+    }
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
