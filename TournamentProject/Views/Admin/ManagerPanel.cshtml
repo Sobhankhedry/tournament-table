@@ -7,73 +7,68 @@
     <link rel="stylesheet" href="/css/coach.css">
 </head>
 <body>
-
-    <!-- Background -->
     <div class="container">
-        <!-- Top Buttons -->
-        <div class="top-buttons">
-            <a asp-controller="Home" asp-action="Index" class="register text-decoration-none">بازگشت</a>
-            <div class="auth-buttons">
-                <button class="button3">جدول مسابقات</button>
+        <header>
+            <nav>
+                <a asp-controller="Home" asp-action="Index" class="btn text-decoration-none">بازگشت</a>
+                <button class="btn">جدول مسابقات</button>
+            </nav>
+        </header>
 
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Table -->
-            <div class="content">
-                <div class="custom-table">
-                    <div class="group">
-                        <svg viewBox="0 0 24 24" aria-hidden="true" class="search-icon">
-                            <g>
-                                <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
-                            </g>
+        <main>
+            <section class="search-section">
+                <div class="search-container">
+                    <input type="search" id="query" placeholder="جستجو...">
+                    <button class="btn btn-search">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
                         </svg>
+                    </button>
+                </div>
+            </section>
 
-                        <input id="query" class="input-search" type="search" placeholder="جستجو " name="searchbar">
+            <section class="content">
+                <div class="sidebar">
+                    <button class="button2">نام مربی</button>
+                    <div class="card">
+                        <p><span data-age-group="نو نهالان">نونهالان</span></p>
+                        <p><span data-age-group="نوجوانان">نوجوانان</span></p>
+                        <p><span data-age-group="جوانان">جوانان</span></p>
+                        <p><span data-age-group="بزرگسالان">بزرگسالان</span></p>
                     </div>
-                    <table class="table">
+                </div>
 
+                <div class="table-container">
+                    <table>
                         <thead>
                             <tr>
-                                <th>نام مربی</th>
-                                <th>وزن</th>
-                                <th>نام</th>
+                                <th>وزن</th>                                
                                 <th>نام خانوادگی</th>
-
+                                <th>نام</th>
                             </tr>
                         </thead>
-                        <tbody>
-                           
+                         <tbody>
+
                         </tbody>
                     </table>
                 </div>
-            </div>
-
-            <div class="card-container">
-                <div class="button-container">
-                    <button class="button2">نام مربی</button>
-                </div>
-                <div class="card">
-                    <p><span data-age-group="نو نهالان">نونهالان</span></p>
-                    <p><span data-age-group="نوجوانان">نوجوانان</span></p>
-                    <p><span data-age-group="جوانان">جوانان</span></p>
-                    <p><span data-age-group="بزرگسالان">بزرگسالان</span></p>
-                </div>
-            </div>
-        </div>
+            </section>
+        </main>
     </div>
+
     <script>
         document.querySelectorAll('.card span').forEach(category => {
-            category.addEventListener('click', function () {
-                const ageGroup = this.getAttribute('data-age-group'); // Get clicked age group
-                const managerName = document.querySelector('.button2').innerText; // Get manager's name
-                alert("here baby")
-                console.log(`Fetching players for ${managerName}, Age Group: ${ageGroup}`);
+            category.addEventListener('click', () => {
+                const ageGroup = category.getAttribute('data-age-group'); // Get the clicked age group
+                const managerName = document.querySelector('.button2').innerText.trim(); // Get the manager's name
+
+                console.log(`Fetching players for manager: ${managerName}, Age Group: ${ageGroup}`);
+
+                // Construct the API endpoint URL
+                const apiUrl = `/Admin/GetPlayersByManagerAndAgeGroup?managerName=${encodeURIComponent(managerName)}&ageGroup=${encodeURIComponent(ageGroup)}`;
 
                 // Fetch players for the selected manager and age group
-                fetch(`/Admin/GetPlayersByManagerAndAgeGroup?managerName=${encodeURIComponent(managerName)}&ageGroup=${encodeURIComponent(ageGroup)}`)
+                fetch(apiUrl)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
@@ -82,19 +77,27 @@
                     })
                     .then(data => {
                         console.log("Players fetched successfully:", data);
+                        alert("Players loaded successfully!");
+
+                        // Select the table body
+                        const tbody = document.querySelector('.table-container table tbody');
+                        if (!tbody) {
+                            console.error("Table <tbody> element not found in the DOM");
+                            return;
+                        }
 
                         // Clear existing table rows
-                        const tbody = document.querySelector('.table tbody');
                         tbody.innerHTML = '';
 
-                        // Populate table with new player data
+                        // Populate the table with new player data
                         data.forEach(player => {
                             const row = document.createElement('tr');
                             row.innerHTML = `
-                                <td>${player.managerName}</td>
-                                <td>${player.weight}</td>
-                                <td>${player.name}</td>
-                                <td>${player.lastName}</td>
+                                
+                               
+                                <td>${player.weigh}</td>
+                                        <td>${player.lastName}</td>
+                                         <td>${player.name}</td>
                             `;
                             tbody.appendChild(row);
                         });
@@ -105,6 +108,7 @@
                     });
             });
         });
+
 
 
 
@@ -131,22 +135,22 @@
 
 
         document.getElementById("query").addEventListener("input", function () {
-            const query = this.value.toLowerCase(); // Get the search query in lowercase
-            const rows = document.querySelectorAll("tbody tr"); // Select all rows in the tbody
+            const query = this.value.toLowerCase();
+            const rows = document.querySelectorAll("tbody tr"); 
 
             rows.forEach(row => {
-                const cells = row.querySelectorAll("td"); // Get all cells in the row
-                let rowText = ""; // Concatenate all cell texts in the row
+                const cells = row.querySelectorAll("td"); 
+                let rowText = ""; 
 
                 cells.forEach(cell => {
-                    rowText += cell.textContent.toLowerCase() + " "; // Convert to lowercase for case-insensitive comparison
+                    rowText += cell.textContent.toLowerCase() + " "; 
                 });
 
-                // Check if the row matches the query
+                
                 if (rowText.includes(query)) {
-                    row.style.display = ""; // Show the row
+                    row.style.display = "";
                 } else {
-                    row.style.display = "none"; // Hide the row
+                    row.style.display = "none"; 
                 }
             });
         });

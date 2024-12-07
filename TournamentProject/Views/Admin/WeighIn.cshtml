@@ -21,13 +21,50 @@
         .form {
           flex: 1;
         }
+
+        :root {
+            --primary-color: #40c9ff;
+            --secondary-color: #e81cff;
+            --accent-color: #00dbde;
+            --background-color: #121212;
+            --surface-color: #000000;
+            --on-surface-color: #ffffff;
+            --on-background-color: #e0e0e0;
+        }
+
+        .btn {
+            text-decoration: none!important;
+            margin-right: auto;
+            margin-left: 30px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: var(--surface-color);
+            color: var(--on-surface-color);
+            border: 2px solid transparent;
+            background-image: linear-gradient(var(--surface-color), var(--surface-color)), linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
     </style>
+    
 </head>
 <body>
-    <div class="container">
         
+            
+        
+    <div class="container">
+        <a asp-controller="Admin" asp-action="AdminPanel" class="btn text-decoration-none">بازگشت</a>
 
-         
+
         <div class="main">
             
 
@@ -81,7 +118,7 @@
                         </table>
 
                     </div>
-                    <button class="edit">ویرایش</button>
+                    @* <button class="edit">ویرایش</button> *@
 
                 </div>
 
@@ -380,8 +417,7 @@
                     gender: modal.querySelector("#edit-gender").value,
                     managerName: modal.querySelector("#edit-coach").value,
                 };
-                alert("before fetch")
-                console.log("Updated Row Data:", updatedRow);
+                
                 
                 fetch('/Admin/UpdatePlayer', {
                     method: 'POST',
@@ -420,11 +456,10 @@
             });
 
 
-            
-            modal.querySelector("#delete-button").addEventListener("click", () => {
-                console.log("Delete row:", index, group);
-                
-                modal.remove();
+
+            const deleteButton = modal.querySelector("#delete-button");
+            deleteButton.addEventListener("click", () => {
+                deletePlayer(row.id, modal);
             });
 
             return modal;
@@ -436,7 +471,49 @@
         });
 
         
+        function deletePlayer(playerId, modal) {
+            if (!confirm("آیا مطمئن هستید که می‌خواهید این بازیکن را حذف کنید؟")) {
+                return;
+            }
 
+            fetch(`/Admin/DeletePlayer/${playerId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text(); // If the back-end sends a success message
+                })
+                .then(data => {
+                    console.log(data);
+                    alert("بازیکن با موفقیت حذف شد.");
+
+                    const table = document.querySelector('.table-container table tbody');
+                    const rowToDelete = Array.from(table.rows).find(
+                        row => row.getAttribute('data-id') === playerId.toString()
+                    );
+
+                    if (rowToDelete) {
+                        rowToDelete.remove(); // Remove the row from the table
+                    } else {
+                        console.error("Row to delete not found in the table.");
+                    }
+
+                    document.body.removeChild(modal); // Close the modal
+                    // Optionally refresh the table or remove the row
+
+                    
+
+                })
+                .catch(error => {
+                    console.error("Failed to delete the player:", error);
+                    alert("حذف بازیکن با مشکل مواجه شد. لطفا دوباره تلاش کنید.");
+                });
+        }
 
     </script>
 

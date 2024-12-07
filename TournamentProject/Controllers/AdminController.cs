@@ -461,6 +461,29 @@ namespace TournamentProject.Controllers
         }
 
 
+        [HttpDelete]
+        public IActionResult DeletePlayer(int id)
+        {
+            try
+            {
+                var player = _dbContext!.Players.FirstOrDefault(p => p.ID == id);
+                if (player == null)
+                {
+                    return NotFound("Player not found.");
+                }
+
+                _dbContext.Players.Remove(player);
+                _dbContext.SaveChanges();
+
+                return Ok("Player deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while deleting the player.");
+            }
+        }
+
+
 
     }
 
