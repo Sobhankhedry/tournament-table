@@ -114,7 +114,7 @@ namespace TournamentProject.Controllers
                     ModelState.AddModelError(string.Empty, "لطفا ایمیل خود را تایید کنید");
                     return View(model);
                 }
-
+                var con = _dbContext.Comfirm.FirstOrDefault(x => x.ID == user.Id);
                 if (result.Succeeded)
                 {
 
@@ -122,10 +122,15 @@ namespace TournamentProject.Controllers
                     {
                         return RedirectToAction("AdminPanel", "Admin");
                     }
-                    else if (await _userManager.IsInRoleAsync(user!, "User"))
+                    else if (await _userManager.IsInRoleAsync(user!, "User") && con.IsConfirmed)
                     {
 
                         return RedirectToAction("ManagerPanel", "Admin");
+                    }
+                    else if (await _userManager.IsInRoleAsync(user!, "User") && !con.IsConfirmed)
+                    {
+                        ModelState.AddModelError(string.Empty, "تاییدیه شما صورت نگرفته");
+                        return View(model);
                     }
                 }
                 else

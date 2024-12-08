@@ -76,9 +76,7 @@
                         return response.json();
                     })
                     .then(data => {
-                        console.log("Players fetched successfully:", data);
-                        alert("Players loaded successfully!");
-
+                        
                         // Select the table body
                         const tbody = document.querySelector('.table-container table tbody');
                         if (!tbody) {
@@ -118,17 +116,17 @@
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
-                    return response.json(); // Parse JSON response
+                    return response.json(); 
                 })
                 .then(data => {
-                    console.log("Response Data:", data); // Debug the response data
+                    console.log("Response Data:", data); 
                     const managerButton = document.querySelector('.button2');
-                    managerButton.innerText = data.name || "نام نامشخص"; // Update button with manager's name
+                    managerButton.innerText = data.name || "نام نامشخص"; 
                 })
                 .catch(error => {
                     console.error("Failed to fetch manager's name:", error);
                     const managerButton = document.querySelector('.button2');
-                    managerButton.innerText = "نام نامشخص"; // Fallback in case of an error
+                    managerButton.innerText = "نام نامشخص"; 
                 });
 
         });
