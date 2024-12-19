@@ -270,8 +270,37 @@
         document.getElementById('printButton').addEventListener('click', printBracket);
 
         document.getElementById('createBracketButton').addEventListener('click', function() {
-         generateBracket();
-         });
+    const ageGroup = document.getElementById('ageGroup').value;
+    const gender = document.getElementById('gender').value;
+    const weightClass = document.getElementById('weightClass').value;
+
+    if (ageGroup && gender && weightClass) {
+        // Fetch data from the controller
+        fetch(`/Admin/GetPlayersForTournament?ageGroup=${encodeURIComponent(ageGroup)}&weightClass=${encodeURIComponent(weightClass)}&gender=${encodeURIComponent(gender)}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Data received:', data);
+            // Optionally handle the received data here (e.g., populate brackets or update the UI)
+            generateBracketFromData(data);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+    } else {
+        alert('لطفاً همه گزینه‌ها را انتخاب کنید.');
+    }
+});
+
 
         function updateGender() {
             const ageGroup = document.getElementById('ageGroup').value;
