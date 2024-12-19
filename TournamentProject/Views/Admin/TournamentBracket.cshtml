@@ -269,47 +269,47 @@
                 }
             }
 
-
-        // function updateWeightClass() {
-        //     const ageGroup = document.getElementById('ageGroup').value;
-        //     const gender = document.getElementById('gender').value;
-        //     const weightClass = document.getElementById('weightClass');
-        //     weightClass.innerHTML = '<option value="" disabled selected>انتخاب وزن</option>';
-        //     if (ageGroup && gender) {
-        //         const weightNames = ['وزن اول', 'وزن دوم', 'وزن سوم', 'وزن چهارم', 'وزن پنجم'];
-        //         Object.keys(teamCounts[ageGroup][gender]).forEach((weight, index) => {
-        //             let option = document.createElement('option');
-        //             option.value = weight;
-        //             option.textContent = weightNames[index];
-        //             weightClass.appendChild(option);
-        //         });
-        //     }
-        // }
-
-        // function generateBracket() {
-        //     const ageGroup = document.getElementById('ageGroup').value;
-        //     const gender = document.getElementById('gender').value;
-        //     const weightClass = document.getElementById('weightClass').value;
-        //     if (ageGroup && gender && weightClass) {
-        //         const teamCount = teamCounts[ageGroup][gender][weightClass];
-        //         currentStruct = getBracket(teamCount);
-        //         document.getElementById('brackets').innerHTML = '';
-        //         renderBrackets(currentStruct);
-        //     }
-        // }
-
-
             function generateBracket(players) {
                 if (!players || players.length < 2) {
                     alert('تعداد بازیکنان کافی نیست.');
                     return;
                 }
 
-                const teamCount = players.length; // Use the number of players from the backend
-                currentStruct = getBracket(teamCount, players); // Pass player count and player list to getBracket
+                const totalPlayers = Math.pow(2, Math.ceil(Math.log2(players.length))); // Normalize to the nearest power of 2
+
+                // Normalize player data to ensure it contains objects with a `name` property
+                const normalizedPlayers = players.map(player =>
+                    typeof player === 'string' ? { name: player } : player
+                );
+
+                // Fill with placeholders if necessary
+                while (normalizedPlayers.length < totalPlayers) {
+                    normalizedPlayers.push({ name: 'تعیین نشده' });
+                }
+
+                // Generate the bracket structure
+                currentStruct = getBracket(totalPlayers, normalizedPlayers); // Pass normalized players
                 document.getElementById('brackets').innerHTML = '';
+                console.log('Bracket structure:', JSON.stringify(currentStruct));
                 renderBrackets(currentStruct); // Render the brackets
             }
+
+
+            // function generateBracket(players) {
+            //     if (!players || players.length < 2) {
+            //         alert('تعداد بازیکنان کافی نیست.');
+            //         return;
+            //     }
+
+            //     const teamCount = players.length; // Use the number of players from the backend
+            //     currentStruct = getBracket(teamCount, players); // Pass player count and player list to getBracket
+            //     document.getElementById('brackets').innerHTML = '';
+            //     console.log('what i have is ' + JSON.stringify(currentStruct))
+            //     renderBrackets(currentStruct); // Render the brackets
+            // }
+
+
+
 
             function getBracket(playerCount, players) {
                 // Normalize player count to the nearest power of 2

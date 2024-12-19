@@ -501,7 +501,7 @@ namespace TournamentProject.Controllers
             {
                 ageGroup = "نونهالان";
             }
-            List<string> finals = new List<string>();
+
 
             var players = _dbContext!.Players
                 .Where((p => p.Age == ageGroup && p.Gender == Gender))
@@ -513,15 +513,13 @@ namespace TournamentProject.Controllers
                 })
                 .ToList();
 
+            var finals = new List<object>();
             if (weightClass == "weight1")
             {
-                foreach (var p in players)
-                {
-                    if (p.Age == "نونهالان")
-                    {
-                        finals.Add(p.FullName!);
-                    }
-                }
+                finals = players
+                    .Where(p => p.Age == "نونهالان")
+                    .Select(p => new { name = p.FullName })
+                    .ToList<object>();
             }
             return Json(finals);
         }
