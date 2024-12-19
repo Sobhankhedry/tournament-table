@@ -486,8 +486,17 @@ namespace TournamentProject.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetPlayersForTournament(string ageGroup, string weightClass)
+        public JsonResult GetPlayersForTournament(string ageGroup, string weightClass, string Gender)
         {
+            if (Gender == "male")
+            {
+                Gender = "مرد";
+            }
+            else if (Gender == "female")
+            {
+                Gender = "زن";
+            }
+
             if (ageGroup == "kids")
             {
                 ageGroup = "نونهالان";
@@ -495,7 +504,7 @@ namespace TournamentProject.Controllers
             List<string> finals = new List<string>();
 
             var players = _dbContext!.Players
-                .Where(p => p.Age == ageGroup)
+                .Where((p => p.Age == ageGroup && p.Gender == Gender))
                 .Select(p => new
                 {
                     p.ID,
