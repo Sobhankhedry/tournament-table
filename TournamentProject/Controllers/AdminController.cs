@@ -492,14 +492,28 @@ namespace TournamentProject.Controllers
             {
                 Gender = "مرد";
             }
-            else if (Gender == "female")
+            else
             {
                 Gender = "زن";
             }
 
-            if (ageGroup == "kids")
+            switch (ageGroup)
             {
-                ageGroup = "نونهالان";
+                case "kids":
+                    ageGroup = "نونهالان";
+                    break;
+                case "teens":
+                    ageGroup = "نوجوانان";
+                    break;
+                case "youth":
+                    ageGroup = "جوانان";
+                    break;
+                case "adults":
+                    ageGroup = "بزرگسالان";
+                    break;
+                default:
+                    // Optionally handle cases where ageGroup doesn't match any of the above
+                    break;
             }
 
 
@@ -517,14 +531,45 @@ namespace TournamentProject.Controllers
             if (weightClass == "weight1")
             {
                 finals = players
-                    .Where(p => p.Age == "نونهالان")
+                    .Where(p => p.Age == ageGroup)
                     .Select(p => new { name = p.FullName })
                     .ToList<object>();
             }
-            return Json(finals);
+            else if (weightClass == "weight2")
+            {
+                finals = players
+                    .Where(p => p.Age == ageGroup)
+                    .Select(p => new { name = p.FullName })
+                    .ToList<object>();
+            }
+            else if (weightClass == "weight3")
+            {
+                finals = players
+                    .Where(p => p.Age == ageGroup)
+                    .Select(p => new { name = p.FullName })
+                    .ToList<object>();
+            }
+            else if (weightClass == "weight4")
+            {
+                finals = players
+                    .Where(p => p.Age == ageGroup)
+                    .Select(p => new { name = p.FullName })
+                    .ToList<object>();
+            }
+            else if (weightClass == "weight5")
+            {
+                finals = players
+                    .Where(p => p.Age == ageGroup)
+                    .Select(p => new { name = p.FullName })
+                    .ToList<object>();
+            }
+            var shuffledList = finals.OrderBy(x => Guid.NewGuid()).ToList();
+            return Json(shuffledList);
         }
 
     }
+
+
 
 
 }

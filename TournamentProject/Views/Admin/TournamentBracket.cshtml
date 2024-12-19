@@ -211,7 +211,7 @@
                 const weightClass = document.getElementById('weightClass').value;
 
                 if (ageGroup && gender && weightClass) {
-                    // Fetch players from the backend
+                    
                     fetch(`/Admin/GetPlayersForTournament?ageGroup=${encodeURIComponent(ageGroup)}&weightClass=${encodeURIComponent(weightClass)}&gender=${encodeURIComponent(gender)}`)
                         .then(response => {
                             if (!response.ok) {
@@ -275,29 +275,28 @@
                     return;
                 }
 
-                const totalPlayers = Math.pow(2, Math.ceil(Math.log2(players.length))); // Normalize to the nearest power of 2
+                const totalPlayers = Math.pow(2, Math.ceil(Math.log2(players.length))); 
 
-                // Normalize player data to ensure it contains objects with a `name` property
+                
                 const normalizedPlayers = players.map(player =>
                     typeof player === 'string' ? { name: player } : player
                 );
 
-                // Fill with placeholders if necessary
+               
                 while (normalizedPlayers.length < totalPlayers) {
-                    normalizedPlayers.push({ name: 'تعیین نشده' });
+                    normalizedPlayers.push({ name: '' });
                 }
 
-                // Generate the bracket structure
-                currentStruct = getBracket(totalPlayers, normalizedPlayers); // Pass normalized players
+                currentStruct = getBracket(totalPlayers, normalizedPlayers); 
                 document.getElementById('brackets').innerHTML = '';
                 console.log('Bracket structure:', JSON.stringify(currentStruct));
-                renderBrackets(currentStruct); // Render the brackets
+                renderBrackets(currentStruct); 
             }
 
 
            
             function getBracket(playerCount, players) {
-                // Normalize player count to the nearest power of 2
+                
                 const totalPlayers = Math.pow(2, Math.ceil(Math.log2(playerCount)));
 
                 let brackets = [];
@@ -306,10 +305,10 @@
                 let baseC = totalPlayers / 2;
                 let nextInc = totalPlayers / 2;
 
-                // Fill the player list with placeholders if necessary
+                
                 const normalizedPlayers = [...players];
                 while (normalizedPlayers.length < totalPlayers) {
-                    normalizedPlayers.push({ name: 'تعیین نشده' });
+                    normalizedPlayers.push({ name: '' });
                 }
 
                 for (let i = 1; i <= (totalPlayers - 1); i++) {
@@ -322,10 +321,10 @@
                         nextGame: nextInc + i > totalPlayers - 1 ? null : nextInc + i,
                         teamnames: round === 1
                             ? [
-                                normalizedPlayers[i * 2 - 2]?.name || 'تعیین نشده',
-                                normalizedPlayers[i * 2 - 1]?.name || 'تعیین نشده'
+                                normalizedPlayers[i * 2 - 2]?.name || '',
+                                normalizedPlayers[i * 2 - 1]?.name || ''
                             ]
-                            : ['', ''], // Empty names for subsequent rounds
+                            : ['', ''], 
                         bracketNo: i,
                         roundNo: round,
                         scores: [0, 0]
