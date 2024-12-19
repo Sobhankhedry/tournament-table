@@ -485,19 +485,36 @@ namespace TournamentProject.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult GetPlayers(string ageGroup, string weightClass)
+        [HttpGet]
+        public JsonResult GetPlayersForTournament(string ageGroup, string weightClass)
         {
+            if (ageGroup == "kids")
+            {
+                ageGroup = "نونهالان";
+            }
+            List<string> finals = new List<string>();
 
             var players = _dbContext!.Players
                 .Where(p => p.Age == ageGroup)
                 .Select(p => new
                 {
                     p.ID,
-                    p.Name
+                    FullName = $"{p.Name} {p.LastName}",
+                    p.Age
                 })
                 .ToList();
-            return Json(players);
+
+            if (weightClass == "weight1")
+            {
+                foreach (var p in players)
+                {
+                    if (p.Age == "نونهالان")
+                    {
+                        finals.Add(p.FullName!);
+                    }
+                }
+            }
+            return Json(finals);
         }
 
     }
