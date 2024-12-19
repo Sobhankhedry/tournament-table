@@ -225,6 +225,43 @@ document.getElementById('generateButton').addEventListener('click', function () 
 });
 
 
+function updateBracket(bracketBox) {
+    const bracketNo = parseInt(bracketBox.dataset.bracketNo);
+    const scores = Array.from(bracketBox.querySelectorAll('.team-score')).map(input => parseInt(input.value) || 0);
+    const winnerIndex = scores[0] > scores[1] ? 0 : 1;
+
+    // Highlight the winner
+    bracketBox.classList.remove('winner-a', 'winner-b');
+    bracketBox.classList.add(winnerIndex === 0 ? 'winner-a' : 'winner-b');
+
+    // Get the next game
+    const nextGame = currentStruct.find(s => s.lastGames?.includes(bracketNo));
+    if (nextGame) {
+        // Find the winner's name
+        const winnerName = bracketBox.querySelector(`.team:nth-child(${winnerIndex + 1}) .team-name`).textContent;
+
+        // Assign the winner to the next game's appropriate position
+        const winnerIndexInNextGame = nextGame.lastGames.indexOf(bracketNo);
+        nextGame.teamnames[winnerIndexInNextGame] = winnerName;
+
+        // Update the next bracket in the DOM
+        const nextBracketBox = document.querySelector(`.bracketbox[data-bracket-no="${nextGame.bracketNo}"]`);
+        if (nextBracketBox) {
+            const nextTeam = nextBracketBox.querySelector(`.team:nth-child(${winnerIndexInNextGame + 1}) .team-name`);
+            nextTeam.textContent = winnerName;
+        }
+    }
+
+    // Check if it's the final bracket and update the winner's name
+    if (!nextGame) {
+        const finalTeamName = bracketBox.querySelector(`.team:nth-child(${winnerIndex + 1}) .team-name`).textContent;
+        const finalBracket = document.querySelector('.final .team-name');
+        if (finalBracket) {
+            finalBracket.textContent = finalTeamName;
+        }
+    }
+}
+
 
     document.addEventListener('DOMContentLoaded', function () {
         let bracketCount = 0;
