@@ -195,72 +195,7 @@
         let bracketCount = 0;
         let currentStruct;
 
-        const teamCounts = {
-            kids: {
-                male: {
-                    weight1: 8,
-                    weight2: 16,
-                    weight3: 8,
-                    weight4: 16,
-                    weight5: 8
-                },
-                female: {
-                    weight1: 8,
-                    weight2: 16,
-                    weight3: 8,
-                    weight4: 16,
-                    weight5: 8
-                }
-            },
-            teens: {
-                male: {
-                    weight1: 16,
-                    weight2: 32,
-                    weight3: 16,
-                    weight4: 32,
-                    weight5: 16
-                },
-                female: {
-                    weight1: 16,
-                    weight2: 32,
-                    weight3: 16,
-                    weight4: 32,
-                    weight5: 16
-                }
-            },
-            youth: {
-                male: {
-                    weight1: 32,
-                    weight2: 16,
-                    weight3: 32,
-                    weight4: 16,
-                    weight5: 32
-                },
-                female: {
-                    weight1: 32,
-                    weight2: 16,
-                    weight3: 32,
-                    weight4: 16,
-                    weight5: 32
-                }
-            },
-            adults: {
-                male: {
-                    weight1: 16,
-                    weight2: 32,
-                    weight3: 16,
-                    weight4: 32,
-                    weight5: 16
-                },
-                female: {
-                    weight1: 16,
-                    weight2: 32,
-                    weight3: 16,
-                    weight4: 32,
-                    weight5: 16
-                }
-            }
-        };
+       
 
         document.getElementById('ageGroup').addEventListener('change', updateGender);
         document.getElementById('gender').addEventListener('change', updateWeightClass);
@@ -269,9 +204,34 @@
     });
         document.getElementById('printButton').addEventListener('click', printBracket);
 
-        document.getElementById('createBracketButton').addEventListener('click', function() {
-         generateBracket();
-         });
+       
+            document.getElementById('createBracketButton').addEventListener('click', function () {
+                const ageGroup = document.getElementById('ageGroup').value;
+                const gender = document.getElementById('gender').value;
+                const weightClass = document.getElementById('weightClass').value;
+
+                if (ageGroup && gender && weightClass) {
+                    // Fetch players from the backend
+                    fetch(`/Admin/GetPlayersForTournament?ageGroup=${encodeURIComponent(ageGroup)}&weightClass=${encodeURIComponent(weightClass)}&gender=${encodeURIComponent(gender)}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(players => {
+                            console.log('Players received:', players);
+                            generateBracket(players); // Pass player data to generateBracket
+                        })
+                        .catch(error => {
+                            console.error('Error fetching players:', error);
+                        });
+                } else {
+                    alert('لطفاً همه گزینه‌ها را انتخاب کنید.');
+                }
+            });
+
+
 
         function updateGender() {
             const ageGroup = document.getElementById('ageGroup').value;
@@ -289,70 +249,115 @@
             updateWeightClass();
         }
 
-        function updateWeightClass() {
-            const ageGroup = document.getElementById('ageGroup').value;
-            const gender = document.getElementById('gender').value;
-            const weightClass = document.getElementById('weightClass');
-            weightClass.innerHTML = '<option value="" disabled selected>انتخاب وزن</option>';
-            if (ageGroup && gender) {
-                const weightNames = ['وزن اول', 'وزن دوم', 'وزن سوم', 'وزن چهارم', 'وزن پنجم'];
-                Object.keys(teamCounts[ageGroup][gender]).forEach((weight, index) => {
-                    let option = document.createElement('option');
-                    option.value = weight;
-                    option.textContent = weightNames[index];
-                    weightClass.appendChild(option);
-                });
-            }
-        }
+            function updateWeightClass() {
+                const ageGroup = document.getElementById('ageGroup').value;
+                const gender = document.getElementById('gender').value;
+                const weightClass = document.getElementById('weightClass');
+                weightClass.innerHTML = '<option value="" disabled selected>انتخاب وزن</option>';
 
-        function generateBracket() {
-            const ageGroup = document.getElementById('ageGroup').value;
-            const gender = document.getElementById('gender').value;
-            const weightClass = document.getElementById('weightClass').value;
-            if (ageGroup && gender && weightClass) {
-                const teamCount = teamCounts[ageGroup][gender][weightClass];
-                currentStruct = getBracket(teamCount);
-                document.getElementById('brackets').innerHTML = '';
-                renderBrackets(currentStruct);
-            }
-        }
+                if (ageGroup && gender) {
+                    // Predefined weight classes
+                    const weightNames = ['وزن اول', 'وزن دوم', 'وزن سوم', 'وزن چهارم', 'وزن پنجم'];
 
-        function getBracket(base) {
-            base = Math.pow(2, Math.ceil(Math.log2(base)));
-
-            let brackets = [];
-            let round = 1;
-            let baseT = base / 2;
-            let baseC = base / 2;
-            let nextInc = base / 2;
-
-            for (let i = 1; i <= (base - 1); i++) {
-                let baseR = i / baseT;
-                let isBye = false;
-
-                let last = brackets.filter(b => b.nextGame == i).map(b => ({ game: b.bracketNo, teams: b.teamnames }));
-
-                brackets.push({
-                    lastGames: round == 1 ? null : [last[0].game, last[1].game],
-                    nextGame: nextInc + i > base - 1 ? null : nextInc + i,
-                    teamnames: round == 1 ? ["بازیکن " + (i * 2 - 1), "بازیکن " + (i * 2)] : [last[0].teams[0], last[1].teams[0]],
-                    bracketNo: i,
-                    roundNo: round,
-                    bye: isBye,
-                    scores: [0, 0]
-                });
-
-                if (i % 2 != 0) nextInc--;
-                while (baseR >= 1) {
-                    round++;
-                    baseC /= 2;
-                    baseT = baseT + baseC;
-                    baseR = i / baseT;
+                    // Populate dropdown with weight classes
+                    weightNames.forEach((weight, index) => {
+                        let option = document.createElement('option');
+                        option.value = `weight${index + 1}`; // Use a unique value for each weight class
+                        option.textContent = weight; // Display name
+                        weightClass.appendChild(option);
+                    });
                 }
             }
 
-            return brackets;
-        }
+
+        // function updateWeightClass() {
+        //     const ageGroup = document.getElementById('ageGroup').value;
+        //     const gender = document.getElementById('gender').value;
+        //     const weightClass = document.getElementById('weightClass');
+        //     weightClass.innerHTML = '<option value="" disabled selected>انتخاب وزن</option>';
+        //     if (ageGroup && gender) {
+        //         const weightNames = ['وزن اول', 'وزن دوم', 'وزن سوم', 'وزن چهارم', 'وزن پنجم'];
+        //         Object.keys(teamCounts[ageGroup][gender]).forEach((weight, index) => {
+        //             let option = document.createElement('option');
+        //             option.value = weight;
+        //             option.textContent = weightNames[index];
+        //             weightClass.appendChild(option);
+        //         });
+        //     }
+        // }
+
+        // function generateBracket() {
+        //     const ageGroup = document.getElementById('ageGroup').value;
+        //     const gender = document.getElementById('gender').value;
+        //     const weightClass = document.getElementById('weightClass').value;
+        //     if (ageGroup && gender && weightClass) {
+        //         const teamCount = teamCounts[ageGroup][gender][weightClass];
+        //         currentStruct = getBracket(teamCount);
+        //         document.getElementById('brackets').innerHTML = '';
+        //         renderBrackets(currentStruct);
+        //     }
+        // }
+
+
+            function generateBracket(players) {
+                if (!players || players.length < 2) {
+                    alert('تعداد بازیکنان کافی نیست.');
+                    return;
+                }
+
+                const teamCount = players.length; // Use the number of players from the backend
+                currentStruct = getBracket(teamCount, players); // Pass player count and player list to getBracket
+                document.getElementById('brackets').innerHTML = '';
+                renderBrackets(currentStruct); // Render the brackets
+            }
+
+            function getBracket(playerCount, players) {
+                // Normalize player count to the nearest power of 2
+                const totalPlayers = Math.pow(2, Math.ceil(Math.log2(playerCount)));
+
+                let brackets = [];
+                let round = 1;
+                let baseT = totalPlayers / 2;
+                let baseC = totalPlayers / 2;
+                let nextInc = totalPlayers / 2;
+
+                // Fill the player list with placeholders if necessary
+                const normalizedPlayers = [...players];
+                while (normalizedPlayers.length < totalPlayers) {
+                    normalizedPlayers.push({ name: 'تعیین نشده' });
+                }
+
+                for (let i = 1; i <= (totalPlayers - 1); i++) {
+                    let baseR = i / baseT;
+
+                    let last = brackets.filter(b => b.nextGame == i).map(b => ({ game: b.bracketNo, teams: b.teamnames }));
+
+                    brackets.push({
+                        lastGames: round == 1 ? null : [last[0]?.game, last[1]?.game],
+                        nextGame: nextInc + i > totalPlayers - 1 ? null : nextInc + i,
+                        teamnames: round == 1
+                            ? [
+                                normalizedPlayers[(i * 2 - 2)] ? normalizedPlayers[(i * 2 - 2)].name : 'تعیین نشده',
+                                normalizedPlayers[(i * 2 - 1)] ? normalizedPlayers[(i * 2 - 1)].name : 'تعیین نشده'
+                            ]
+                            : [last[0]?.teams[0] || 'تعیین نشده', last[1]?.teams[0] || 'تعیین نشده'],
+                        bracketNo: i,
+                        roundNo: round,
+                        scores: [0, 0]
+                    });
+
+                    if (i % 2 != 0) nextInc--;
+                    while (baseR >= 1) {
+                        round++;
+                        baseC /= 2;
+                        baseT = baseT + baseC;
+                        baseR = i / baseT;
+                    }
+                }
+
+                return brackets;
+            }
+
 
         function renderBrackets(struct) {
             let groupCount = [...new Set(struct.map(s => s.roundNo))].length;
