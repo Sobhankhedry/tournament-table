@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>جدول مسابقات</title>
+    <title>جدول مسابقات</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
@@ -140,6 +140,7 @@
             border: none;
             color: #ffffff;
         }
+
         .team-score:focus {
             outline: none;
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
@@ -148,21 +149,13 @@
             color: rgb(255, 234, 0); 
             font-size: 20px;
         }
-
     </style>
 </head>
 <body class="bg-black text-light">
     <div class="container my-5">
         <h1 class="text-center mb-4">جدول مسابقات</h1>
         <div class="row g-3 mb-4">
-            <div class="col-md-3">
-                <select id="gender" class="form-select custom-button text-center">
-                    <option value="" disabled selected>انتخاب جنسیت</option>
-                    <option value="male">مرد</option>
-                    <option value="female">زن</option>
-                </select>
-            </div>
-            <div class="col-md-3">
+             <div class="col-md-3">
                 <select id="ageGroup" class="form-select custom-button text-center">
                     <option value="" disabled selected>انتخاب رده سنی</option>
                     <option value="kids">نونهالان</option>
@@ -171,6 +164,14 @@
                     <option value="adults">بزرگسالان</option>
                 </select>
             </div>
+            <div class="col-md-3">
+                <select id="gender" class="form-select custom-button text-center">
+                    <option value="" disabled selected>انتخاب جنسیت</option>
+                    <option value="male">مرد</option>
+                    <option value="female">زن</option>
+                </select>
+            </div>
+           
             <div class="col-md-3">
                 <select id="weightClass" class="form-select custom-button text-center">
                     <option value="" disabled selected>انتخاب وزن</option>
@@ -184,26 +185,25 @@
         </div>
         <div id="brackets" class="brackets mt-4"></div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        let bracketCount = 0;
+   <script>
+    document.addEventListener('DOMContentLoaded', function () {
         let currentStruct;
 
         const teamCounts = {
             kids: {
                 male: {
-                    weight1: 16,
-                    weight2: 32,
-                    weight3: 16,
-                    weight4: 32,
-                    weight5: 16
+                    weight1: 8,
+                    weight2: 16,
+                    weight3: 8,
+                    weight4: 16,
+                    weight5: 8
                 },
                 female: {
-                    weight1: 16,
-                    weight2: 32,
-                    weight3: 16,
-                    weight4: 32,
-                    weight5: 16
+                    weight1: 8,
+                    weight2: 16,
+                    weight3: 8,
+                    weight4: 16,
+                    weight5: 8
                 }
             },
             teens: {
@@ -224,22 +224,22 @@
             },
             youth: {
                 male: {
-                    weight1: 16,
-                    weight2: 32,
-                    weight3: 16,
-                    weight4: 32,
-                    weight5: 16
+                    weight1: 32,
+                    weight2: 16,
+                    weight3: 32,
+                    weight4: 16,
+                    weight5: 32
                 },
                 female: {
-                    weight1: 16,
-                    weight2: 32,
-                    weight3: 16,
-                    weight4: 32,
-                    weight5: 16
+                    weight1: 32,
+                    weight2: 16,
+                    weight3: 32,
+                    weight4: 16,
+                    weight5: 32
                 }
             },
             adults: {
-               male: {
+                male: {
                     weight1: 16,
                     weight2: 32,
                     weight3: 16,
@@ -256,12 +256,14 @@
             }
         };
 
+        // Event listeners
         document.getElementById('ageGroup').addEventListener('change', updateGender);
         document.getElementById('gender').addEventListener('change', updateWeightClass);
         document.getElementById('weightClass').addEventListener('change', generateBracket);
-        document.getElementById('printButton').addEventListener('click', printBracket);
 
+        // Update Gender Dropdown
         function updateGender() {
+            
             const ageGroup = document.getElementById('ageGroup').value;
             const gender = document.getElementById('gender');
             gender.innerHTML = '<option value="" disabled selected>انتخاب جنسیت</option>';
@@ -274,29 +276,37 @@
                     gender.appendChild(option);
                 });
             }
-            updateWeightClass();
         }
 
-
+        // Update Weight Class Dropdown
         function updateWeightClass() {
+            console.log("updateWeightClass triggered.");
             const ageGroup = document.getElementById('ageGroup').value;
+            const gender = document.getElementById('gender').value;
             const weightClass = document.getElementById('weightClass');
+            console.log("Age group:", ageGroup, "Gender:", gender);
             weightClass.innerHTML = '<option value="" disabled selected>انتخاب وزن</option>';
-            if (ageGroup && gender)  {
+
+            if (ageGroup && gender) {
                 const weightNames = ['وزن اول', 'وزن دوم', 'وزن سوم', 'وزن چهارم', 'وزن پنجم'];
-                Object.keys(teamCounts[ageGroup][gender]).forEach((weight, index) => {
-                    let option = document.createElement('option');
-                    option.value = weight;
-                    option.textContent = weightNames[index];
-                    weightClass.appendChild(option);
-                });
+                const weights = teamCounts[ageGroup]?.[gender];
+                if (weights) {
+                    Object.keys(weights).forEach((weight, index) => {
+                        let option = document.createElement('option');
+                        option.value = weight;
+                        option.textContent = weightNames[index];
+                        weightClass.appendChild(option);
+                    });
+                }
             }
         }
 
+        // Generate Bracket
         function generateBracket() {
             const ageGroup = document.getElementById('ageGroup').value;
             const gender = document.getElementById('gender').value;
             const weightClass = document.getElementById('weightClass').value;
+
             if (ageGroup && gender && weightClass) {
                 const teamCount = teamCounts[ageGroup][gender][weightClass];
                 currentStruct = getBracket(teamCount);
@@ -305,6 +315,7 @@
             }
         }
 
+        // Generate Bracket Structure
         function getBracket(base) {
             base = Math.pow(2, Math.ceil(Math.log2(base)));
 
@@ -342,7 +353,8 @@
             return brackets;
         }
 
-        function renderBrackets(struct) {
+        // Render Brackets
+     function renderBrackets(struct) {
             let groupCount = [...new Set(struct.map(s => s.roundNo))].length;
 
             let bracketsContainer = document.getElementById('brackets');
@@ -381,32 +393,14 @@
                 bracketsContainer.appendChild(round);
             }
 
-            let finalRound = document.createElement('div');
-            finalRound.className = 'round final';
-            finalRound.innerHTML = `
-                <div class="bracketbox winner">
-                    <div class="team">
-                        <span class="team-name"></span>
-                        <i class="fas fa-trophy trophy"></i>
-                    </div>
-                </div>
-            `;
-            bracketsContainer.appendChild(finalRound);
-
-            document.querySelectorAll('.team-score').forEach(input => {
-                input.addEventListener('change', function() {
-                    updateBracket(this.closest('.bracketbox'));
-                });
-            });
-        }
-
-        function updateBracket(bracketBox) {
+    function updateBracket(bracketBox) {
             let bracketNo = parseInt(bracketBox.dataset.bracketNo);
             let scores = [
                 parseInt(bracketBox.querySelector('.team-a .team-score').value),
                 parseInt(bracketBox.querySelector('.team-b .team-score').value)
             ];
-            let winner = scores[0] > scores[1] ? 0: 1;
+            let winner = scores[0] > scores[1] ? 0 : 1;
+            // let winner = scores[0] > scores[1] ? 0: 1;
 
             bracketBox.classList.remove('winner-a', 'winner-b');
             bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
@@ -428,8 +422,8 @@
             checkAndEnableNextRound(currentRound);
         }
 
-        function checkAndEnableNextRound(currentRound) {
-            let allScoresEntered = true;
+function checkAndEnableNextRound(currentRound) {
+    let allScoresEntered = true;
             document.querySelectorAll(`.bracketbox[data-round="${currentRound}"]`).forEach(box => {
                 let score1 = box.querySelector('.team-score[data-team="0"]').value;
                 let score2 = box.querySelector('.team-score[data-team="1"]').value;
@@ -443,14 +437,18 @@
                     input.disabled = false;
                 });
             }
-        }
+        
 
-        function printBracket() {
-            window.print();
-        }
-    });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+function printBracket() {
+    window.print();
+}
+}
+
+
+</script>
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.1/underscore-min.js"></script>
     <script src="script.js"></script>
 </body>
