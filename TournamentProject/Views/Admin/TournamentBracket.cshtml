@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tournament</title>
+     <title>جدول مسابقات</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
-     <style>
+    <style>
         body {
             margin: 0;
             padding: 20px;
@@ -130,203 +130,161 @@
             }
         }
         .team-score {
-                    background-color: #585e68;
-                    padding: 2px 6px;
-                    border-radius: 2px;
-                    font-size: 0.75rem;
-                    font-weight: bold;
-                    width: 40px;
-                    text-align: center;
-                    border: none;
-                    color: #ffffff;
-                }
-
-                .team-score:focus {
-                    outline: none;
-                    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-                }
-                .fas.fa-trophy {
-                color: rgb(255, 234, 0); 
-                font-size: 20px;
-                }
+            background-color: #585e68;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            width: 40px;
+            text-align: center;
+            border: none;
+            color: #ffffff;
+        }
+        .team-score:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+        }
+        .fas.fa-trophy {
+            color: rgb(255, 234, 0); 
+            font-size: 20px;
+        }
 
     </style>
 </head>
 <body class="bg-black text-light">
     <div class="container my-5">
-    <h1 class="text-center mb-4">جدول مسابقات</h1>
-    <div class="row g-3 mb-4">
-        <div class="col-md-4">
-            <select id="ageGroup" class="form-select custom-button text-center">
-                <option value="" disabled selected>انتخاب رده سنی</option>
-                <option value="kids">نونهالان</option>
-                <option value="teens">نوجوانان</option>
-                <option value="youth">جوانان</option>
-                <option value="adults">بزرگسالان</option>
-            </select>
+        <h1 class="text-center mb-4">جدول مسابقات</h1>
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <select id="gender" class="form-select custom-button text-center">
+                    <option value="" disabled selected>انتخاب جنسیت</option>
+                    <option value="male">مرد</option>
+                    <option value="female">زن</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="ageGroup" class="form-select custom-button text-center">
+                    <option value="" disabled selected>انتخاب رده سنی</option>
+                    <option value="kids">نونهالان</option>
+                    <option value="teens">نوجوانان</option>
+                    <option value="youth">جوانان</option>
+                    <option value="adults">بزرگسالان</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="weightClass" class="form-select custom-button text-center">
+                    <option value="" disabled selected>انتخاب وزن</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button id="printButton" class="btn custom-button w-100">
+                    <i class="fas fa-print me-2"></i>چاپ جدول
+                </button>
+            </div>
         </div>
-        <div class="col-md-4">
-            <select id="weightClass" class="form-select custom-button text-center">
-                <option value="" disabled selected>انتخاب وزن</option>
-            </select>
-        </div>
-        <!-- Add the Generate Bracket button here -->
-        <div class="col-md-4">
-            <button id="generateButton" class="btn btn-success custom-button w-100">
-                <i class="fas fa-cogs me-2"></i>ایجاد جدول
-            </button>
-        </div>
-        <div class="col-md-4">
-            <button id="printButton" class="btn custom-button w-100">
-                <i class="fas fa-print me-2"></i>چاپ جدول
-            </button>
-        </div>
+        <div id="brackets" class="brackets mt-4"></div>
     </div>
-    <div id="brackets" class="brackets mt-4"></div>
-</div>
-
-  <script>
-      
-document.getElementById('generateButton').addEventListener('click', function () {
-    const ageGroup = document.getElementById('ageGroup').value;
-    const weightClass = document.getElementById('weightClass').value;
-
-    // Validate both dropdowns are selected
-    if (!ageGroup || !weightClass) {
-        alert("لطفاً هر دو گزینه را انتخاب کنید.");
-        return;
-    }
-
-    console.log(ageGroup + " And " + weightClass);
-
-    // Send selected values to the backend
-    fetch(`/Admin/GetPlayersForTournament?ageGroup=${encodeURIComponent(ageGroup)}&weightClass=${encodeURIComponent(weightClass)}`, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Failed to fetch players from the backend.");
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("Players received from backend:", data);
-
-            // Generate the bracket using the received player data
-            generateBracketFromPlayers(data);
-        })
-        .catch(error => {
-            console.error("Error fetching player data:", error);
-            alert("خطا در دریافت داده‌ها از سرور.");
-        });
-});
-
-
-function updateBracket(bracketBox) {
-    const bracketNo = parseInt(bracketBox.dataset.bracketNo);
-    const scores = Array.from(bracketBox.querySelectorAll('.team-score')).map(input => parseInt(input.value) || 0);
-    const winnerIndex = scores[0] > scores[1] ? 0 : 1;
-
-    // Highlight the winner
-    bracketBox.classList.remove('winner-a', 'winner-b');
-    bracketBox.classList.add(winnerIndex === 0 ? 'winner-a' : 'winner-b');
-
-    // Get the next game
-    const nextGame = currentStruct.find(s => s.lastGames?.includes(bracketNo));
-    if (nextGame) {
-        // Find the winner's name
-        const winnerName = bracketBox.querySelector(`.team:nth-child(${winnerIndex + 1}) .team-name`).textContent;
-
-        // Assign the winner to the next game's appropriate position
-        const winnerIndexInNextGame = nextGame.lastGames.indexOf(bracketNo);
-        nextGame.teamnames[winnerIndexInNextGame] = winnerName;
-
-        // Update the next bracket in the DOM
-        const nextBracketBox = document.querySelector(`.bracketbox[data-bracket-no="${nextGame.bracketNo}"]`);
-        if (nextBracketBox) {
-            const nextTeam = nextBracketBox.querySelector(`.team:nth-child(${winnerIndexInNextGame + 1}) .team-name`);
-            nextTeam.textContent = winnerName;
-        }
-    }
-
-    // Check if it's the final bracket and update the winner's name
-    if (!nextGame) {
-        const finalTeamName = bracketBox.querySelector(`.team:nth-child(${winnerIndex + 1}) .team-name`).textContent;
-        const finalBracket = document.querySelector('.final .team-name');
-        if (finalBracket) {
-            finalBracket.textContent = finalTeamName;
-        }
-    }
-}
-
-
-    document.addEventListener('DOMContentLoaded', function () {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
         let bracketCount = 0;
         let currentStruct;
 
         const teamCounts = {
             kids: {
-                weight1: 8,
-                weight2: 16,
-                weight3: 8,
-                weight4: 16,
-                weight5: 8
+                male: {
+                    weight1: 16,
+                    weight2: 32,
+                    weight3: 16,
+                    weight4: 32,
+                    weight5: 16
+                },
+                female: {
+                    weight1: 16,
+                    weight2: 32,
+                    weight3: 16,
+                    weight4: 32,
+                    weight5: 16
+                }
             },
             teens: {
-                weight1: 16,
-                weight2: 32,
-                weight3: 16,
-                weight4: 32,
-                weight5: 16
+                male: {
+                    weight1: 16,
+                    weight2: 32,
+                    weight3: 16,
+                    weight4: 32,
+                    weight5: 16
+                },
+                female: {
+                    weight1: 16,
+                    weight2: 32,
+                    weight3: 16,
+                    weight4: 32,
+                    weight5: 16
+                }
             },
             youth: {
-                weight1: 32,
-                weight2: 16,
-                weight3: 32,
-                weight4: 16,
-                weight5: 32
+                male: {
+                    weight1: 16,
+                    weight2: 32,
+                    weight3: 16,
+                    weight4: 32,
+                    weight5: 16
+                },
+                female: {
+                    weight1: 16,
+                    weight2: 32,
+                    weight3: 16,
+                    weight4: 32,
+                    weight5: 16
+                }
             },
             adults: {
-                weight1: 16,
-                weight2: 32,
-                weight3: 16,
-                weight4: 32,
-                weight5: 16
+               male: {
+                    weight1: 16,
+                    weight2: 32,
+                    weight3: 16,
+                    weight4: 32,
+                    weight5: 16
+                },
+                female: {
+                    weight1: 16,
+                    weight2: 32,
+                    weight3: 16,
+                    weight4: 32,
+                    weight5: 16
+                }
             }
         };
 
-        document.getElementById('ageGroup').addEventListener('change', updateWeightClass);
-        document.getElementById('weightClass').addEventListener('change', () => {
-            console.log("Weight class changed.");
-        });
-
-        document.getElementById('generateButton').addEventListener('click', function () {
-            const ageGroup = document.getElementById('ageGroup').value;
-            const weightClass = document.getElementById('weightClass').value;
-
-            // Validate both dropdowns are selected
-            if (!ageGroup || !weightClass) {
-                alert("لطفاً هر دو گزینه را انتخاب کنید.");
-                return;
-            }
-
-            // Generate the bracket only after button is clicked
-            console.log("Generating bracket for:", ageGroup, weightClass);
-            generateBracket();
-        });
-
+        document.getElementById('ageGroup').addEventListener('change', updateGender);
+        document.getElementById('gender').addEventListener('change', updateWeightClass);
+        document.getElementById('weightClass').addEventListener('change', generateBracket);
         document.getElementById('printButton').addEventListener('click', printBracket);
+
+        function updateGender() {
+            const ageGroup = document.getElementById('ageGroup').value;
+            const gender = document.getElementById('gender');
+            gender.innerHTML = '<option value="" disabled selected>انتخاب جنسیت</option>';
+            if (ageGroup) {
+                const genderOptions = ['male', 'female'];
+                genderOptions.forEach(g => {
+                    let option = document.createElement('option');
+                    option.value = g;
+                    option.textContent = g === 'male' ? 'مرد' : 'زن';
+                    gender.appendChild(option);
+                });
+            }
+            updateWeightClass();
+        }
+
 
         function updateWeightClass() {
             const ageGroup = document.getElementById('ageGroup').value;
             const weightClass = document.getElementById('weightClass');
             weightClass.innerHTML = '<option value="" disabled selected>انتخاب وزن</option>';
-            if (ageGroup) {
+            if (ageGroup && gender)  {
                 const weightNames = ['وزن اول', 'وزن دوم', 'وزن سوم', 'وزن چهارم', 'وزن پنجم'];
-                Object.keys(teamCounts[ageGroup]).forEach((weight, index) => {
+                Object.keys(teamCounts[ageGroup][gender]).forEach((weight, index) => {
                     let option = document.createElement('option');
                     option.value = weight;
                     option.textContent = weightNames[index];
@@ -337,9 +295,10 @@ function updateBracket(bracketBox) {
 
         function generateBracket() {
             const ageGroup = document.getElementById('ageGroup').value;
+            const gender = document.getElementById('gender').value;
             const weightClass = document.getElementById('weightClass').value;
-            if (ageGroup && weightClass) {
-                const teamCount = teamCounts[ageGroup][weightClass];
+            if (ageGroup && gender && weightClass) {
+                const teamCount = teamCounts[ageGroup][gender][weightClass];
                 currentStruct = getBracket(teamCount);
                 document.getElementById('brackets').innerHTML = '';
                 renderBrackets(currentStruct);
@@ -355,23 +314,23 @@ function updateBracket(bracketBox) {
             let baseC = base / 2;
             let nextInc = base / 2;
 
-            for (let i = 1; i <= base - 1; i++) {
+            for (let i = 1; i <= (base - 1); i++) {
                 let baseR = i / baseT;
                 let isBye = false;
 
                 let last = brackets.filter(b => b.nextGame == i).map(b => ({ game: b.bracketNo, teams: b.teamnames }));
 
                 brackets.push({
-                    lastGames: round == 1 ? null : [last[0]?.game, last[1]?.game],
+                    lastGames: round == 1 ? null : [last[0].game, last[1].game],
                     nextGame: nextInc + i > base - 1 ? null : nextInc + i,
-                    teamnames: round == 1 ? ["بازیکن " + (i * 2 - 1), "بازیکن " + (i * 2)] : [last[0]?.teams[0], last[1]?.teams[0]],
+                    teamnames: round == 1 ? ["بازیکن " + (i * 2 - 1), "بازیکن " + (i * 2)] : [last[0].teams[0], last[1].teams[0]],
                     bracketNo: i,
                     roundNo: round,
                     bye: isBye,
                     scores: [0, 0]
                 });
 
-                if (i % 2 !== 0) nextInc--;
+                if (i % 2 != 0) nextInc--;
                 while (baseR >= 1) {
                     round++;
                     baseC /= 2;
@@ -435,23 +394,62 @@ function updateBracket(bracketBox) {
             bracketsContainer.appendChild(finalRound);
 
             document.querySelectorAll('.team-score').forEach(input => {
-                input.addEventListener('change', function () {
+                input.addEventListener('change', function() {
                     updateBracket(this.closest('.bracketbox'));
                 });
             });
+        }
+
+        function updateBracket(bracketBox) {
+            let bracketNo = parseInt(bracketBox.dataset.bracketNo);
+            let scores = [
+                parseInt(bracketBox.querySelector('.team-a .team-score').value),
+                parseInt(bracketBox.querySelector('.team-b .team-score').value)
+            ];
+            let winner = scores[0] > scores[1] ? 0: 1;
+
+            bracketBox.classList.remove('winner-a', 'winner-b');
+            bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
+
+            let nextGame = currentStruct.find(s => s.lastGames && s.lastGames.includes(bracketNo));
+            if (nextGame) {
+                let nextBracketBox = document.querySelector(`.bracketbox[data-bracket-no="${nextGame.bracketNo}"]`);
+                let winnerIndex = nextGame.lastGames.indexOf(bracketNo);
+                nextBracketBox.querySelector(`.team:nth-child(${winnerIndex + 1}) .team-name`).textContent = 
+                    bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
+            }
+
+            if (bracketNo === currentStruct.length) {
+                document.querySelector('.final .team-name').textContent = 
+                    bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
+            }
+
+            let currentRound = parseInt(bracketBox.dataset.round);
+            checkAndEnableNextRound(currentRound);
+        }
+
+        function checkAndEnableNextRound(currentRound) {
+            let allScoresEntered = true;
+            document.querySelectorAll(`.bracketbox[data-round="${currentRound}"]`).forEach(box => {
+                let score1 = box.querySelector('.team-score[data-team="0"]').value;
+                let score2 = box.querySelector('.team-score[data-team="1"]').value;
+                if (score1 === '' || score2 === '') {
+                    allScoresEntered = false;
+                }
+            });
+
+            if (allScoresEntered) {
+                document.querySelectorAll(`.bracketbox[data-round="${currentRound + 1}"] .team-score`).forEach(input => {
+                    input.disabled = false;
+                });
+            }
         }
 
         function printBracket() {
             window.print();
         }
     });
-
-
-
-
-
-</script>
-
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.1/underscore-min.js"></script>
     <script src="script.js"></script>
