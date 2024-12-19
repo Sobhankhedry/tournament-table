@@ -295,22 +295,7 @@
             }
 
 
-            // function generateBracket(players) {
-            //     if (!players || players.length < 2) {
-            //         alert('تعداد بازیکنان کافی نیست.');
-            //         return;
-            //     }
-
-            //     const teamCount = players.length; // Use the number of players from the backend
-            //     currentStruct = getBracket(teamCount, players); // Pass player count and player list to getBracket
-            //     document.getElementById('brackets').innerHTML = '';
-            //     console.log('what i have is ' + JSON.stringify(currentStruct))
-            //     renderBrackets(currentStruct); // Render the brackets
-            // }
-
-
-
-
+           
             function getBracket(playerCount, players) {
                 // Normalize player count to the nearest power of 2
                 const totalPlayers = Math.pow(2, Math.ceil(Math.log2(playerCount)));
@@ -335,12 +320,12 @@
                     brackets.push({
                         lastGames: round == 1 ? null : [last[0]?.game, last[1]?.game],
                         nextGame: nextInc + i > totalPlayers - 1 ? null : nextInc + i,
-                        teamnames: round == 1
+                        teamnames: round === 1
                             ? [
-                                normalizedPlayers[(i * 2 - 2)] ? normalizedPlayers[(i * 2 - 2)].name : 'تعیین نشده',
-                                normalizedPlayers[(i * 2 - 1)] ? normalizedPlayers[(i * 2 - 1)].name : 'تعیین نشده'
+                                normalizedPlayers[i * 2 - 2]?.name || 'تعیین نشده',
+                                normalizedPlayers[i * 2 - 1]?.name || 'تعیین نشده'
                             ]
-                            : [last[0]?.teams[0] || 'تعیین نشده', last[1]?.teams[0] || 'تعیین نشده'],
+                            : ['', ''], // Empty names for subsequent rounds
                         bracketNo: i,
                         roundNo: round,
                         scores: [0, 0]
