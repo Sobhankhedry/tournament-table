@@ -484,6 +484,22 @@ namespace TournamentProject.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult GetPlayers(string ageGroup, string weightClass)
+        {
+
+            var players = _dbContext!.Players
+                .Where(p => p.Age == ageGroup)
+                .Select(p => new
+                {
+                    p.ID,
+                    p.Name
+                })
+                .ToList();
+            return Json(players);
+        }
+
     }
 
 
