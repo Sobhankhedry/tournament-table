@@ -186,6 +186,46 @@
 </div>
 
   <script>
+      
+document.getElementById('generateButton').addEventListener('click', function () {
+    const ageGroup = document.getElementById('ageGroup').value;
+    const weightClass = document.getElementById('weightClass').value;
+
+    // Validate both dropdowns are selected
+    if (!ageGroup || !weightClass) {
+        alert("لطفاً هر دو گزینه را انتخاب کنید.");
+        return;
+    }
+
+    console.log(ageGroup + " And " + weightClass);
+
+    // Send selected values to the backend
+    fetch(`/Admin/GetPlayersForTournament?ageGroup=${encodeURIComponent(ageGroup)}&weightClass=${encodeURIComponent(weightClass)}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to fetch players from the backend.");
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Players received from backend:", data);
+
+            // Generate the bracket using the received player data
+            generateBracketFromPlayers(data);
+        })
+        .catch(error => {
+            console.error("Error fetching player data:", error);
+            alert("خطا در دریافت داده‌ها از سرور.");
+        });
+});
+
+
+
     document.addEventListener('DOMContentLoaded', function () {
         let bracketCount = 0;
         let currentStruct;
@@ -368,6 +408,11 @@
             window.print();
         }
     });
+
+
+
+
+
 </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
