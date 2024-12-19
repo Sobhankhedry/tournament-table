@@ -1,18 +1,17 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tournament Bracket</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.1/underscore-min.js"></script>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Tournament</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
     <style>
-        @@import 'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css';
-
         body {
             margin: 0;
             padding: 20px;
+            background: black;
             background-color: #1a1d21;
             color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -20,25 +19,18 @@
         }
 
         .brackets {
-            width: 100%;
-            min-height: 100%;
             display: flex;
-            flex-direction: column;
-            gap: 20px;
+            flex-direction: row;
+            overflow-x: auto;
+            padding-bottom: 20px;
         }
 
-        .brackets > div {
-            display: flex;
-            justify-content: flex-start;
-            padding: 10px;
-        }
-
-        .brackets > div > div {
+        .round {
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            padding: 0 15px;
-            flex: 1;
+            min-width: 200px;
+            margin-right: 20px;
         }
 
         .bracketbox {
@@ -54,7 +46,7 @@
 
         .bracketbox:hover {
             transform: translateY(-2px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .team {
@@ -69,37 +61,24 @@
             font-size: 0.875rem;
         }
 
-        .team-score {
-            background-color: #374151;
-            padding: 2px 6px;
-            border-radius: 2px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-
         .team-b {
             border-top: 1px solid #374151;
         }
 
-        .brackets > div > .r1 { flex: 0 0 200px; }
-        .brackets > div > .r2 { flex: 0 0 220px; }
-        .brackets > div > .r3 { flex: 0 0 240px; }
-        .brackets > div > .r4 { flex: 0 0 260px; }
-        .brackets > div > .r5 { flex: 0 0 280px; }
-
         .final .bracketbox {
             background: linear-gradient(135deg, #e81cff 0%, #40c9ff 100%);
+            
         }
 
-        .final .bracketbox .team {
+        .final .team {
             justify-content: center;
-            padding: 8px;
+            padding: 15px;
         }
 
-        .final .bracketbox .team-name {
-            font-size: 1rem;
+        .final .team-name {
+            font-size: 1.2rem;
             font-weight: bold;
-            margin-right: 8px;
+            margin-right: 10px;
         }
 
         .bracketbox.winner-a .team-a,
@@ -113,210 +92,286 @@
         }
 
         .trophy {
-            color: #fbbf24;
+            color: #ffd700;
+            font-size: 20px;
+            margin-left: 10px;
+        }
+
+        .custom-button {
+            background-color: #000000;
+            border: 1px solid #40c9ff;
+            color: #40c9ff;
+            transition: all 0.3s ease;
+        }
+
+        .custom-button:hover {
+            background-color: #40c9ff;
+            color: #2a2d31;
+            transform: translateY(-2px);
+        }
+
+        @@media print {
+            body {
+                background-color: white !important;
+                color: black !important;
+            }
+            .container {
+                width: 100% !important;
+                max-width: none !important;
+            }
+            select, button {
+                display: none !important;
+            }
+            .brackets {
+                overflow-x: visible;
+            }
+            .bracketbox {
+                break-inside: avoid;
+            }
         }
         .team-score {
-            background-color: #585e68;
-            padding: 2px 6px;
-            border-radius: 2px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            width: 40px;
-            text-align: center;
-            border: none;
-            color: #ffffff;
-        }
+                    background-color: #585e68;
+                    padding: 2px 6px;
+                    border-radius: 2px;
+                    font-size: 0.75rem;
+                    font-weight: bold;
+                    width: 40px;
+                    text-align: center;
+                    border: none;
+                    color: #ffffff;
+                }
 
-        .team-score:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-        }
-        .fas.fa-trophy {
-        color: rgb(255, 234, 0); 
-        font-size: 20px;
-        }
-</style>
+                .team-score:focus {
+                    outline: none;
+                    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+                }
+                .fas.fa-trophy {
+                color: rgb(255, 234, 0); 
+                font-size: 20px;
+                }
+
+    </style>
 </head>
-
-<body class="bg-black text-white">
-    <div class="container mx-auto p-4">
-        <button id="add" class="px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200">Add Bracket</button>
-        <div class="brackets mt-8" id="brackets"></div>
+<body class="bg-black text-light">
+    <div class="container my-5">
+    <h1 class="text-center mb-4">جدول مسابقات</h1>
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <select id="ageGroup" class="form-select custom-button text-center">
+                <option value="" disabled selected>انتخاب رده سنی</option>
+                <option value="kids">نونهالان</option>
+                <option value="teens">نوجوانان</option>
+                <option value="youth">جوانان</option>
+                <option value="adults">بزرگسالان</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select id="weightClass" class="form-select custom-button text-center">
+                <option value="" disabled selected>انتخاب وزن</option>
+            </select>
+        </div>
+        <!-- Add the Generate Bracket button here -->
+        <div class="col-md-4">
+            <button id="generateButton" class="btn btn-success custom-button w-100">
+                <i class="fas fa-cogs me-2"></i>ایجاد جدول
+            </button>
+        </div>
+        <div class="col-md-4">
+            <button id="printButton" class="btn custom-button w-100">
+                <i class="fas fa-print me-2"></i>چاپ جدول
+            </button>
+        </div>
     </div>
-    <script src="script.js"></script>
+    <div id="brackets" class="brackets mt-4"></div>
+</div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        let bracketCount = 0;
-        let currentStruct;
+        document.addEventListener('DOMContentLoaded', function () {
+    let bracketCount = 0;
+    let currentStruct;
 
-        function getBracket(base) {
-
-            base = Math.pow(2, Math.ceil(Math.log2(base)));
-
-            let brackets = [];
-            let round = 1;
-            let baseT = base / 2;
-            let baseC = base / 2;
-            let nextInc = base / 2;
-
-            for (let i = 1; i <= (base - 1); i++) {
-                let baseR = i / baseT;
-                let isBye = false;
-
-                let last = brackets.filter(b => b.nextGame == i).map(b => ({ game: b.bracketNo, teams: b.teamnames }));
-
-                brackets.push({
-                    lastGames: round == 1 ? null : [last[0].game, last[1].game],
-                    nextGame: nextInc + i > base - 1 ? null : nextInc + i,
-                    teamnames: round == 1 ? ["Team " + (i * 2 - 1), "Team " + (i * 2)] : [last[0].teams[0], last[1].teams[0]],
-                    bracketNo: i,
-                    roundNo: round,
-                    bye: isBye,
-                    scores: [0, 0]
-                });
-
-                if (i % 2 != 0) nextInc--;
-                while (baseR >= 1) {
-                    round++;
-                    baseC /= 2;
-                    baseT = baseT + baseC;
-                    baseR = i / baseT;
-                }
-            }
-
-            return brackets;
+    const teamCounts = {
+        kids: {
+            weight1: 8,
+            weight2: 16,
+            weight3: 8,
+            weight4: 16,
+            weight5: 8
+        },
+        teens: {
+            weight1: 16,
+            weight2: 32,
+            weight3: 16,
+            weight4: 32,
+            weight5: 16
+        },
+        youth: {
+            weight1: 32,
+            weight2: 16,
+            weight3: 32,
+            weight4: 16,
+            weight5: 32
+        },
+        adults: {
+            weight1: 16,
+            weight2: 32,
+            weight3: 16,
+            weight4: 32,
+            weight5: 16
         }
+    };
 
-        function renderBrackets(struct) {
-            let groupCount = [...new Set(struct.map(s => s.roundNo))].length;
-
-            let group = document.createElement('div');
-            group.className = `group${groupCount + 1}`;
-            group.id = `b${bracketCount}`;
-
-            let grouped = struct.reduce((acc, s) => {
-                (acc[s.roundNo] = acc[s.roundNo] || []).push(s);
-                return acc;
-            }, {});
-
-            for (let g = 1; g <= groupCount; g++) {
-                let round = document.createElement('div');
-                round.className = `r${g}`;
-
-                grouped[g].forEach(gg => {
-                    if (gg.bye) {
-                        let byeDiv = document.createElement('div');
-                        byeDiv.className = 'bye';
-                        round.appendChild(byeDiv);
-                    } else {
-                        let bracketBox = document.createElement('div');
-                        bracketBox.className = 'bracketbox';
-                        bracketBox.dataset.bracketNo = gg.bracketNo;
-                        bracketBox.dataset.round = g;
-
-                        bracketBox.innerHTML = `
-                            <div class="team team-a">
-                                <span class="team-name">${gg.teamnames[0]}</span>
-                                <input type="number" class="team-score" value="${gg.scores[0]}" min="0" data-team="0" ${g > 1 ? 'disabled' : ''}>
-                            </div>
-                            <div class="team team-b">
-                                <span class="team-name">${gg.teamnames[1]}</span>
-                                <input type="number" class="team-score" value="${gg.scores[1]}" min="0" data-team="1" ${g > 1 ? 'disabled' : ''}>
-                            </div>
-                        `;
-
-                        round.appendChild(bracketBox);
-                    }
-                });
-
-                group.appendChild(round);
-            }
-
-            let finalRound = document.createElement('div');
-            finalRound.className = `r${groupCount + 1}`;
-            finalRound.innerHTML = `
-                <div class="final">
-                    <div class="bracketbox winner">
-                        <div class="team">
-                            <span class="team-name"></span>
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                    </div>
-                </div>
-            `;
-            group.appendChild(finalRound);
-
-            document.getElementById('brackets').appendChild(group);
-
-            bracketCount++;
-            window.scrollTo({
-                top: document.getElementById(`b${bracketCount - 1}`).offsetTop,
-                behavior: 'smooth'
-            });
-
-            document.querySelectorAll('.team-score').forEach(input => {
-                input.addEventListener('change', function() {
-                    updateBracket(this.closest('.bracketbox'));
-                });
-            });
-        }
-
-        function updateBracket(bracketBox) {
-            let bracketNo = parseInt(bracketBox.dataset.bracketNo);
-            let scores = [
-                parseInt(bracketBox.querySelector('.team-a .team-score').value),
-                parseInt(bracketBox.querySelector('.team-b .team-score').value)
-            ];
-            let winner = scores[0] > scores[1] ? 0 : 1;
-
-            bracketBox.classList.remove('winner-a', 'winner-b');
-            bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
-
-            let nextGame = currentStruct.find(s => s.lastGames && s.lastGames.includes(bracketNo));
-            if (nextGame) {
-                let nextBracketBox = document.querySelector(`.bracketbox[data-bracket-no="${nextGame.bracketNo}"]`);
-                let winnerIndex = nextGame.lastGames.indexOf(bracketNo);
-                nextBracketBox.querySelector(`.team:nth-child(${winnerIndex + 1}) .team-name`).textContent = 
-                    bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
-            }
-
-            if (bracketNo === currentStruct.length) {
-                document.querySelector('.final .team-name').textContent = 
-                    bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
-            }
-
-            let currentRound = parseInt(bracketBox.dataset.round);
-            checkAndEnableNextRound(currentRound);
-        }
-
-        function checkAndEnableNextRound(currentRound) {
-            let allScoresEntered = true;
-            document.querySelectorAll(`.bracketbox[data-round="${currentRound}"]`).forEach(box => {
-                let score1 = box.querySelector('.team-score[data-team="0"]').value;
-                let score2 = box.querySelector('.team-score[data-team="1"]').value;
-                if (score1 === '' || score2 === '') {
-                    allScoresEntered = false;
-                }
-            });
-
-            if (allScoresEntered) {
-                document.querySelectorAll(`.bracketbox[data-round="${currentRound + 1}"] .team-score`).forEach(input => {
-                    input.disabled = false;
-                });
-            }
-        }
-
-        document.getElementById('add').addEventListener('click', function() {
-            let opts = parseInt(prompt('تعداد تیم‌ها را وارد کنید:', 8));
-
-            if (!isNaN(opts) && opts > 1 && opts <= 32) {
-                currentStruct = getBracket(opts);
-                renderBrackets(currentStruct);
-            } else {
-                alert('لطفاً یک عدد بین 2 و 32 وارد کنید.');
-            }
-        });
+    document.getElementById('ageGroup').addEventListener('change', updateWeightClass);
+    document.getElementById('weightClass').addEventListener('change', () => {
+        console.log("Weight class changed.");
     });
+
+    document.getElementById('generateButton').addEventListener('click', function () {
+        const ageGroup = document.getElementById('ageGroup').value;
+        const weightClass = document.getElementById('weightClass').value;
+
+        // Validate both dropdowns are selected
+        if (!ageGroup || !weightClass) {
+            alert("لطفاً هر دو گزینه را انتخاب کنید.");
+            return;
+        }
+
+        // Generate the bracket only after button is clicked
+        console.log("Generating bracket for:", ageGroup, weightClass);
+        generateBracket();
+    });
+
+    document.getElementById('printButton').addEventListener('click', printBracket);
+
+    function updateWeightClass() {
+        const ageGroup = document.getElementById('ageGroup').value;
+        const weightClass = document.getElementById('weightClass');
+        weightClass.innerHTML = '<option value="" disabled selected>انتخاب وزن</option>';
+        if (ageGroup) {
+            const weightNames = ['وزن اول', 'وزن دوم', 'وزن سوم', 'وزن چهارم', 'وزن پنجم'];
+            Object.keys(teamCounts[ageGroup]).forEach((weight, index) => {
+                let option = document.createElement('option');
+                option.value = weight;
+                option.textContent = weightNames[index];
+                weightClass.appendChild(option);
+            });
+        }
+    }
+
+    function generateBracket() {
+        const ageGroup = document.getElementById('ageGroup').value;
+        const weightClass = document.getElementById('weightClass').value;
+        if (ageGroup && weightClass) {
+            const teamCount = teamCounts[ageGroup][weightClass];
+            currentStruct = getBracket(teamCount);
+            document.getElementById('brackets').innerHTML = '';
+            renderBrackets(currentStruct);
+        }
+    }
+
+    function getBracket(base) {
+        base = Math.pow(2, Math.ceil(Math.log2(base)));
+
+        let brackets = [];
+        let round = 1;
+        let baseT = base / 2;
+        let baseC = base / 2;
+        let nextInc = base / 2;
+
+        for (let i = 1; i <= base - 1; i++) {
+            let baseR = i / baseT;
+            let isBye = false;
+
+            let last = brackets.filter(b => b.nextGame == i).map(b => ({ game: b.bracketNo, teams: b.teamnames }));
+
+            brackets.push({
+                lastGames: round == 1 ? null : [last[0].game, last[1].game],
+                nextGame: nextInc + i > base - 1 ? null : nextInc + i,
+                teamnames: round == 1 ? ["بازیکن " + (i * 2 - 1), "بازیکن " + (i * 2)] : [last[0].teams[0], last[1].teams[0]],
+                bracketNo: i,
+                roundNo: round,
+                bye: isBye,
+                scores: [0, 0]
+            });
+
+            if (i % 2 != 0) nextInc--;
+            while (baseR >= 1) {
+                round++;
+                baseC /= 2;
+                baseT = baseT + baseC;
+                baseR = i / baseT;
+            }
+        }
+
+        return brackets;
+    }
+
+    function renderBrackets(struct) {
+        let groupCount = [...new Set(struct.map(s => s.roundNo))].length;
+
+        let bracketsContainer = document.getElementById('brackets');
+        bracketsContainer.innerHTML = '';
+
+        for (let g = 1; g <= groupCount; g++) {
+            let round = document.createElement('div');
+            round.className = `round round-${g}`;
+
+            struct.filter(s => s.roundNo === g).forEach(gg => {
+                if (gg.bye) {
+                    let byeDiv = document.createElement('div');
+                    byeDiv.className = 'bye';
+                    round.appendChild(byeDiv);
+                } else {
+                    let bracketBox = document.createElement('div');
+                    bracketBox.className = 'bracketbox';
+                    bracketBox.dataset.bracketNo = gg.bracketNo;
+                    bracketBox.dataset.round = g;
+
+                    bracketBox.innerHTML = `
+                        <div class="team team-a">
+                            <span class="team-name">${gg.teamnames[0]}</span>
+                            <input type="number" class="team-score" value="${gg.scores[0]}" min="0" data-team="0" ${g > 1 ? 'disabled' : ''}>
+                        </div>
+                        <div class="team team-b">
+                            <span class="team-name">${gg.teamnames[1]}</span>
+                            <input type="number" class="team-score" value="${gg.scores[1]}" min="0" data-team="1" ${g > 1 ? 'disabled' : ''}>
+                        </div>
+                    `;
+
+                    round.appendChild(bracketBox);
+                }
+            });
+
+            bracketsContainer.appendChild(round);
+        }
+
+        let finalRound = document.createElement('div');
+        finalRound.className = 'round final';
+        finalRound.innerHTML = `
+            <div class="bracketbox winner">
+                <div class="team">
+                    <span class="team-name"></span>
+                    <i class="fas fa-trophy trophy"></i>
+                </div>
+            </div>
+        `;
+        bracketsContainer.appendChild(finalRound);
+
+        document.querySelectorAll('.team-score').forEach(input => {
+            input.addEventListener('change', function () {
+                updateBracket(this.closest('.bracketbox'));
+            });
+        });
+    }
+
+    function printBracket() {
+        window.print();
+    }
+});
+
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.1/underscore-min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
