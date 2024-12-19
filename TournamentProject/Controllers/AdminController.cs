@@ -16,14 +16,11 @@ namespace TournamentProject.Controllers
         {
             _dbContext = dBContext;
             _signInManager = signInManager;
-
         }
         public IActionResult AdminPanel()
         {
             var list = _dbContext!.ContactUs.ToList();
-
             return View(list);
-
         }
 
 
@@ -34,7 +31,6 @@ namespace TournamentProject.Controllers
             {
                 return Json(new { success = false, message = "هیچ داده‌ای دریافت نشد." });
             }
-
             try
             {
                 if (_dbContext!.Coaches.Any())
@@ -484,7 +480,10 @@ namespace TournamentProject.Controllers
         }
 
 
-
+        public IActionResult TournamentBracket()
+        {
+            return View();
+        }
     }
 
 
