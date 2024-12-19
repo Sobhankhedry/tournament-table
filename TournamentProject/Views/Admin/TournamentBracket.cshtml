@@ -263,8 +263,14 @@
 
         document.getElementById('ageGroup').addEventListener('change', updateGender);
         document.getElementById('gender').addEventListener('change', updateWeightClass);
-        document.getElementById('weightClass').addEventListener('change', generateBracket);
+        document.getElementById('weightClass').addEventListener('change', function() {
+        // Do nothing here for bracket generation
+    });
         document.getElementById('printButton').addEventListener('click', printBracket);
+
+        document.getElementById('createBracketButton').addEventListener('click', function() {
+         generateBracket();
+         });
 
         function updateGender() {
             const ageGroup = document.getElementById('ageGroup').value;
