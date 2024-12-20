@@ -512,7 +512,6 @@ namespace TournamentProject.Controllers
                     ageGroup = "بزرگسالان";
                     break;
                 default:
-                    // Optionally handle cases where ageGroup doesn't match any of the above
                     break;
             }
 

@@ -221,7 +221,7 @@
                         })
                         .then(players => {
                             console.log('Players received:', players);
-                            generateBracket(players); // Pass player data to generateBracket
+                            generateBracket(players); 
                         })
                         .catch(error => {
                             console.error('Error fetching players:', error);
@@ -256,14 +256,14 @@
                 weightClass.innerHTML = '<option value="" disabled selected>انتخاب وزن</option>';
 
                 if (ageGroup && gender) {
-                    // Predefined weight classes
+                    
                     const weightNames = ['وزن اول', 'وزن دوم', 'وزن سوم', 'وزن چهارم', 'وزن پنجم'];
 
-                    // Populate dropdown with weight classes
+                    
                     weightNames.forEach((weight, index) => {
                         let option = document.createElement('option');
-                        option.value = `weight${index + 1}`; // Use a unique value for each weight class
-                        option.textContent = weight; // Display name
+                        option.value = `weight${index + 1}`;
+                        option.textContent = weight; 
                         weightClass.appendChild(option);
                     });
                 }
