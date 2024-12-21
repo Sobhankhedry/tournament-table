@@ -712,6 +712,36 @@ namespace TournamentProject.Controllers
 
         }
 
+
+
+
+        [HttpDelete("DeleteTournament/{tournamentName}")]
+        public async Task<IActionResult> DeleteTournament(string tournamentName)
+        {
+            try
+            {
+                // Assuming you have a Player entity with a TournamentName column
+                var playersToDelete = _dbContext.Matches.Where(p => p.TournamentName == tournamentName);
+
+                if (!playersToDelete.Any())
+                {
+                    return NotFound(new { message = $"No players found for tournament '{tournamentName}'." });
+                }
+
+                _dbContext.Matches.RemoveRange(playersToDelete);
+                await _dbContext.SaveChangesAsync();
+
+                return Ok(new { message = $"Successfully deleted all players for tournament '{tournamentName}'.", deletedCount = playersToDelete.Count() });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error deleting tournament: " + ex.Message);
+                return StatusCode(500, new { message = "An error occurred while deleting the tournament.", error = ex.Message });
+            }
+        }
+
+
+
     }
 
 
