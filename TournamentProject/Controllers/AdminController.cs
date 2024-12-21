@@ -715,27 +715,38 @@ namespace TournamentProject.Controllers
 
 
 
-        [HttpDelete("DeleteTournament/{tournamentName}")]
-        public async Task<IActionResult> DeleteTournament(string tournamentName)
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteTournament([FromBody] TournamentNameDto request)
         {
+            if (request == null || string.IsNullOrEmpty(request.TournamentName))
+            {
+                return BadRequest(new { message = "Tournament name is required." });
+            }
+
             try
             {
-                // Assuming you have a Player entity with a TournamentName column
-                var playersToDelete = _dbContext.Matches.Where(p => p.TournamentName == tournamentName);
+                var playersToDelete = _dbContext.Matches
+                    .Where(p => p.TournamentName.Trim().ToLower() == request.TournamentName.Trim().ToLower())
+                    .ToList();
 
                 if (!playersToDelete.Any())
                 {
-                    return NotFound(new { message = $"No players found for tournament '{tournamentName}'." });
+                    return NotFound(new { message = $"No players found for tournament '{request.TournamentName}'." });
                 }
 
                 _dbContext.Matches.RemoveRange(playersToDelete);
                 await _dbContext.SaveChangesAsync();
 
-                return Ok(new { message = $"Successfully deleted all players for tournament '{tournamentName}'.", deletedCount = playersToDelete.Count() });
+                return Ok(new
+                {
+                    message = $"Successfully deleted all players for tournament '{request.TournamentName}'.",
+                    deletedCount = playersToDelete.Count
+                });
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error deleting tournament: " + ex.Message);
+                Console.WriteLine($"Error deleting tournament: {ex.Message}");
                 return StatusCode(500, new { message = "An error occurred while deleting the tournament.", error = ex.Message });
             }
         }

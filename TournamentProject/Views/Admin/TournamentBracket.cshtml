@@ -669,28 +669,30 @@
 
         function deleteBracket(tournamentName) {
             if (confirm(`آیا از حذف جدول ${tournamentName} اطمینان دارید؟`)) {
-                fetch(`/Admin/DeleteTournament/${encodeURIComponent(tournamentName)}`, {
-                    method: 'DELETE', // Use the DELETE method
+                fetch('/Admin/DeleteTournament', {
+                    method: 'DELETE',
                     headers: {
-                        'Content-Type': 'application/json', // Optional for DELETE, but included for consistency
+                        'Content-Type': 'application/json', // Ensure JSON is specified in the headers
                     },
+                    body: JSON.stringify({ tournamentName: tournamentName }), // JSON payload
                 })
-                    .then(response => {
+                    .then(async response => {
                         if (response.ok) {
-                            return response.json(); // Parse the JSON response
+                            const data = await response.json();
+                            alert(data.message);
+                            console.log('Response from server:', data);
+
+                            // Remove the deleted item from the modal
+                            const listItem = document.querySelector(`li:has(button[onclick="deleteBracket('${tournamentName}')"])`);
+                            if (listItem) {
+                                listItem.remove();
+                            }
                         } else if (response.status === 404) {
-                            alert(`No players found for tournament '${tournamentName}'.`);
+                            const errorData = await response.json();
+                            alert(errorData.message);
                         } else {
                             throw new Error(`HTTP error! Status: ${response.status}`);
                         }
-                    })
-                    .then(data => {
-                        alert(`Tournament '${tournamentName}' was successfully deleted.`);
-                        console.log('Response from server:', data);
-
-                        // Optionally, remove the deleted item from the UI
-                        const listItem = document.querySelector(`li:has(button[onclick="deleteBracket('${tournamentName}')"])`);
-                        if (listItem) listItem.remove();
                     })
                     .catch(error => {
                         console.error('Error deleting tournament:', error);
@@ -698,6 +700,7 @@
                     });
             }
         }
+
 
 
 
