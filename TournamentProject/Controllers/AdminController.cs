@@ -670,6 +670,48 @@ namespace TournamentProject.Controllers
         }
 
 
+
+
+        public IActionResult UpdateBracketes([FromBody] SaveBracketRequest request)
+        {
+            var touname = request.TournamentName;
+            var updatedBrackets = request.Brackets;
+            var matchesToRemove = _dbContext.Matches
+    .Where(p => p.TournamentName == touname)
+    .ToList();
+
+            if (matchesToRemove.Any())
+            {
+                _dbContext.Matches.RemoveRange(matchesToRemove);
+                _dbContext.SaveChanges();
+            }
+
+            foreach (var match in updatedBrackets)
+            {
+                var matchEntity = new MatchEntity
+                {
+                    TournamentName = touname,
+                    BracketNo = match.BracketNo,
+                    RoundNo = match.RoundNo,
+                    TeamAName = match.Teamnames?.Length > 0 ? match.Teamnames[0] : null,
+                    TeamBName = match.Teamnames?.Length > 1 ? match.Teamnames[1] : null,
+                    TeamAScore = match.Scores?.Length > 0 ? match.Scores[0] : 0,
+                    TeamBScore = match.Scores?.Length > 0 ? match.Scores[1] : 0,
+                    NextGameId = match.NextGame,
+                    // handle LastGames: store them as JSON or another relationship.
+                };
+
+                // Insert or update matchEntity in DB
+                _dbContext!.Matches.Add(matchEntity); // pseudo code
+            }
+            _dbContext.SaveChanges();
+
+            return Ok(new { message = "Bracket updated successfully." });
+
+
+
+        }
+
     }
 
 
