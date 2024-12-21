@@ -12,8 +12,8 @@ using TournamentProject.Data;
 namespace TournamentProject.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241204131134_addedColumn")]
-    partial class addedColumn
+    [Migration("20241221061351_addMatchBracket")]
+    partial class addMatchBracket
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -278,6 +278,46 @@ namespace TournamentProject.Migrations
                     b.HasKey("Email");
 
                     b.ToTable("ContactUs");
+                });
+
+            modelBuilder.Entity("TournamentProject.Models.MatchEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BracketNo")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NextGameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoundNo")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TeamAName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TeamAScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TeamBName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TeamBScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TournamentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Matches");
                 });
 
             modelBuilder.Entity("TournamentProject.Models.Medals", b =>

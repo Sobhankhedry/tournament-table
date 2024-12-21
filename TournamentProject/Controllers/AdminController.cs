@@ -566,6 +566,50 @@ namespace TournamentProject.Controllers
             return Json(shuffledList);
         }
 
+
+        [HttpPost]
+        [Route("Admin/SaveBracketData")]
+        public IActionResult SaveBracketData([FromBody] SaveBracketRequest request)
+        {
+            string tournamentName = request.TournamentName;
+            List<Bracket> brackets = request.Brackets;
+
+
+            if (brackets == null || brackets.Count == 0)
+            {
+                return BadRequest("No data received.");
+            }
+
+            // Here you would:
+            // 1. Validate the data.
+            // 2. Insert/Update matches in the database.
+
+            // For each match:
+            foreach (var match in brackets)
+            {
+                var matchEntity = new MatchEntity
+                {
+                    TournamentName = tournamentName,
+                    BracketNo = match.BracketNo,
+                    RoundNo = match.RoundNo,
+                    TeamAName = match.Teamnames?.Length > 0 ? match.Teamnames[0] : null,
+                    TeamBName = match.Teamnames?.Length > 1 ? match.Teamnames[1] : null,
+                    TeamAScore = match.Scores?.Length > 0 ? match.Scores[0] : 0,
+                    TeamBScore = match.Scores?.Length > 1 ? match.Scores[1] : 0,
+                    NextGameId = match.NextGame,
+                    // handle LastGames: store them as JSON or another relationship.
+                };
+
+                // Insert or update matchEntity in DB
+                _dbContext!.Matches.Add(matchEntity); // pseudo code
+            }
+
+            // Save changes
+            _dbContext!.SaveChanges();
+
+            return Ok(new { message = "Bracket saved successfully" });
+        }
+
     }
 
 

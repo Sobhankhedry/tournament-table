@@ -277,6 +277,46 @@ namespace TournamentProject.Migrations
                     b.ToTable("ContactUs");
                 });
 
+            modelBuilder.Entity("TournamentProject.Models.MatchEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BracketNo")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NextGameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoundNo")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TeamAName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TeamAScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TeamBName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TeamBScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TournamentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Matches");
+                });
+
             modelBuilder.Entity("TournamentProject.Models.Medals", b =>
                 {
                     b.Property<int>("Id")
