@@ -632,7 +632,7 @@ namespace TournamentProject.Controllers
             }
 
             // Check if the tournament already exists
-            bool exists = _dbContext.Matches.Any(m => m.TournamentName == tournamentName);
+            bool exists = _dbContext!.Matches.Any(m => m.TournamentName == tournamentName);
 
             return Ok(exists);
         }
