@@ -609,16 +609,18 @@ namespace TournamentProject.Controllers
 
         public IActionResult GetSavedBrackets()
         {
-            var brackets = _dbContext.Matches
-     .GroupBy(b => b.TournamentName) // Group by TournamentName
-     .Select(g => new
-     {
-         Id = g.First().Id,           // Take the first Id from the group
-         TournamentName = g.Key       // Use the key (TournamentName)
-     })
-     .ToList();
+            var brackets = _dbContext!.Matches
+                .GroupBy(b => b.TournamentName) // Group by TournamentName
+                .Select(g => new
+                {
+                    Id = g.First().Id,           // Take the first Id from the group
+                    TournamentName = g.Key       // Use the key (TournamentName)
+                })
+                .ToList();
+
             return Ok(brackets);
         }
+
 
         [HttpGet]
         [Route("Admin/CheckTournamentExists")]
@@ -634,6 +636,39 @@ namespace TournamentProject.Controllers
 
             return Ok(exists);
         }
+
+        [HttpGet]
+        [Route("Admin/RetrieveBracket")]
+        public IActionResult RetrieveBracket(string tournamentName)
+        {
+            if (string.IsNullOrWhiteSpace(tournamentName))
+            {
+                return BadRequest("Tournament name is required.");
+            }
+
+            // Fetch all rows for the given tournament name
+            var brackets = _dbContext.Matches // Replace "Matches" with your actual table name
+                .Where(m => m.TournamentName == tournamentName)
+                .Select(m => new
+                {
+                    m.BracketNo,
+                    m.RoundNo,
+                    m.TeamAName,
+                    m.TeamBName,
+                    m.TeamAScore,
+                    m.TeamBScore,
+                    m.NextGameId
+                })
+                .ToList();
+
+            if (brackets == null || brackets.Count == 0)
+            {
+                return NotFound("No brackets found for the specified tournament.");
+            }
+
+            return Ok(brackets); // Return all rows for the given tournament name
+        }
+
 
     }
 
