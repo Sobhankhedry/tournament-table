@@ -580,9 +580,6 @@ namespace TournamentProject.Controllers
                 return BadRequest("No data received.");
             }
 
-            // Here you would:
-            // 1. Validate the data.
-            // 2. Insert/Update matches in the database.
 
             // For each match:
             foreach (var match in brackets)
@@ -595,7 +592,7 @@ namespace TournamentProject.Controllers
                     TeamAName = match.Teamnames?.Length > 0 ? match.Teamnames[0] : null,
                     TeamBName = match.Teamnames?.Length > 1 ? match.Teamnames[1] : null,
                     TeamAScore = match.Scores?.Length > 0 ? match.Scores[0] : 0,
-                    TeamBScore = match.Scores?.Length > 1 ? match.Scores[1] : 0,
+                    TeamBScore = match.Scores?.Length > 0 ? match.Scores[1] : 0,
                     NextGameId = match.NextGame,
                     // handle LastGames: store them as JSON or another relationship.
                 };
@@ -609,6 +606,21 @@ namespace TournamentProject.Controllers
 
             return Ok(new { message = "Bracket saved successfully" });
         }
+
+        public IActionResult GetSavedBrackets()
+        {
+            var brackets = _dbContext.Matches
+     .GroupBy(b => b.TournamentName) // Group by TournamentName
+     .Select(g => new
+     {
+         Id = g.First().Id,           // Take the first Id from the group
+         TournamentName = g.Key       // Use the key (TournamentName)
+     })
+     .ToList();
+            return Ok(brackets);
+        }
+
+
 
     }
 
