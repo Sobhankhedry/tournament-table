@@ -620,7 +620,20 @@ namespace TournamentProject.Controllers
             return Ok(brackets);
         }
 
+        [HttpGet]
+        [Route("Admin/CheckTournamentExists")]
+        public IActionResult CheckTournamentExists(string tournamentName)
+        {
+            if (string.IsNullOrWhiteSpace(tournamentName))
+            {
+                return BadRequest("Tournament name is required.");
+            }
 
+            // Check if the tournament already exists
+            bool exists = _dbContext.Matches.Any(m => m.TournamentName == tournamentName);
+
+            return Ok(exists);
+        }
 
     }
 

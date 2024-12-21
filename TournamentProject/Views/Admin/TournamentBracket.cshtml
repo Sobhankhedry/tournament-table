@@ -218,7 +218,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             let bracketCount = 0;
             let currentStruct;
-
+            let flag = 0;
 
 
             document.getElementById('ageGroup').addEventListener('change', updateGender);
@@ -234,25 +234,54 @@
                 const gender = document.getElementById('gender').value;
                 const weightClass = document.getElementById('weightClass').value;
 
-                if (ageGroup && gender && weightClass) {
+                // Dynamically construct the tournament name
+                const tournamentName = `${weightClass}-${gender}-${ageGroup}`;
+                console.log('tournamentName:', tournamentName);
+                alert('before checking')
+               
+               
 
-                    fetch(`/Admin/GetPlayersForTournament?ageGroup=${encodeURIComponent(ageGroup)}&weightClass=${encodeURIComponent(weightClass)}&gender=${encodeURIComponent(gender)}`)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! status: ${response.status}`);
-                            }
-                            return response.json();
-                        })
-                        .then(players => {
+               
+
+
+                // First, check if the tournament already exists
+                fetch(`/Admin/CheckTournamentExists?tournamentName=${encodeURIComponent(tournamentName)}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(exists => {
+                        if (exists) {
+                            alert('این جدول از قبل وجود دارد.');
+                            return; // Stop execution if the tournament exists
+                        }
+
+                        
+                        return fetch(`/Admin/GetPlayersForTournament?ageGroup=${encodeURIComponent(ageGroup)}&weightClass=${encodeURIComponent(weightClass)}&gender=${encodeURIComponent(gender)}`);
+                    })
+                    .then(response => {
+                        if (!response) {
+                            
+                            return;
+                        }
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(players => {
+                        if (players) {
                             console.log('Players received:', players);
-                            generateBracket(players);
-                        })
-                        .catch(error => {
-                            console.error('Error fetching players:', error);
-                        });
-                } else {
-                    alert('لطفاً همه گزینه‌ها را انتخاب کنید.');
-                }
+                            generateBracket(players); 
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error during execution:', error);
+                        alert('خطایی در اجرای درخواست رخ داد.');
+                    });
+
             });
 
             document.getElementById('saveBracketButton').addEventListener('click', function () {
@@ -261,12 +290,7 @@
                     return;
                 }
 
-                const ageGroup = document.getElementById('ageGroup').value.trim();
-                const gender = document.getElementById('gender').value.trim();
-                const weightClass = document.getElementById('weightClass').value.trim();
 
-                // Dynamically construct the tournament name
-                const tournamentName = `${weightClass}-${gender}-${ageGroup}`;
 
                 document.querySelectorAll('.bracketbox').forEach(box => {
                     // Parse the bracketNo from data attribute
@@ -290,10 +314,6 @@
                     brackets: currentStruct       // Include the bracket structure
                 };
 
-
-
-
-
                 fetch('/Admin/SaveBracketData', {
                     method: 'POST',
                     headers: {
@@ -316,6 +336,8 @@
                         alert('Failed to save bracket.');
                     });
             });
+
+            
 
 
             function updateGender() {
