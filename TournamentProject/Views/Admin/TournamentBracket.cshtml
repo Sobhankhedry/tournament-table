@@ -522,63 +522,44 @@
             }
 
 
-            function renderBrackets(struct) {
-                let groupCount = [...new Set(struct.map(s => s.roundNo))].length;
+            function renderBracket(brackets) {
+                const container = document.getElementById('brackets');
+                container.innerHTML = ''; // Clear any existing content
 
-                let bracketsContainer = document.getElementById('brackets');
-                bracketsContainer.innerHTML = '';
+                brackets.forEach((roundBrackets, roundIndex) => {
+                    const roundDiv = document.createElement('div');
+                    roundDiv.classList.add('round', `round-${roundIndex + 1}`);
 
-                for (let g = 1; g <= groupCount; g++) {
-                    let round = document.createElement('div');
-                    round.className = `round round-${g}`;
+                    roundBrackets.forEach(match => {
+                        const matchDiv = document.createElement('div');
+                        matchDiv.classList.add('bracketbox');
+                        matchDiv.dataset.round = match.roundNo;
+                        matchDiv.dataset.bracketNo = match.bracketNo;
 
-                    struct.filter(s => s.roundNo === g).forEach(gg => {
-                        if (gg.bye) {
-                            let byeDiv = document.createElement('div');
-                            byeDiv.className = 'bye';
-                            round.appendChild(byeDiv);
-                        } else {
-                            let bracketBox = document.createElement('div');
-                            bracketBox.className = 'bracketbox';
-                            bracketBox.dataset.bracketNo = gg.bracketNo;
-                            bracketBox.dataset.round = g;
+                        // Add team A and team B with their scores
+                        const teamA = document.createElement('div');
+                        teamA.classList.add('team');
+                        teamA.innerHTML = `
+                        <span class="team-name">${match.teamA.name}</span>
+                        <input type="number" class="team-score" value="${match.teamA.score}" disabled>
+                    `;
 
-                            bracketBox.innerHTML = `
-                                            <div class="team team-a">
-                                                <span class="team-name">${gg.teamnames[0]}</span>
-                                                <input type="number" class="team-score" value="${gg.scores[0]}" min="0" data-team="0" ${g > 1 ? 'disabled' : ''}>
-                                            </div>
-                                            <div class="team team-b">
-                                                <span class="team-name">${gg.teamnames[1]}</span>
-                                                <input type="number" class="team-score" value="${gg.scores[1]}" min="0" data-team="1" ${g > 1 ? 'disabled' : ''}>
-                                            </div>
-                                        `;
+                        const teamB = document.createElement('div');
+                        teamB.classList.add('team');
+                        teamB.innerHTML = `
+                        <span class="team-name">${match.teamB.name}</span>
+                        <input type="number" class="team-score" value="${match.teamB.score}" disabled>
+                    `;
 
-                            round.appendChild(bracketBox);
-                        }
+                        matchDiv.appendChild(teamA);
+                        matchDiv.appendChild(teamB);
+                        roundDiv.appendChild(matchDiv);
                     });
 
-                    bracketsContainer.appendChild(round);
-                }
-
-                let finalRound = document.createElement('div');
-                finalRound.className = 'round final';
-                finalRound.innerHTML = `
-                                <div class="bracketbox winner">
-                                    <div class="team">
-                                        <span class="team-name"></span>
-                                        <i class="fas fa-trophy trophy"></i>
-                                    </div>
-                                </div>
-                            `;
-                bracketsContainer.appendChild(finalRound);
-
-                document.querySelectorAll('.team-score').forEach(input => {
-                    input.addEventListener('change', function () {
-                        updateBracket(this.closest('.bracketbox'));
-                    });
+                    container.appendChild(roundDiv);
                 });
             }
+
 
             function updateBracket(bracketBox) {
                 let bracketNo = parseInt(bracketBox.dataset.bracketNo);
@@ -696,18 +677,18 @@
 
                     console.log('Retrieved Bracket Data:', bracketData);
 
-                    // Transform data into the required structure
-                    const predefinedStructure = transformBracketData(bracketData);
-                    console.log('Transformed Bracket Structure:', predefinedStructure);
+                    // Transform the data
+                    const transformedData = transformBracketData(bracketData);
 
-                    // Pass to the rendering function
-                    generateCompleteBracket(predefinedStructure);
+                    // Render the bracket
+                    renderBracket(transformedData);
                 })
                 .catch(error => {
                     console.error('Error during bracket retrieval:', error);
                     alert('خطایی در بازیابی جدول رخ داد.');
                 });
         }
+
 
 
 
@@ -718,7 +699,7 @@
 
         function renderBracket(brackets) {
             const container = document.getElementById('brackets');
-            container.innerHTML = ''; // Clear existing content
+            container.innerHTML = ''; // Clear any existing content
 
             brackets.forEach((roundBrackets, roundIndex) => {
                 const roundDiv = document.createElement('div');
@@ -727,21 +708,22 @@
                 roundBrackets.forEach(match => {
                     const matchDiv = document.createElement('div');
                     matchDiv.classList.add('bracketbox');
-                    matchDiv.dataset.round = roundIndex + 1;
+                    matchDiv.dataset.round = match.roundNo;
                     matchDiv.dataset.bracketNo = match.bracketNo;
 
-                    // Add teams and scores
+                    // Add team A and team B with their scores
                     const teamA = document.createElement('div');
                     teamA.classList.add('team');
                     teamA.innerHTML = `
-                        <span class="team-name">${match.teamA.name || 'TBD'}</span>
-                        <input type="number" class="team-score" value="${match.teamA.score || 0}" disabled>
+                        <span class="team-name">${match.teamA.name}</span>
+                        <input type="number" class="team-score" value="${match.teamA.score}" disabled>
                     `;
+
                     const teamB = document.createElement('div');
                     teamB.classList.add('team');
                     teamB.innerHTML = `
-                        <span class="team-name">${match.teamB.name || 'TBD'}</span>
-                        <input type="number" class="team-score" value="${match.teamB.score || 0}" disabled>
+                        <span class="team-name">${match.teamB.name}</span>
+                        <input type="number" class="team-score" value="${match.teamB.score}" disabled>
                     `;
 
                     matchDiv.appendChild(teamA);
@@ -751,10 +733,13 @@
 
                 container.appendChild(roundDiv);
             });
-
-            // Attach event listeners for updates (optional, if needed for further interaction)
-            attachScoreListeners();
         }
+
+
+
+
+
+
 
 
         // Function to attach event listeners
@@ -776,7 +761,6 @@
 
 
 
-
         function transformBracketData(data) {
             const rounds = {};
 
@@ -785,74 +769,20 @@
                 if (!rounds[match.roundNo]) {
                     rounds[match.roundNo] = [];
                 }
+
+                // Use backend-provided data for each match
                 rounds[match.roundNo].push({
+                    bracketNo: match.bracketNo,
+                    roundNo: match.roundNo,
                     teamA: { name: match.teamAName || 'TBD', score: match.teamAScore || 0 },
                     teamB: { name: match.teamBName || 'TBD', score: match.teamBScore || 0 },
-                    winner: null, // Placeholder for winner
-                    bracketNo: match.bracketNo, // Track match ID
+                    nextGameId: match.nextGameId || null // Useful for linking matches in UI
                 });
             });
 
-            // Convert rounds object to an array of arrays
-            const roundArray = Object.values(rounds);
-
-            // Make sure every round has accurate scores and names from backend
-            for (let i = 0; i < roundArray.length; i++) {
-                const currentRound = roundArray[i];
-
-                // Ensure the structure matches the backend data
-                currentRound.forEach((match) => {
-                    const backendMatch = data.find(
-                        m => m.roundNo === i + 1 && m.bracketNo === match.bracketNo
-                    );
-
-                    if (backendMatch) {
-                        match.teamA.name = backendMatch.teamAName || 'TBD';
-                        match.teamB.name = backendMatch.teamBName || 'TBD';
-                        match.teamA.score = backendMatch.teamAScore || 0;
-                        match.teamB.score = backendMatch.teamBScore || 0;
-                    }
-                });
-            }
-
-            // Dynamically populate the next round's teams based on winners
-            for (let i = 0; i < roundArray.length - 1; i++) {
-                const currentRound = roundArray[i];
-                const nextRound = roundArray[i + 1];
-
-                // Populate the next round teams
-                for (let j = 0; j < currentRound.length; j += 2) {
-                    const matchA = currentRound[j];
-                    const matchB = currentRound[j + 1];
-
-                    // Fetch the winners from the current matches
-                    const winnerA = matchA.teamA.score > matchA.teamB.score ? matchA.teamA : matchA.teamB;
-                    const winnerB = matchB.teamA.score > matchB.teamB.score ? matchB.teamA : matchB.teamB;
-
-                    // Use backend data to populate the next round (ensure names and scores are correct)
-                    const nextMatch = data.find(
-                        m => m.roundNo === i + 2 && m.bracketNo === Math.floor(j / 2) + 1
-                    );
-
-                    nextRound[Math.floor(j / 2)] = {
-                        teamA: {
-                            name: nextMatch ? nextMatch.teamAName : winnerA.name || 'TBD', // Use backend name or winner name
-                            score: nextMatch ? nextMatch.teamAScore : 0, // Use backend score or reset to 0
-                        },
-                        teamB: {
-                            name: nextMatch ? nextMatch.teamBName : winnerB.name || 'TBD', // Use backend name or winner name
-                            score: nextMatch ? nextMatch.teamBScore : 0, // Use backend score or reset to 0
-                        },
-                        winner: null, // Placeholder for winner
-                        bracketNo: Math.floor(j / 2) + 1, // Assign correct bracket number
-                    };
-                }
-            }
-
-            return roundArray;
+            // Convert the grouped rounds into an array of arrays
+            return Object.values(rounds);
         }
-
-
 
 
 
