@@ -653,9 +653,9 @@
                         const listItem = document.createElement('li');
                         listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
                         listItem.innerHTML = `
-                            <span>${bracket.tournamentName}</span>
-                            <button class="btn btn-primary btn-sm" onclick="retrieveBracket('${bracket.tournamentName}')">بازیابی</button>
-                        `;
+                                    <span>${bracket.tournamentName}</span>
+                                    <button class="btn btn-primary btn-sm" onclick="retrieveBracket('${bracket.tournamentName}')">بازیابی</button>
+                                `;
                         bracketList.appendChild(listItem);
                     });
                 })
@@ -717,17 +717,17 @@
                     const teamA = document.createElement('div');
                     teamA.classList.add('team', 'team-a');
                     teamA.innerHTML = `
-                        <span class="team-name">${match.teamA.name}</span>
-                        <input type="number" class="team-score" value="${match.teamA.score}" >
-                    `;
+                                <span class="team-name">${match.teamA.name}</span>
+                                <input type="number" class="team-score" value="${match.teamA.score}" >
+                            `;
 
                     // Team B
                     const teamB = document.createElement('div');
                     teamB.classList.add('team', 'team-b');
                     teamB.innerHTML = `
-                        <span class="team-name">${match.teamB.name}</span>
-                        <input type="number" class="team-score" value="${match.teamB.score}" >
-                    `;
+                                <span class="team-name">${match.teamB.name}</span>
+                                <input type="number" class="team-score" value="${match.teamB.score}" >
+                            `;
 
                     matchDiv.appendChild(teamA);
                     matchDiv.appendChild(teamB);
@@ -806,7 +806,7 @@
 
         //     // Re-render the brackets
         //     renderBracket11(transformedStructure);
-           
+
         // }
 
         function propagateWinner(bracketBox) {
@@ -853,8 +853,8 @@
             attachScoreListeners();
         }
 
-        
-       
+
+
 
 
         function enableNextRoundIfComplete(currentRound) {
