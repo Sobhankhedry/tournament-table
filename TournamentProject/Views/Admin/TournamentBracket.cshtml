@@ -231,32 +231,7 @@
 
            
 
-            // document.getElementById('createBracketButton').addEventListener('click', function () {
-            //     const ageGroup = document.getElementById('ageGroup').value;
-            //     const gender = document.getElementById('gender').value;
-            //     const weightClass = document.getElementById('weightClass').value;
-
-            //     if (ageGroup && gender && weightClass) {
-
-            //         fetch(`/Admin/GetPlayersForTournament?ageGroup=${encodeURIComponent(ageGroup)}&weightClass=${encodeURIComponent(weightClass)}&gender=${encodeURIComponent(gender)}`)
-            //             .then(response => {
-            //                 if (!response.ok) {
-            //                     throw new Error(`HTTP error! status: ${response.status}`);
-            //                 }
-            //                 return response.json();
-            //             })
-            //             .then(players => {
-            //                 console.log('Players received:', players);
-            //                 generateBracket(players);
-            //             })
-            //             .catch(error => {
-            //                 console.error('Error fetching players:', error);
-            //             });
-            //     } else {
-            //         alert('لطفاً همه گزینه‌ها را انتخاب کنید.');
-            //     }
-            // });
-
+            
 
 
             document.getElementById('createBracketButton').addEventListener('click', function () {
@@ -722,14 +697,11 @@
 
 
 
-        function generateCompleteBracket(predefinedStructure) {
-            const brackets = predefinedStructure;
-            renderBracket11(brackets);
-        }
+
 
         function renderBracket11(brackets) {
             const container = document.getElementById('brackets');
-            container.innerHTML = ''; // Clear any existing content
+            container.innerHTML = ''; // Clear existing content
 
             brackets.forEach((roundBrackets, roundIndex) => {
                 const roundDiv = document.createElement('div');
@@ -741,9 +713,9 @@
                     matchDiv.dataset.round = match.roundNo;
                     matchDiv.dataset.bracketNo = match.bracketNo;
 
-                    // Add team A and team B with their scores
+                    // Team A
                     const teamA = document.createElement('div');
-                    teamA.classList.add('team');
+                    teamA.classList.add('team', 'team-a');
                     teamA.innerHTML = `
                         <span class="team-name">${match.teamA.name}</span>
                         <input type="number" class="team-score" value="${match.teamA.score}" >
@@ -751,7 +723,7 @@
 
                     // Team B
                     const teamB = document.createElement('div');
-                    teamB.classList.add('team');
+                    teamB.classList.add('team', 'team-b');
                     teamB.innerHTML = `
                         <span class="team-name">${match.teamB.name}</span>
                         <input type="number" class="team-score" value="${match.teamB.score}" >
@@ -764,31 +736,24 @@
 
                 container.appendChild(roundDiv);
             });
+
+            // Attach listeners after rendering
+            attachScoreListeners();
+            highlightWinners(); // Highlight winners after rendering
         }
-
-
-
-
-
 
 
 
         // Function to attach event listeners
         function attachScoreListeners() {
-            alert('attachscor');
+            // Attach input listeners to all score inputs
             document.querySelectorAll('.team-score').forEach(input => {
                 input.addEventListener('input', function () {
-                    console.log('Input changed on:', this); // Debug
-                    const bracketBox = this.closest('.bracketbox');
-                    if (bracketBox) {
-                        console.log('Bracket box found:', bracketBox); // Debug
-                        propagateWinner(bracketBox);
-                    } else {
-                        console.log('Bracket box not found!');
-                    }
+                    highlightWinners(); // Check and highlight winners after every score update
                 });
             });
         }
+
 
 
 
@@ -815,86 +780,64 @@
             return Object.values(rounds);
         }
 
+        // function propagateWinner(bracketBox) {
+        //     const bracketNo = parseInt(bracketBox.dataset.bracketNo);
+        //     const currentRound = parseInt(bracketBox.dataset.round);
 
+        //     const teamAScore = parseInt(bracketBox.querySelector('.team:nth-child(1) .team-score').value) || 0;
+        //     const teamBScore = parseInt(bracketBox.querySelector('.team:nth-child(2) .team-score').value) || 0;
 
-        // function transformBracketData(data) {
-        //     const rounds = {};
+        //     const winnerIndex = teamAScore > teamBScore ? 0 : 1;
+        //     const winnerName = bracketBox.querySelector(`.team:nth-child(${winnerIndex + 1}) .team-name`).textContent;
 
-        //     // Group matches by round number
-        //     data.forEach(match => {
-        //         if (!rounds[match.roundNo]) {
-        //             rounds[match.roundNo] = [];
-        //         }
-        //         rounds[match.roundNo].push({
-        //             teamA: { name: match.teamAName || 'TBD', score: match.teamAScore || 0 },
-        //             teamB: { name: match.teamBName || 'TBD', score: match.teamBScore || 0 },
-        //             winner: null, // Placeholder for winner
-        //             bracketNo: match.bracketNo, // Track match ID
-        //         });
-        //     });
+        //     // Update the winner in the Transformed Bracket Structure
+        //     const currentMatch = transformedStructure[currentRound - 1].find(match => match.bracketNo === bracketNo);
+        //     currentMatch.winner = winnerName;
 
-        //     // Convert rounds object to an array of arrays
-        //     const roundArray = Object.values(rounds);
+        //     // Propagate winner to the next round (if applicable)
+        //     if (currentRound < transformedStructure.length) {
+        //         const nextMatch = transformedStructure[currentRound][Math.floor((bracketNo - 1) / 2)];
+        //         const nextTeamIndex = (bracketNo - 1) % 2;
 
-        //     // Dynamically populate the next round's teams based on winners
-        //     for (let i = 0; i < roundArray.length - 1; i++) {
-        //         const currentRound = roundArray[i];
-        //         const nextRound = roundArray[i + 1];
-
-        //         // Populate the next round teams
-        //         for (let j = 0; j < currentRound.length; j += 2) {
-        //             const matchA = currentRound[j];
-        //             const matchB = currentRound[j + 1];
-
-        //             // Fetch the winners from the current matches
-        //             const winnerA = matchA.teamA.score > matchA.teamB.score ? matchA.teamA : matchA.teamB;
-        //             const winnerB = matchB.teamA.score > matchB.teamB.score ? matchB.teamA : matchB.teamB;
-
-        //             // Use backend data to populate the next round (ensure names and scores are correct)
-        //             const nextMatch = data.find(
-        //                 m => m.roundNo === i + 2 && m.bracketNo === Math.floor(j / 2) + 1
-        //             );
-
-        //             nextRound[Math.floor(j / 2)] = {
-        //                 teamA: {
-        //                     name: nextMatch ? nextMatch.teamAName : winnerA.name || 'TBD', // Use backend name or winner name
-        //                     score: nextMatch ? nextMatch.teamAScore : 0, // Use backend score or reset to 0
-        //                 },
-        //                 teamB: {
-        //                     name: nextMatch ? nextMatch.teamBName : winnerB.name || 'TBD', // Use backend name or winner name
-        //                     score: nextMatch ? nextMatch.teamBScore : 0, // Use backend score or reset to 0
-        //                 },
-        //                 winner: null, // Placeholder for winner
-        //                 bracketNo: Math.floor(j / 2) + 1, // Assign correct bracket number
-        //             };
+        //         if (nextMatch) {
+        //             nextMatch[nextTeamIndex === 0 ? 'teamA' : 'teamB'] = { name: winnerName, score: 0 }; // Reset score
         //         }
         //     }
 
-        //     return roundArray;
+        //     // Re-render the brackets
+        //     renderBracket11(transformedStructure);
+           
         // }
 
-
-
-
-
-
-
-
         function propagateWinner(bracketBox) {
+            const teamAElement = bracketBox.querySelector('.team:nth-child(1)');
+            const teamBElement = bracketBox.querySelector('.team:nth-child(2)');
+            const teamAScore = parseInt(teamAElement.querySelector('.team-score').value) || 0;
+            const teamBScore = parseInt(teamBElement.querySelector('.team-score').value) || 0;
+
+            // Determine winner and apply corresponding class
+            if (teamAScore > teamBScore) {
+                bracketBox.classList.add('winner-a');
+                bracketBox.classList.remove('winner-b');
+            } else if (teamBScore > teamAScore) {
+                bracketBox.classList.add('winner-b');
+                bracketBox.classList.remove('winner-a');
+            } else {
+                // Remove highlight if scores are equal
+                bracketBox.classList.remove('winner-a', 'winner-b');
+            }
+
+            // Propagate the winner to the next round
             const bracketNo = parseInt(bracketBox.dataset.bracketNo);
             const currentRound = parseInt(bracketBox.dataset.round);
 
-            const teamAScore = parseInt(bracketBox.querySelector('.team:nth-child(1) .team-score').value) || 0;
-            const teamBScore = parseInt(bracketBox.querySelector('.team:nth-child(2) .team-score').value) || 0;
+            const winnerName = teamAScore > teamBScore
+                ? teamAElement.querySelector('.team-name').textContent
+                : teamBElement.querySelector('.team-name').textContent;
 
-            const winnerIndex = teamAScore > teamBScore ? 0 : 1;
-            const winnerName = bracketBox.querySelector(`.team:nth-child(${winnerIndex + 1}) .team-name`).textContent;
-
-            // Update the winner in the Transformed Bracket Structure
             const currentMatch = transformedStructure[currentRound - 1].find(match => match.bracketNo === bracketNo);
             currentMatch.winner = winnerName;
 
-            // Propagate winner to the next round (if applicable)
             if (currentRound < transformedStructure.length) {
                 const nextMatch = transformedStructure[currentRound][Math.floor((bracketNo - 1) / 2)];
                 const nextTeamIndex = (bracketNo - 1) % 2;
@@ -906,8 +849,12 @@
 
             // Re-render the brackets
             renderBracket11(transformedStructure);
+            highlightWinners(); // Ensure winners are highlighted initially
+            attachScoreListeners();
         }
 
+        
+       
 
 
         function enableNextRoundIfComplete(currentRound) {
@@ -926,6 +873,34 @@
             }
         }
 
+
+        function highlightWinners() {
+            // Select all bracket boxes
+            const allBrackets = document.querySelectorAll('.bracketbox');
+
+            allBrackets.forEach(bracketBox => {
+                const teamAElement = bracketBox.querySelector('.team-a');
+                const teamBElement = bracketBox.querySelector('.team-b');
+
+                // Get scores from the inputs
+                const teamAScore = parseInt(teamAElement.querySelector('.team-score').value) || 0;
+                const teamBScore = parseInt(teamBElement.querySelector('.team-score').value) || 0;
+
+                // Remove previous winner classes
+                bracketBox.classList.remove('winner-a', 'winner-b');
+
+                // Highlight the winner
+                if (teamAScore > teamBScore) {
+                    bracketBox.classList.add('winner-a');
+                } else if (teamBScore > teamAScore) {
+                    bracketBox.classList.add('winner-b');
+                }
+            });
+        }
+
+
+
+        
 
     </script>
     
