@@ -567,60 +567,40 @@ namespace TournamentProject.Controllers
         }
 
 
-        [HttpPost]
-        [Route("Admin/SaveBracketData")]
-        public IActionResult SaveBracketData([FromBody] SaveBracketRequest request)
+
+
+        public JsonResult GetSavedTournaments()
         {
-            string tournamentName = request.TournamentName;
-            List<Bracket> brackets = request.Brackets;
-
-
-            if (brackets == null || brackets.Count == 0)
-            {
-                return BadRequest("No data received.");
-            }
-
-
-            // For each match:
-            foreach (var match in brackets)
-            {
-                var matchEntity = new MatchEntity
-                {
-                    TournamentName = tournamentName,
-                    BracketNo = match.BracketNo,
-                    RoundNo = match.RoundNo,
-                    TeamAName = match.Teamnames?.Length > 0 ? match.Teamnames[0] : null,
-                    TeamBName = match.Teamnames?.Length > 1 ? match.Teamnames[1] : null,
-                    TeamAScore = match.Scores?.Length > 0 ? match.Scores[0] : 0,
-                    TeamBScore = match.Scores?.Length > 0 ? match.Scores[1] : 0,
-                    NextGameId = match.NextGame,
-                    // handle LastGames: store them as JSON or another relationship.
-                };
-
-                // Insert or update matchEntity in DB
-                _dbContext!.Matches.Add(matchEntity); // pseudo code
-            }
-
-            // Save changes
-            _dbContext!.SaveChanges();
-
-            return Ok(new { message = "Bracket saved successfully" });
-        }
-
-        public IActionResult GetSavedBrackets()
-        {
-            var brackets = _dbContext!.Matches
-                .GroupBy(b => b.TournamentName) // Group by TournamentName
+            var tournaments = _dbContext.Matches // Replace Matches with your actual table if different
+                .GroupBy(m => m.TournamentName)
                 .Select(g => new
                 {
-                    Id = g.First().Id,           // Take the first Id from the group
-                    TournamentName = g.Key       // Use the key (TournamentName)
+                    TournamentName = g.Key // Ensure this matches your database column
                 })
                 .ToList();
 
-            return Ok(brackets);
+            return Json(tournaments);
         }
 
+
+        private static string GetAgeGroupFromTournamentName(string tournamentName)
+        {
+            // Assuming the format "weightClass-gender-ageGroup"
+            var parts = tournamentName.Split('-');
+            return parts.Length == 3 ? parts[2] : string.Empty;
+        }
+
+        private static string GetGenderFromTournamentName(string tournamentName)
+        {
+            var parts = tournamentName.Split('-');
+            return parts.Length == 3 ? parts[1] : string.Empty;
+        }
+
+        private static string GetWeightClassFromTournamentName(string tournamentName)
+        {
+            var parts = tournamentName.Split('-');
+            return parts.Length == 3 ? parts[0] : string.Empty;
+        }
 
         [HttpGet]
         [Route("Admin/CheckTournamentExists")]
@@ -637,122 +617,23 @@ namespace TournamentProject.Controllers
             return Ok(exists);
         }
 
-        [HttpGet]
-        [Route("Admin/RetrieveBracket")]
-        public IActionResult RetrieveBracket(string tournamentName)
-        {
-            if (string.IsNullOrWhiteSpace(tournamentName))
-            {
-                return BadRequest("Tournament name is required.");
-            }
 
-            // Fetch all rows for the given tournament name
-            var brackets = _dbContext.Matches // Replace "Matches" with your actual table name
+        public JsonResult LoadTournament(string tournamentName)
+        {
+            var matches = _dbContext.Matches
                 .Where(m => m.TournamentName == tournamentName)
                 .Select(m => new
                 {
                     m.BracketNo,
                     m.RoundNo,
-                    m.TeamAName,
-                    m.TeamBName,
-                    m.TeamAScore,
-                    m.TeamBScore,
+                    TeamNames = new[] { m.TeamAName, m.TeamBName },
+                    Scores = new[] { m.TeamAScore, m.TeamBScore },
                     m.NextGameId
                 })
                 .ToList();
 
-            if (brackets == null || brackets.Count == 0)
-            {
-                return NotFound("No brackets found for the specified tournament.");
-            }
-
-            return Ok(brackets); // Return all rows for the given tournament name
+            return Json(matches);
         }
-
-
-
-
-        public IActionResult UpdateBracketes([FromBody] SaveBracketRequest request)
-        {
-            var touname = request.TournamentName;
-            var updatedBrackets = request.Brackets;
-            var matchesToRemove = _dbContext.Matches
-    .Where(p => p.TournamentName == touname)
-    .ToList();
-
-            if (matchesToRemove.Any())
-            {
-                _dbContext.Matches.RemoveRange(matchesToRemove);
-                _dbContext.SaveChanges();
-            }
-
-            foreach (var match in updatedBrackets)
-            {
-                var matchEntity = new MatchEntity
-                {
-                    TournamentName = touname,
-                    BracketNo = match.BracketNo,
-                    RoundNo = match.RoundNo,
-                    TeamAName = match.Teamnames?.Length > 0 ? match.Teamnames[0] : null,
-                    TeamBName = match.Teamnames?.Length > 1 ? match.Teamnames[1] : null,
-                    TeamAScore = match.Scores?.Length > 0 ? match.Scores[0] : 0,
-                    TeamBScore = match.Scores?.Length > 0 ? match.Scores[1] : 0,
-                    NextGameId = match.NextGame,
-                    // handle LastGames: store them as JSON or another relationship.
-                };
-
-                // Insert or update matchEntity in DB
-                _dbContext!.Matches.Add(matchEntity); // pseudo code
-            }
-            _dbContext.SaveChanges();
-
-            return Ok(new { message = "Bracket updated successfully." });
-
-
-
-        }
-
-
-
-
-
-        [HttpDelete]
-        public async Task<IActionResult> DeleteTournament([FromBody] TournamentNameDto request)
-        {
-            if (request == null || string.IsNullOrEmpty(request.TournamentName))
-            {
-                return BadRequest(new { message = "Tournament name is required." });
-            }
-
-            try
-            {
-                var playersToDelete = _dbContext.Matches
-                    .Where(p => p.TournamentName.Trim().ToLower() == request.TournamentName.Trim().ToLower())
-                    .ToList();
-
-                if (!playersToDelete.Any())
-                {
-                    return NotFound(new { message = $"No players found for tournament '{request.TournamentName}'." });
-                }
-
-                _dbContext.Matches.RemoveRange(playersToDelete);
-                await _dbContext.SaveChangesAsync();
-
-                return Ok(new
-                {
-                    message = $"Successfully deleted all players for tournament '{request.TournamentName}'.",
-                    deletedCount = playersToDelete.Count
-                });
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error deleting tournament: {ex.Message}");
-                return StatusCode(500, new { message = "An error occurred while deleting the tournament.", error = ex.Message });
-            }
-        }
-
-
-
     }
 
 
