@@ -669,6 +669,15 @@
                         });
                     });
                 }
+
+                if (isFromDatabase) {
+                    document.querySelectorAll('.team-score').forEach(input => {
+                        input.addEventListener('change', function () {
+                            updateBracket(this.closest('.bracketbox'));
+                        });
+                    });
+                }
+
             }
 
             
@@ -738,8 +747,8 @@
                         tournamentList.innerHTML = ''; // Clear existing content
 
                         tournaments.forEach(tournament => {
-                            if (!tournament.TournamentName) {
-                                console.warn('Missing TournamentName for:', tournament); // Log any missing names
+                            if (!tournament.tournamentName) {
+                                console.warn('Missing tournamentName for:', tournament); // Log any missing names
                             }
 
                             const listItem = document.createElement('li');
@@ -758,9 +767,18 @@
                                 loadTournament(tournament.tournamentName);
                             });
 
+                            // Add the button to delete the tournament
+                            const deleteButton = document.createElement('button');
+                            deleteButton.className = 'btn btn-danger btn-sm ms-2'; // Add spacing between buttons
+                            deleteButton.textContent = 'حذف';
+                            deleteButton.addEventListener('click', () => {
+                                deleteTournament(tournament.tournamentName);
+                            });
+
                             // Append elements to the list item
                             listItem.appendChild(tournamentNameSpan);
                             listItem.appendChild(loadButton);
+                            listItem.appendChild(deleteButton);
 
                             // Append the list item to the modal
                             tournamentList.appendChild(listItem);
@@ -768,6 +786,7 @@
                     })
                     .catch(error => console.error('Error fetching tournaments:', error));
             });
+
 
             function loadTournament(tournamentName) {
                 fetch(`/Admin/LoadTournament?tournamentName=${encodeURIComponent(tournamentName)}`)
@@ -809,7 +828,41 @@
 
 
         
+        function deleteTournament(tournamentName) {
+            if (!confirm(`آیا از حذف جدول '${tournamentName}' اطمینان دارید؟`)) {
+                return; // Exit if the user cancels the confirmation dialog
+            }
 
+            const requestData = {
+                TournamentName: tournamentName
+            };
+
+            fetch('/Admin/DeleteTournament', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(error => {
+                            console.error('Error deleting tournament:', error);
+                            throw new Error(error.message || 'Unknown error');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    alert(result.message);
+                    // Reload the tournament list to reflect changes
+                    document.getElementById('viewTablesButton').click();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(`حذف جدول شکست خورد: ${error.message}`);
+                });
+        }
 
 
 

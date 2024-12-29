@@ -634,6 +634,82 @@ namespace TournamentProject.Controllers
 
             return Json(matches);
         }
+
+        [HttpPost]
+        [Route("Admin/SaveBracketData")]
+        public IActionResult SaveBracketData([FromBody] SaveBracketRequest request)
+        {
+            string tournamentName = request.TournamentName;
+            List<Bracket> brackets = request.Brackets;
+
+
+            if (brackets == null || brackets.Count == 0)
+            {
+                return BadRequest("No data received.");
+            }
+
+
+            // For each match:
+            foreach (var match in brackets)
+            {
+                var matchEntity = new MatchEntity
+                {
+                    TournamentName = tournamentName,
+                    BracketNo = match.BracketNo,
+                    RoundNo = match.RoundNo,
+                    TeamAName = match.Teamnames?.Length > 0 ? match.Teamnames[0] : null,
+                    TeamBName = match.Teamnames?.Length > 1 ? match.Teamnames[1] : null,
+                    TeamAScore = match.Scores?.Length > 0 ? match.Scores[0] : 0,
+                    TeamBScore = match.Scores?.Length > 0 ? match.Scores[1] : 0,
+                    NextGameId = match.NextGame,
+                    // handle LastGames: store them as JSON or another relationship.
+                };
+
+                // Insert or update matchEntity in DB
+                _dbContext!.Matches.Add(matchEntity); // pseudo code
+            }
+
+            // Save changes
+            _dbContext!.SaveChanges();
+
+            return Ok(new { message = "Bracket saved successfully" });
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteTournament([FromBody] TournamentNameDto request)
+        {
+            if (request == null || string.IsNullOrEmpty(request.TournamentName))
+            {
+                return BadRequest(new { message = "Tournament name is required." });
+            }
+
+            try
+            {
+                var playersToDelete = _dbContext.Matches
+                    .Where(p => p.TournamentName.Trim().ToLower() == request.TournamentName.Trim().ToLower())
+                    .ToList();
+
+                if (!playersToDelete.Any())
+                {
+                    return NotFound(new { message = $"No players found for tournament '{request.TournamentName}'." });
+                }
+
+                _dbContext.Matches.RemoveRange(playersToDelete);
+                await _dbContext.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    message = $"Successfully deleted all players for tournament '{request.TournamentName}'.",
+                    deletedCount = playersToDelete.Count
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting tournament: {ex.Message}");
+                return StatusCode(500, new { message = "An error occurred while deleting the tournament.", error = ex.Message });
+            }
+        }
+
     }
 
 
