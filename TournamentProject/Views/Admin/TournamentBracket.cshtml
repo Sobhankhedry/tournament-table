@@ -249,22 +249,22 @@
             document.getElementById('ageGroup').addEventListener('change', updateGender);
             document.getElementById('gender').addEventListener('change', updateWeightClass);
             document.getElementById('weightClass').addEventListener('change', function () {
-                
+
             });
             document.getElementById('printButton').addEventListener('click', printBracket);
 
 
-   
+
 
 
             document.getElementById('createBracketButton').addEventListener('click', function () {
                 const ageGroup = document.getElementById('ageGroup').value;
                 const gender = document.getElementById('gender').value;
                 const weightClass = document.getElementById('weightClass').value;
-                const tournamentName = `${weightClass}-${gender}-${ageGroup}`; 
+                const tournamentName = `${weightClass}-${gender}-${ageGroup}`;
 
                 if (ageGroup && gender && weightClass) {
-                   
+
                     fetch(`/Admin/CheckTournamentExists?tournamentName=${encodeURIComponent(tournamentName)}`)
                         .then(response => {
                             if (!response.ok) {
@@ -273,13 +273,13 @@
                             return response.json();
                         })
                         .then(exists => {
-                            console.log("Tournament exists:", exists); 
+                            console.log("Tournament exists:", exists);
                             if (exists) {
                                 alert('A tournament with this name already exists. Please choose a different combination.');
-                                return; 
+                                return;
                             }
 
-                           
+
                             fetch(`/Admin/GetPlayersForTournament?ageGroup=${encodeURIComponent(ageGroup)}&weightClass=${encodeURIComponent(weightClass)}&gender=${encodeURIComponent(gender)}`)
                                 .then(response => {
                                     if (!response.ok) {
@@ -290,12 +290,12 @@
                                 .then(players => {
                                     console.log('Players received:', players);
 
-                                    
+
                                     generateBracket(players);
 
-                                    
+
                                     const saveBracketButton = document.getElementById('saveBracketButton');
-                                    saveBracketButton.style.display = 'block';  
+                                    saveBracketButton.style.display = 'block';
                                     const updateBracketButton = document.getElementById('updateBracketButton');
                                     updateBracketButton.style.display = 'none';
                                 })
@@ -312,7 +312,7 @@
             });
 
 
-            
+
             document.getElementById('saveBracketButton').addEventListener('click', function () {
                 if (!currentStruct || currentStruct.length === 0) {
                     alert('No bracket data to save.');
@@ -323,38 +323,38 @@
                 const gender = document.getElementById('gender').value.trim();
                 const weightClass = document.getElementById('weightClass').value.trim();
 
-                
+
                 const tournamentName = `${weightClass}-${gender}-${ageGroup}`;
                 console.log(tournamentName)
-                
+
                 document.querySelectorAll('.bracketbox').forEach(box => {
                     const bracketNo = parseInt(box.dataset.bracketNo, 10);
 
-                    
+
                     const match = currentStruct.find(m => m.bracketNo === bracketNo);
                     if (!match) {
                         console.warn(`No match found for bracketNo: ${bracketNo}`);
                         return;
                     }
 
-                    
+
                     const scoreA = parseInt(box.querySelector('.team:nth-child(1) .team-score').value, 10) || 0;
                     const scoreB = parseInt(box.querySelector('.team:nth-child(2) .team-score').value, 10) || 0;
 
-                    
+
                     match.scores = [scoreA, scoreB];
                 });
 
-                
+
                 propagateWinnersToNextRounds(currentStruct);
                 const dataToSave = {
                     tournamentName: tournamentName,
                     brackets: currentStruct
                 };
 
-                console.log('Bracket structure to save:', JSON.stringify(dataToSave, null, 2)); 
+                console.log('Bracket structure to save:', JSON.stringify(dataToSave, null, 2));
 
-             
+
                 fetch('/Admin/SaveBracketData', {
                     method: 'POST',
                     headers: {
@@ -378,7 +378,7 @@
                     });
             });
 
-            
+
             function propagateWinnersToNextRounds(brackets) {
                 for (let i = 0; i < brackets.length - 1; i++) {
                     const currentRoundMatches = brackets.filter(m => m.roundNo === i + 1);
@@ -463,7 +463,7 @@
                 currentStruct = getBracket(totalPlayers, normalizedPlayers);
                 console.log('Generated bracket structure:', currentStruct); // Debugging log
                 document.getElementById('brackets').innerHTML = '';
-                renderBrackets(currentStruct , false); // Call the renderBrackets function
+                renderBrackets(currentStruct, false); // Call the renderBrackets function
             }
 
 
@@ -516,6 +516,75 @@
             }
 
 
+            // function renderBrackets(struct) {
+            //     alert('loged')
+            //     console.log('Rendering brackets with struct:', struct);
+            //     struct.forEach((match, index) => {
+            //         console.log(`Match ${index}:`, match);
+            //         console.log(`BracketNo: ${match.bracketNo}`);
+            //         console.log(`RoundNo: ${match.roundNo}`);
+            //         console.log(`TeamNames: ${match.teamNames}`);
+            //         console.log(`Scores: ${match.scores}`);
+            //     });
+
+            //     let groupCount = [...new Set(struct.map(s => s.roundNo))].length;
+
+            //     let bracketsContainer = document.getElementById('brackets');
+            //     bracketsContainer.innerHTML = '';
+
+            //     for (let g = 1; g <= groupCount; g++) {
+            //         let round = document.createElement('div');
+            //         round.className = `round round-${g}`;
+
+            //         struct.filter(s => s.roundNo === g).forEach(gg => {
+            //             if (gg.bye) {
+            //                 let byeDiv = document.createElement('div');
+            //                 byeDiv.className = 'bye';
+            //                 round.appendChild(byeDiv);
+            //             } else {
+            //                 let bracketBox = document.createElement('div');
+            //                 bracketBox.className = 'bracketbox';
+            //                 bracketBox.dataset.bracketNo = gg.bracketNo;
+            //                 bracketBox.dataset.round = g;
+
+            //                 bracketBox.innerHTML = `
+            //                         <div class="team team-a">
+            //                             <span class="team-name">${gg.teamnames[0]}</span>
+            //                             <input type="number" class="team-score" value="${gg.scores[0]}" min="0" data-team="0" ${g > 1 ? 'disabled' : ''}>
+            //                         </div>
+            //                         <div class="team team-b">
+            //                             <span class="team-name">${gg.teamnames[1]}</span>
+            //                             <input type="number" class="team-score" value="${gg.scores[1]}" min="0" data-team="1" ${g > 1 ? 'disabled' : ''}>
+            //                         </div>
+            //                     `;
+
+            //                 round.appendChild(bracketBox);
+            //             }
+            //         });
+
+            //         bracketsContainer.appendChild(round);
+            //     }
+
+            //     let finalRound = document.createElement('div');
+            //     finalRound.className = 'round final';
+            //     finalRound.innerHTML = `
+            //             <div class="bracketbox winner">
+            //                 <div class="team">
+            //                     <span class="team-name"></span>
+            //                     <i class="fas fa-trophy trophy"></i>
+            //                 </div>
+            //             </div>
+            //         `;
+            //     bracketsContainer.appendChild(finalRound);
+
+            //     document.querySelectorAll('.team-score').forEach(input => {
+            //         input.addEventListener('change', function () {
+            //             updateBracket(this.closest('.bracketbox'));
+            //         });
+            //     });
+            // }
+
+
             function renderBrackets(struct, isFromDatabase = false) {
                 console.log('Rendering brackets with struct:', struct);
                 console.log('Is from database:', isFromDatabase);
@@ -529,33 +598,51 @@
                     round.className = `round round-${g}`;
 
                     struct.filter(s => s.roundNo === g).forEach(gg => {
-                        let bracketBox = document.createElement('div');
-                        bracketBox.className = 'bracketbox';
-                        bracketBox.dataset.bracketNo = gg.bracketNo;
-                        bracketBox.dataset.round = g;
+                        if (!isFromDatabase && gg.bye) {
+                            // Handle "bye" matches when creating a new bracket
+                            let byeDiv = document.createElement('div');
+                            byeDiv.className = 'bye';
+                            round.appendChild(byeDiv);
+                        } else {
+                            let bracketBox = document.createElement('div');
+                            bracketBox.className = 'bracketbox';
+                            bracketBox.dataset.bracketNo = gg.bracketNo;
+                            bracketBox.dataset.round = g;
 
-                        const teamNames = Array.isArray(gg.teamNames) ? gg.teamNames : gg.teamNames?.split(',');
-                        const teamA = teamNames?.[0] || '';
-                        const teamB = teamNames?.[1] || '';
-                        const scoreA = gg.scores?.[0] || 0;
-                        const scoreB = gg.scores?.[1] || 0;
+                            // Use different logic depending on whether it's from the database
+                            if (isFromDatabase) {
+                                // When retrieving data from the database
+                                const teamNames = typeof gg.teamNames === 'string' ? gg.teamNames.split(',') : gg.teamNames;
+                                const teamA = teamNames?.[0] || 'TBD';
+                                const teamB = teamNames?.[1] || 'TBD';
+                                const scoreA = gg.scores?.[0] || 0;
+                                const scoreB = gg.scores?.[1] || 0;
 
-                        bracketBox.innerHTML = `
-                        <div class="team team-a">
-                            <span class="team-name">${teamA}</span>
-                            <input type="number" class="team-score" value="${scoreA}" min="0" data-team="0" >
-                        </div>
-                        <div class="team team-b">
-                            <span class="team-name">${teamB}</span>
-                            <input type="number" class="team-score" value="${scoreB}" min="0" data-team="1" >
-                        </div>
-                    `;
+                                bracketBox.innerHTML = `
+                                        <div class="team team-a">
+                                            <span class="team-name">${teamA}</span>
+                                            <input type="number" class="team-score" value="${scoreA}" min="0" data-team="0">
+                                        </div>
+                                        <div class="team team-b">
+                                            <span class="team-name">${teamB}</span>
+                                            <input type="number" class="team-score" value="${scoreB}" min="0" data-team="1">
+                                        </div>
+                                    `;
+                            } else {
+                                // When creating a new bracket
+                                bracketBox.innerHTML = `
+                                        <div class="team team-a">
+                                            <span class="team-name">${gg.teamnames[0]}</span>
+                                            <input type="number" class="team-score" value="${gg.scores[0]}" min="0" data-team="0" ${g > 1 ? 'disabled' : ''}>
+                                        </div>
+                                        <div class="team team-b">
+                                            <span class="team-name">${gg.teamnames[1]}</span>
+                                            <input type="number" class="team-score" value="${gg.scores[1]}" min="0" data-team="1" ${g > 1 ? 'disabled' : ''}>
+                                        </div>
+                                    `;
+                            }
 
-                        round.appendChild(bracketBox);
-
-                        // If data is retrieved from the database, highlight the winner immediately
-                        if (isFromDatabase) {
-                            setTimeout(() => updateBracket(bracketBox), 0); // Ensure DOM is ready before updating
+                            round.appendChild(bracketBox);
                         }
                     });
 
@@ -565,16 +652,16 @@
                 let finalRound = document.createElement('div');
                 finalRound.className = 'round final';
                 finalRound.innerHTML = `
-                <div class="bracketbox winner">
-                    <div class="team">
-                        <span class="team-name"></span>
-                        <i class="fas fa-trophy trophy"></i>
-                    </div>
-                </div>
-            `;
+                        <div class="bracketbox winner">
+                            <div class="team">
+                                <span class="team-name"></span>
+                                <i class="fas fa-trophy trophy"></i>
+                            </div>
+                        </div>
+                    `;
                 bracketsContainer.appendChild(finalRound);
 
-                // Add event listeners for score inputs
+                // Add event listeners for score inputs when creating a new bracket
                 if (!isFromDatabase) {
                     document.querySelectorAll('.team-score').forEach(input => {
                         input.addEventListener('change', function () {
@@ -584,113 +671,45 @@
                 }
 
                 if (isFromDatabase) {
-                            document.querySelectorAll('.team-score').forEach(input => {
-                                input.addEventListener('change', function () {
-                                    updateBracket(this.closest('.bracketbox'));
-                                });
-                            });
-                        }
+                    document.querySelectorAll('.team-score').forEach(input => {
+                        input.addEventListener('change', function () {
+                            updateBracket(this.closest('.bracketbox'));
+                        });
+                    });
+                }
+
             }
 
 
 
-           
 
-            // function updateBracket(bracketBox) {
-            //     let bracketNo = parseInt(bracketBox.dataset.bracketNo);
-            //     let scores = [
-            //         parseInt(bracketBox.querySelector('.team-a .team-score').value),
-            //         parseInt(bracketBox.querySelector('.team-b .team-score').value)
-            //     ];
-            //     let winner = scores[0] > scores[1] ? 0 : 1;
+            function updateBracket(bracketBox) {
+                let bracketNo = parseInt(bracketBox.dataset.bracketNo);
+                let scores = [
+                    parseInt(bracketBox.querySelector('.team-a .team-score').value),
+                    parseInt(bracketBox.querySelector('.team-b .team-score').value)
+                ];
+                let winner = scores[0] > scores[1] ? 0 : 1;
 
-            //     // Highlight the winner
-            //     bracketBox.classList.remove('winner-a', 'winner-b');
-            //     if (scores[0] !== scores[1]) { // Only highlight if there's a winner
-            //         bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
-            //     }
+                bracketBox.classList.remove('winner-a', 'winner-b');
+                bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
 
-            //     // Determine the winner's name
-            //     let winnerName = bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
+                let nextGame = currentStruct.find(s => s.lastGames && s.lastGames.includes(bracketNo));
+                if (nextGame) {
+                    let nextBracketBox = document.querySelector(`.bracketbox[data-bracket-no="${nextGame.bracketNo}"]`);
+                    let winnerIndex = nextGame.lastGames.indexOf(bracketNo);
+                    nextBracketBox.querySelector(`.team:nth-child(${winnerIndex + 1}) .team-name`).textContent =
+                        bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
+                }
 
-            //     // Propagate the winner to the next game if this bracket has a nextGame
-            //     let nextGame = currentStruct.find(s => s.lastGames && s.lastGames.includes(bracketNo));
-            //     if (nextGame) {
-            //         let nextBracketBox = document.querySelector(`.bracketbox[data-bracket-no="${nextGame.bracketNo}"]`);
-            //         let winnerIndex = nextGame.lastGames.indexOf(bracketNo);
+                if (bracketNo === currentStruct.length) {
+                    document.querySelector('.final .team-name').textContent =
+                        bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
+                }
 
-            //         // Update the next match with the new winner
-            //         let nextTeamElement = nextBracketBox.querySelector(`.team:nth-child(${winnerIndex + 1}) .team-name`);
-            //         let oldWinnerName = nextTeamElement.textContent;
-
-            //         if (oldWinnerName !== winnerName) {
-            //             nextTeamElement.textContent = winnerName;
-
-            //             // Recursively update the next rounds
-            //             updateBracket(nextBracketBox);
-            //         }
-            //     }
-
-            //     // Check if it's the final match and update the final round winner
-            //     const finalMatch = currentStruct.find(m => !m.nextGame);
-            //     if (finalMatch && finalMatch.bracketNo === bracketNo) {
-            //         document.querySelector('.final .team-name').textContent = winnerName;
-            //     }
-
-            //     // Enable the next round when all scores in the current round are entered
-            //     let currentRound = parseInt(bracketBox.dataset.round);
-            //     checkAndEnableNextRound(currentRound);
-            // }
-
-
-            // function updateBracket(bracketBox) {
-            //     let bracketNo = parseInt(bracketBox.dataset.bracketNo);
-            //     let scores = [
-            //         parseInt(bracketBox.querySelector('.team-a .team-score').value),
-            //         parseInt(bracketBox.querySelector('.team-b .team-score').value)
-            //     ];
-            //     let winner = scores[0] > scores[1] ? 0 : 1;
-
-            //     // Highlight the winner
-            //     bracketBox.classList.remove('winner-a', 'winner-b');
-            //     if (scores[0] !== scores[1]) { // Only highlight if there's a winner
-            //         bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
-            //     }
-
-            //     // Determine the winner's name
-            //     let winnerName = bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
-
-            //     // Propagate the winner to the next game if this bracket has a nextGame
-            //     let nextGame = currentStruct.find(s => s.lastGames && s.lastGames.includes(bracketNo));
-            //     if (nextGame) {
-            //         let nextBracketBox = document.querySelector(`.bracketbox[data-bracket-no="${nextGame.bracketNo}"]`);
-            //         let winnerIndex = nextGame.lastGames.indexOf(bracketNo);
-
-            //         // Update the next match with the new winner
-            //         let nextTeamElement = nextBracketBox.querySelector(`.team:nth-child(${winnerIndex + 1}) .team-name`);
-            //         let oldWinnerName = nextTeamElement.textContent;
-
-            //         if (oldWinnerName !== winnerName) {
-            //             nextTeamElement.textContent = winnerName;
-
-            //             // Recursively update subsequent rounds
-            //             updateBracket(nextBracketBox);
-            //         }
-            //     }
-
-            //     // Check if it's the final match and update the final round winner
-            //     const finalMatch = currentStruct.find(m => !m.nextGame);
-            //     if (finalMatch && finalMatch.bracketNo === bracketNo) {
-            //         document.querySelector('.final .team-name').textContent = winnerName;
-            //     }
-
-            //     // Enable the next round when all scores in the current round are entered
-            //     let currentRound = parseInt(bracketBox.dataset.round);
-            //     checkAndEnableNextRound(currentRound);
-            // }
-
-
-            
+                let currentRound = parseInt(bracketBox.dataset.round);
+                checkAndEnableNextRound(currentRound);
+            }
 
             function checkAndEnableNextRound(currentRound) {
                 let allScoresEntered = true;
@@ -780,7 +799,7 @@
 
                         // Use the fetched data to generate the bracket
                         currentStruct = tournamentData;
-                        renderBrackets(currentStruct , true);
+                        renderBrackets(currentStruct, true);
 
                         // Show the save button
                         document.getElementById('saveBracketButton').style.display = 'block';
@@ -799,80 +818,7 @@
             });
 
 
-            function updateBracket(bracketBox) {
-                const bracketNo = parseInt(bracketBox.dataset.bracketNo);
-                const scores = [
-                    parseInt(bracketBox.querySelector('.team-a .team-score').value),
-                    parseInt(bracketBox.querySelector('.team-b .team-score').value)
-                ];
-                const winner = scores[0] > scores[1] ? 0 : 1;
 
-                // Highlight the winner
-                bracketBox.classList.remove('winner-a', 'winner-b');
-                if (scores[0] !== scores[1]) { // Only highlight if there's a winner
-                    bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
-                }
-
-                // Determine the winner's name
-                const winnerName = bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
-
-                // Propagate the winner to the next game if this bracket has a nextGame
-                const nextGame = currentStruct.find(s => s.lastGames && s.lastGames.includes(bracketNo));
-                if (nextGame) {
-                    const nextBracketBox = document.querySelector(`.bracketbox[data-bracket-no="${nextGame.bracketNo}"]`);
-
-                    // Replace the old winner in the next match and recursively propagate changes
-                    propagateWinnerToNextRounds(winnerName, bracketNo, nextBracketBox);
-                }
-
-                // Check if it's the final match and update the final round winner
-                const finalMatch = currentStruct.find(m => !m.nextGame);
-                if (finalMatch && finalMatch.bracketNo === bracketNo) {
-                    document.querySelector('.final .team-name').textContent = winnerName;
-                }
-
-                // Enable the next round when all scores in the current round are entered
-                const currentRound = parseInt(bracketBox.dataset.round);
-                checkAndEnableNextRound(currentRound);
-            }
-
-
-
-
-
-            function propagateWinner(winnerName, nextBracketBox) {
-                if (!nextBracketBox) return; // Exit if there's no next bracket
-
-                // Identify which team slot in the next bracket this winner should occupy
-                const teamSlots = nextBracketBox.querySelectorAll('.team-name');
-
-                let replaced = false;
-                teamSlots.forEach((slot, index) => {
-                    if (!replaced && slot.textContent.trim() !== winnerName) {
-                        slot.textContent = winnerName; // Replace the name in the correct slot
-                        replaced = true; // Ensure only the correct slot is updated
-                    }
-                });
-
-                // Check if this bracket has a winner and highlight it
-                let scores = [
-                    parseInt(nextBracketBox.querySelector('.team-a .team-score').value) || 0,
-                    parseInt(nextBracketBox.querySelector('.team-b .team-score').value) || 0,
-                ];
-                const winnerIndex = scores[0] > scores[1] ? 0 : 1;
-
-                nextBracketBox.classList.remove('winner-a', 'winner-b');
-                if (scores[0] !== scores[1]) { // Only highlight if there's a winner
-                    nextBracketBox.classList.add(winnerIndex === 0 ? 'winner-a' : 'winner-b');
-                }
-
-                // Recursively propagate to the next round
-                const nextGame = currentStruct.find(s => s.lastGames && s.lastGames.includes(parseInt(nextBracketBox.dataset.bracketNo)));
-                if (nextGame) {
-                    const nextNextBracketBox = document.querySelector(`.bracketbox[data-bracket-no="${nextGame.bracketNo}"]`);
-                    propagateWinner(winnerName, nextNextBracketBox);
-                }
-            }
 
 
 
@@ -881,7 +827,7 @@
 
 
 
-        
+
         function deleteTournament(tournamentName) {
             if (!confirm(`آیا از حذف جدول '${tournamentName}' اطمینان دارید؟`)) {
                 return; // Exit if the user cancels the confirmation dialog
@@ -920,14 +866,8 @@
 
 
 
-
-        
-
-
-        
-
     </script>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.1/underscore-min.js"></script>
     <script src="script.js"></script>
