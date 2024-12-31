@@ -195,26 +195,7 @@
                 </button>
             </div>
         </div>
-        @* <div class="modal" id="bracketModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">نمایش جداول ذخیره‌شده</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <ul id="savedTournaments" class="list-group">
-                            <!-- Tournament items will be dynamically added here -->
-                        </ul>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="brackets" class="brackets mt-4"></div> *@
+       
         <div class="modal fade" id="bracketModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
@@ -516,73 +497,6 @@
             }
 
 
-            // function renderBrackets(struct) {
-            //     alert('loged')
-            //     console.log('Rendering brackets with struct:', struct);
-            //     struct.forEach((match, index) => {
-            //         console.log(`Match ${index}:`, match);
-            //         console.log(`BracketNo: ${match.bracketNo}`);
-            //         console.log(`RoundNo: ${match.roundNo}`);
-            //         console.log(`TeamNames: ${match.teamNames}`);
-            //         console.log(`Scores: ${match.scores}`);
-            //     });
-
-            //     let groupCount = [...new Set(struct.map(s => s.roundNo))].length;
-
-            //     let bracketsContainer = document.getElementById('brackets');
-            //     bracketsContainer.innerHTML = '';
-
-            //     for (let g = 1; g <= groupCount; g++) {
-            //         let round = document.createElement('div');
-            //         round.className = `round round-${g}`;
-
-            //         struct.filter(s => s.roundNo === g).forEach(gg => {
-            //             if (gg.bye) {
-            //                 let byeDiv = document.createElement('div');
-            //                 byeDiv.className = 'bye';
-            //                 round.appendChild(byeDiv);
-            //             } else {
-            //                 let bracketBox = document.createElement('div');
-            //                 bracketBox.className = 'bracketbox';
-            //                 bracketBox.dataset.bracketNo = gg.bracketNo;
-            //                 bracketBox.dataset.round = g;
-
-            //                 bracketBox.innerHTML = `
-            //                         <div class="team team-a">
-            //                             <span class="team-name">${gg.teamnames[0]}</span>
-            //                             <input type="number" class="team-score" value="${gg.scores[0]}" min="0" data-team="0" ${g > 1 ? 'disabled' : ''}>
-            //                         </div>
-            //                         <div class="team team-b">
-            //                             <span class="team-name">${gg.teamnames[1]}</span>
-            //                             <input type="number" class="team-score" value="${gg.scores[1]}" min="0" data-team="1" ${g > 1 ? 'disabled' : ''}>
-            //                         </div>
-            //                     `;
-
-            //                 round.appendChild(bracketBox);
-            //             }
-            //         });
-
-            //         bracketsContainer.appendChild(round);
-            //     }
-
-            //     let finalRound = document.createElement('div');
-            //     finalRound.className = 'round final';
-            //     finalRound.innerHTML = `
-            //             <div class="bracketbox winner">
-            //                 <div class="team">
-            //                     <span class="team-name"></span>
-            //                     <i class="fas fa-trophy trophy"></i>
-            //                 </div>
-            //             </div>
-            //         `;
-            //     bracketsContainer.appendChild(finalRound);
-
-            //     document.querySelectorAll('.team-score').forEach(input => {
-            //         input.addEventListener('change', function () {
-            //             updateBracket(this.closest('.bracketbox'));
-            //         });
-            //     });
-            // }
 
 
             function renderBrackets(struct, isFromDatabase = false) {
