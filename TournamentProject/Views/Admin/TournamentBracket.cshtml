@@ -641,6 +641,10 @@
             }
 
 
+
+
+
+
             function updateBracket(bracketBox) {
                 // Get the current bracket number and round number
                 let bracketNo = parseInt(bracketBox.dataset.bracketNo);
@@ -652,6 +656,16 @@
                     parseInt(bracketBox.querySelector('.team-a .team-score')?.value || 0),
                     parseInt(bracketBox.querySelector('.team-b .team-score')?.value || 0),
                 ];
+
+                // Check for a tie
+                if (scores[0] === scores[1]) {
+                    // Remove highlighting in case of a tie
+                    bracketBox.classList.remove('winner-a', 'winner-b');
+                    console.log(`Bracket ${bracketNo}, Round ${roundNo} - Tie detected! No winner.`);
+                    return; // Stop here as there's no winner to propagate
+                }
+
+                // Determine the winner
                 let winner = scores[0] > scores[1] ? 0 : 1;
 
                 // Highlight the winner in the current box
@@ -696,7 +710,6 @@
                     console.log(`Final winner updated: ${finalWinner}`);
                 }
             }
-
 
 
 
