@@ -643,8 +643,6 @@
 
 
 
-
-
             function updateBracket(bracketBox) {
                 // Get the current bracket number and round number
                 let bracketNo = parseInt(bracketBox.dataset.bracketNo);
@@ -652,10 +650,46 @@
 
                 console.log(`Updating Bracket: No = ${bracketNo}, Round = ${roundNo}`);
 
+                let teamA = bracketBox.querySelector('.team-a .team-name').textContent.trim();
+                let teamB = bracketBox.querySelector('.team-b .team-name').textContent.trim();
+
                 let scores = [
                     parseInt(bracketBox.querySelector('.team-a .team-score')?.value || 0),
                     parseInt(bracketBox.querySelector('.team-b .team-score')?.value || 0),
                 ];
+
+                // Special "Bye" logic only for Bracket No. 6
+                if (bracketNo === 6 && (!teamA || !teamB)) {
+                    let winner = teamA ? 0 : 1; // If Team A exists, they win; otherwise, Team B wins
+
+                    console.log(`Bracket ${bracketNo}, Round ${roundNo} - Bye detected! Winner is ${teamA || teamB}`);
+
+                    // Highlight the winner in the current box
+                    bracketBox.classList.remove('winner-a', 'winner-b');
+                    bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
+
+                    // Propagate the winner to the next round
+                    let nextBracketNo = 7; // Bracket 6 always feeds into Bracket 7
+                    console.log(`Looking for Next Bracket: Round ${roundNo + 1}, No ${nextBracketNo}`);
+
+                    let nextBracketBox = document.querySelector(
+                        `.bracketbox[data-round="${roundNo + 1}"][data-bracket-no="${nextBracketNo}"]`
+                    );
+
+                    if (nextBracketBox) {
+                        let winnerPosition = (bracketNo % 2 === 0) ? 2 : 1; // Even → Team B, Odd → Team A
+                        let winnerName = teamA || teamB;
+
+                        console.log(`Propagating winner (${winnerName}) to Bracket ${nextBracketNo} in Round ${roundNo + 1} at Position ${winnerPosition}`);
+                        nextBracketBox.querySelector(`.team:nth-child(${winnerPosition}) .team-name`).textContent = winnerName;
+
+                        updateBracket(nextBracketBox); // Recursively update the next bracket
+                    } else {
+                        console.warn(`No nextBracketBox found for Bracket ${bracketNo} in Round ${roundNo}`);
+                    }
+
+                    return; // Skip further processing for "bye" case
+                }
 
                 // Check for a tie
                 if (scores[0] === scores[1]) {
@@ -715,82 +749,14 @@
 
 
 
-            // function updateBracket(bracketBox) {
-            //     let bracketNo = parseInt(bracketBox.dataset.bracketNo);
-            //     let scores = [
-            //         parseInt(bracketBox.querySelector('.team-a .team-score')?.value || 0),
-            //         parseInt(bracketBox.querySelector('.team-b .team-score')?.value || 0),
-            //     ];
-            //     let winner = scores[0] > scores[1] ? 0 : 1;
 
-            //     // Highlight the winner in the current box
-            //     bracketBox.classList.remove('winner-a', 'winner-b');
-            //     bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
-
-            //     // Find the next bracket (in the next round) that depends on this match
-            //     let nextBracketBox = document.querySelector(
-            //         `.bracketbox[data-round="${parseInt(bracketBox.dataset.round) + 1}"][data-bracket-no="${Math.ceil(bracketNo / 2)}"]`
-            //     );
-
-            //     if (nextBracketBox) {
-            //         alert(winner)
-            //         // Determine which team position in the next bracket to update
-            //         let winnerPosition = (bracketNo % 2 === 0) ? 2 : 1; // Even bracketNo → Team B, Odd → Team A
-
-            //         // Log the propagation
-            //         console.log(`Propagating Winner from Bracket ${bracketNo} to Bracket ${Math.ceil(bracketNo / 2)} in Position ${winnerPosition}`);
-            //         console.log(`Winner Name: ${bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent}`);
-
-            //         // Update the winner's name in the next bracket
-            //         nextBracketBox.querySelector(`.team:nth-child(${winnerPosition}) .team-name`).textContent =
-            //             bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
-
-            //         // Recursively update the next bracket
-            //         updateBracket(nextBracketBox);
-            //     }
-
-            //     // Update the final winner box if this is the last bracket
-            //     if (!document.querySelector(`.bracketbox[data-round="${parseInt(bracketBox.dataset.round) + 1}"]`)) {
-            //         document.querySelector('.final .team-name').textContent =
-            //             bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
-            //         console.log(`Final Winner Updated: ${document.querySelector('.final .team-name').textContent}`);
-            //     }
-            // }
+           
 
 
 
-            // function updateBracket(bracketBox) {
-            //     let bracketNo = parseInt(bracketBox.dataset.bracketNo);
-            //     let scores = [
-            //         parseInt(bracketBox.querySelector('.team-a .team-score').value),
-            //         parseInt(bracketBox.querySelector('.team-b .team-score').value)
-            //     ];
-            //     let winner = scores[0] > scores[1] ? 0 : 1;
 
-            //     bracketBox.classList.remove('winner-a', 'winner-b');
-            //     bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
 
-            //     // Propagate the winner to the next match
-            //     let nextGame = currentStruct.find(s => s.lastGames && s.lastGames.includes(bracketNo));
-            //     if (nextGame) {
-            //         let nextBracketBox = document.querySelector(`.bracketbox[data-bracket-no="${nextGame.bracketNo}"]`);
-            //         let winnerIndex = nextGame.lastGames.indexOf(bracketNo);
-
-            //         // Overwrite the next bracket’s team name with the new winner
-            //         nextBracketBox.querySelector(`.team:nth-child(${winnerIndex + 1}) .team-name`).textContent =
-            //             bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
-            //     }
-
-            //     // If this bracket is the final bracket (e.g., bracketNo === currentStruct.length)
-            //     // then also show the trophy winner
-            //     if (bracketNo === currentStruct.length) {
-            //         document.querySelector('.final .team-name').textContent =
-            //             bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
-            //     }
-
-            //     let currentRound = parseInt(bracketBox.dataset.round);
-            //     checkAndEnableNextRound(currentRound);
-            // }
+           
 
 
 
