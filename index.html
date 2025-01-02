@@ -45,57 +45,35 @@
   <!-- Tournament banner -->
   <section class="announcements-section p-5 bg-dark accordion">
     <div class="container-fluid">
-      <div class="row justify-content-center mb-5">
-        <div class="col-lg-8 text-center">
-          <h2 class="section-title text-light">اطلاعیه ها</h2>
-          <div class="section-divider"></div>
-        </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-lg-10">
-          <div id="announcementsCarousel" class="carousel slide carousel-fade" data-ride="carousel">
-            <ol class="carousel-indicators list-unstyled">
-              <li data-target="#announcementsCarousel" data-slide-to="0" class="active"></li>
-              <li data-target="#announcementsCarousel" data-slide-to="1"></li>
-              <li data-target="#announcementsCarousel" data-slide-to="2"></li>
-            </ol>
-            <div class="carousel-inner">
-              <div class="carousel-item active text-center">
-                <img src="./bg.jpg" alt="First announcement" class="img-fluid d-block w-100" style="height: 700px;">
-                <div class="carousel-caption d-none d-md-block">
-                  <h3>عنوان اطلاعیه اول</h3>
-                  <p>توضیحات مربوط به اطلاعیه اول در اینجا قرار می‌گیرد.</p>
-                </div>
-              </div>
-              <div class="carousel-item text-center">
-                <img src="./images/p1.jpg" alt="Second announcement" class="img-fluid d-block w-100" style="height: 700px;">
-                <div class="carousel-caption d-none d-md-block">
-                  <h3>عنوان اطلاعیه دوم</h3>
-                  <p>توضیحات مربوط به اطلاعیه دوم در اینجا قرار می‌گیرد.</p>
-                </div>
-              </div>
-              <div class="carousel-item text-center">
-                <img src="./images/p2.jpg" alt="Third announcement" class="img-fluid d-block w-100" style="height: 700px;">
-                <div class="carousel-caption d-none d-md-block">
-                  <h3>عنوان اطلاعیه سوم</h3>
-                  <p>توضیحات مربوط به اطلاعیه سوم در اینجا قرار می‌گیرد.</p>
-                </div>
-              </div>
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="section-title text-light">اطلاعیه ها</h2>
+                <div class="section-divider"></div>
             </div>
-            <a class="carousel-control-prev" href="#announcementsCarousel" role="button" data-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="sr-only">قبلی</span>
-            </a>
-            <a class="carousel-control-next" href="#announcementsCarousel" role="button" data-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="sr-only">بعدی</span>
-            </a>
-          </div>
         </div>
-      </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div id="announcementsCarousel" class="carousel slide carousel-fade" data-ride="carousel">
+                    <ol class="carousel-indicators list-unstyled" id="carouselIndicators">
+                        <!-- banner will be dynamically added -->
+                    </ol>
+                    <div class="carousel-inner" id="carouselInner">
+                        <!-- caption will be dynamically added -->
+                    </div>
+                    <a class="carousel-control-prev" href="#announcementsCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">قبلی</span>
+                    </a>
+                    <a class="carousel-control-next" href="#announcementsCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">بعدی</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-  </section>
-  <!-- End of tournament banner -->
+</section>
+<!-- End of tournament banner -->
 
    <!-- services  -->
    <section class="bg-dark accordion py-4">
@@ -326,6 +304,45 @@
             });
         });
     });
+
+    window.addEventListener('load', function() {
+        const savedAnnouncements = localStorage.getItem('announcements');
+        if (savedAnnouncements) {
+            const announcements = JSON.parse(savedAnnouncements);
+            updateCarousel(announcements);
+        }
+    });
+
+    function updateCarousel(announcements) {
+        const carouselInner = document.getElementById('carouselInner');
+        const carouselIndicators = document.getElementById('carouselIndicators');
+        
+        carouselInner.innerHTML = '';
+        carouselIndicators.innerHTML = '';
+
+        announcements.forEach((announcement, index) => {
+            const carouselItem = document.createElement('div');
+            carouselItem.className = `carousel-item${index === 0 ? ' active' : ''}`;
+            carouselItem.innerHTML = `
+                <img src="${announcement.imageData}" alt="${announcement.title}" class="img-fluid d-block w-100" style="height: 700px; object-fit: cover;">
+                <div class="carousel-caption d-none d-md-block">
+                    <h3>${announcement.title}</h3>
+                    <p>${announcement.description}</p>
+                </div>
+            `;
+            carouselInner.appendChild(carouselItem);
+
+            const indicator = document.createElement('li');
+            indicator.setAttribute('data-target', '#announcementsCarousel');
+            indicator.setAttribute('data-slide-to', index.toString());
+            if (index === 0) {
+                indicator.className = 'active';
+            }
+            carouselIndicators.appendChild(indicator);
+        });
+
+        $('#announcementsCarousel').carousel();
+    }
  </script>
   
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
