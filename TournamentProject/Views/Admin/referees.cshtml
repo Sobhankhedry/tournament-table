@@ -1,0 +1,470 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>refree</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/9682b0efe9.js" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --gradient-start: #e81cff;
+            --gradient-end: #40c9ff;
+            --text-color: #ffffff;
+            --background-color: #121212;
+            --card-background: #1e1e1e;
+            --input-background: #2a2a2a;
+            --table-header-bg: #2c2c2c;
+            --table-row-bg: #1e1e1e;
+            --table-row-hover: #202124b6;
+        }
+
+        body {
+            font-family: yekan;
+            src : url("../fonts/iranyekanwebbold.ttf");
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            padding: 2rem 1rem;
+        }
+
+        h1 {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            color: var(--text-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-label {
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            background-color: var(--input-background);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+        }
+
+        .form-select {
+            appearance: auto;
+            -webkit-appearance: auto;
+            -moz-appearance: auto;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: var(--input-background);
+            border-color: var(--gradient-end);
+            color: var(--text-color);
+            box-shadow: 0 0 0 0.25rem rgba(64, 201, 255, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .table {
+            color: var(--text-color);
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background-color: var(--table-header-bg);
+            color: var(--text-color);
+            font-weight: 600;
+            padding: 1rem;
+            border-bottom: 2px solid var(--gradient-end);
+        }
+
+        .table tbody td {
+            background-color: var(--table-row-bg);
+            color: var(--text-color);
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table tbody tr:hover td {
+            background-color: var(--table-row-hover);
+        }
+
+        .table-responsive {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 8px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--card-background);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 4px;
+        }
+
+        .card-title {
+            color: var(--text-color);
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .table-container {
+            background-color: var(--card-background);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+
+        @@media (max-width: 768px) {
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        h1 {
+            font-size: 2rem;
+        }
+        
+        .table thead th,
+        .table tbody td {
+            padding: 0.75rem;
+        }
+        }
+
+        @@media (min-width: 768px) {
+        .col-md-3 {
+            flex: 0 0 auto;
+            width: 25%;
+        }
+        }
+        .table td {
+            vertical-align: middle;
+        }
+
+        .table td:last-child {
+            text-align: center;
+            width: 80px;
+        }
+
+        .delete-btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            border-radius: 0.2rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delete-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .delete-btn i {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-5">سیستم مدیریت داوران</h1>
+        <div class="card mb-5">
+            <div class="card-body">
+                <h2 class="card-title mb-4">ثبت اطلاعات داور جدید</h2>
+                <form id="refereeForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">نام و نام خانوادگی</label>
+                            <input type="text" class="form-control" id="name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="nationalCode" class="form-label">کد ملی</label>
+                            <input type="text" class="form-control" id="nationalCode" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="degree" class="form-label">درجه داوری</label>
+                            <select class="form-select" id="degree" required>
+                                <option value="">انتخاب کنید</option>
+                                <option value="international">بین‌المللی</option>
+                                <option value="1">درجه 1</option>
+                                <option value="2">درجه 2</option>
+                                <option value="3">درجه 3</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="position" class="form-label">پست</label>
+                            <select class="form-select" id="position" required>
+                                <option value="">انتخاب کنید</option>
+                                <option value="سر داور">سر داور</option>
+                                <option value="داور وسط">داور وسط</option>
+                                <option value="داور کنار">داور کنار</option>
+                                <option value="وقت نگهدار">وقت نگهدار</option>
+                                <option value="ثبات">ثبات</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="city" class="form-label">شهر محل سکونت</label>
+                            <input type="text" class="form-control" id="city" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="experience" class="form-label">سابقه داوری (سال)</label>
+                            <input type="number" class="form-control" id="experience" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">ثبت اطلاعات</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">داوران بین‌المللی</h2>
+                        <div class="table-responsive">
+                            <table class="table" id="internationalTable">
+                                <thead>
+                                    <tr>
+                                        <th>نام</th>
+                                        <th>کد ملی</th>
+                                        <th>پست</th>
+                                        <th>شهر</th>
+                                        <th>حذف</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">داوران درجه 1</h2>
+                        <div class="table-responsive">
+                            <table class="table" id="degree1Table">
+                                <thead>
+                                    <tr>
+                                        <th>نام</th>
+                                        <th>کد ملی</th>
+                                        <th>پست</th>
+                                        <th>شهر</th>
+                                        <th>حذف</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">داوران درجه 2</h2>
+                        <div class="table-responsive">
+                            <table class="table" id="degree2Table">
+                                <thead>
+                                    <tr>
+                                        <th>نام</th>
+                                        <th>کد ملی</th>
+                                        <th>پست</th>
+                                        <th>شهر</th>
+                                        <th>حذف</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">داوران درجه 3</h2>
+                        <div class="table-responsive">
+                            <table class="table" id="degree3Table">
+                                <thead>
+                                    <tr>
+                                        <th>نام</th>
+                                        <th>کد ملی</th>
+                                        <th>پست</th>
+                                        <th>شهر</th>
+                                        <th>حذف</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+       document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('refereeForm');
+        const internationalTable = document.getElementById('internationalTable').getElementsByTagName('tbody')[0];
+        const degree1Table = document.getElementById('degree1Table').getElementsByTagName('tbody')[0];
+        const degree2Table = document.getElementById('degree2Table').getElementsByTagName('tbody')[0];
+        const degree3Table = document.getElementById('degree3Table').getElementsByTagName('tbody')[0];
+
+        loadSavedData();
+
+        function saveData() {
+            const data = {
+                international: internationalTable.innerHTML,
+                degree1: degree1Table.innerHTML,
+                degree2: degree2Table.innerHTML,
+                degree3: degree3Table.innerHTML
+            };
+            localStorage.setItem('refereeData', JSON.stringify(data));
+        }
+
+        function loadSavedData() {
+            const savedData = localStorage.getItem('refereeData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                internationalTable.innerHTML = data.international;
+                degree1Table.innerHTML = data.degree1;
+                degree2Table.innerHTML = data.degree2;
+                degree3Table.innerHTML = data.degree3;
+
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', handleDelete);
+                });
+            }
+        }
+
+        function handleDelete(e) {
+            const row = e.target.closest('tr');
+            row.style.opacity = '0';
+            row.style.transform = 'translateY(-20px)';
+            setTimeout(() => {
+                row.remove();
+                saveData(); 
+            }, 500);
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const nationalCode = document.getElementById('nationalCode').value;
+            const degree = document.getElementById('degree').value;
+            const position = document.getElementById('position').value;
+            const city = document.getElementById('city').value;
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${name}</td>
+                <td>${nationalCode}</td>
+                <td>${position}</td>
+                <td>${city}</td>
+                <td class="text-center">
+                    <button class="btn btn-danger btn-sm delete-btn">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </td>
+            `;
+
+            row.style.opacity = '0';
+            row.style.transform = 'translateY(-20px)';
+            row.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+
+            let targetTable;
+            switch(degree) {
+                case 'international':
+                    targetTable = internationalTable;
+                    break;
+                case '1':
+                    targetTable = degree1Table;
+                    break;
+                case '2':
+                    targetTable = degree2Table;
+                    break;
+                case '3':
+                    targetTable = degree3Table;
+                    break;
+            }
+
+            targetTable.appendChild(row);
+
+            const deleteBtn = row.querySelector('.delete-btn');
+            deleteBtn.addEventListener('click', handleDelete);
+
+            setTimeout(() => {
+                row.style.opacity = '1';
+                row.style.transform = 'translateY(0)';
+                saveData(); 
+            }, 50);
+
+            form.reset();
+        });
+    });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

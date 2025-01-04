@@ -675,6 +675,12 @@ namespace TournamentProject.Controllers
             return Ok(new { message = "Bracket saved successfully" });
         }
 
+
+        public IActionResult referees()
+        {
+            return View();
+        }
+
         [HttpDelete]
         public async Task<IActionResult> DeleteTournament([FromBody] TournamentNameDto request)
         {
