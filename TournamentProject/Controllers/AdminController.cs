@@ -648,6 +648,15 @@ namespace TournamentProject.Controllers
                 return BadRequest("No data received.");
             }
 
+            var matches = _dbContext!.Matches
+            .Where(m => m.TournamentName == tournamentName)
+            .ToList();
+
+            if (matches.Count > 0)
+            {
+                _dbContext.Matches.RemoveRange(matches);
+                _dbContext.SaveChanges(); // Commit the changes to the database
+            }
 
             // For each match:
             foreach (var match in brackets)
