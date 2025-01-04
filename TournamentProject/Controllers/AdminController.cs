@@ -716,6 +716,43 @@ namespace TournamentProject.Controllers
             }
         }
 
+
+        [HttpPost]
+        public IActionResult SaveReferee(Referees referee)
+        {
+            if (ModelState.IsValid)
+            {
+                _dbContext.Referee.Add(referee);
+                _dbContext.SaveChanges();
+                return Json(new { success = true, message = "Referee saved successfully!" });
+            }
+
+            return Json(new { success = false, message = "Validation failed!" });
+        }
+
+
+        [HttpGet]
+        public IActionResult GetReferee()
+        {
+            var referees = _dbContext.Referee.ToList();
+            return Json(referees);
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteReferee(int id)
+        {
+            var referee = _dbContext.Referee.Find(id);
+            if (referee == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.Referee.Remove(referee);
+            _dbContext.SaveChanges();
+
+            return Ok();
+        }
+
     }
 
 

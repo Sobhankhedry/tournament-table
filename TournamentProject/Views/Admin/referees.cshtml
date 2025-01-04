@@ -226,21 +226,21 @@
         <div class="card mb-5">
             <div class="card-body">
                 <h2 class="card-title mb-4">ثبت اطلاعات داور جدید</h2>
-                <form id="refereeForm">
+                <form id="refereeForm" method="post" asp-controller="Admin" asp-action="SaveReferee">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="name" class="form-label">نام و نام خانوادگی</label>
-                            <input type="text" class="form-control" id="name" required>
+                            <input type="text" class="form-control" id="name" name="Name" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="nationalCode" class="form-label">کد ملی</label>
-                            <input type="text" class="form-control" id="nationalCode" required>
+                            <input type="text" class="form-control" id="nationalCode" name="NationalCode" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="degree" class="form-label">درجه داوری</label>
-                            <select class="form-select" id="degree" required>
+                            <select class="form-select" id="degree" name="Degree" required>
                                 <option value="">انتخاب کنید</option>
                                 <option value="international">بین‌المللی</option>
                                 <option value="1">درجه 1</option>
@@ -250,7 +250,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="position" class="form-label">پست</label>
-                            <select class="form-select" id="position" required>
+                            <select class="form-select" id="position" name="Position" required>
                                 <option value="">انتخاب کنید</option>
                                 <option value="سر داور">سر داور</option>
                                 <option value="داور وسط">داور وسط</option>
@@ -263,11 +263,11 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="city" class="form-label">شهر محل سکونت</label>
-                            <input type="text" class="form-control" id="city" required>
+                            <input type="text" class="form-control" id="city" name="City" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="experience" class="form-label">سابقه داوری (سال)</label>
-                            <input type="number" class="form-control" id="experience" required>
+                            <input type="number" class="form-control" id="experience" name="Experience" required>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">ثبت اطلاعات</button>
@@ -463,6 +463,98 @@
             form.reset();
         });
     });
+
+        document.getElementById('refereeForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch('/Admin/SaveReferee', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload(); // Optionally reload the page or update the table
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/Admin/GetReferee')
+                .then(response => response.json())
+                .then(data => {
+                    populateTables(data);
+                })
+                .catch(error => console.error('Error fetching referees:', error));
+
+            function populateTables(referees) {
+                const internationalTable = document.getElementById('internationalTable').getElementsByTagName('tbody')[0];
+                const degree1Table = document.getElementById('degree1Table').getElementsByTagName('tbody')[0];
+                const degree2Table = document.getElementById('degree2Table').getElementsByTagName('tbody')[0];
+                const degree3Table = document.getElementById('degree3Table').getElementsByTagName('tbody')[0];
+
+                referees.forEach(referee => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${referee.name}</td>
+                        <td>${referee.nationalCode}</td>
+                        <td>${referee.position}</td>
+                        <td>${referee.city}</td>
+                        <td class="text-center">
+                            <button class="btn btn-danger btn-sm delete-btn">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    `;
+
+                    // Add the row to the appropriate table based on the degree
+                    switch (referee.degree) {
+                        case 'international':
+                            internationalTable.appendChild(row);
+                            break;
+                        case '1':
+                            degree1Table.appendChild(row);
+                            break;
+                        case '2':
+                            degree2Table.appendChild(row);
+                            break;
+                        case '3':
+                            degree3Table.appendChild(row);
+                            break;
+                    }
+
+                    // Add delete functionality to the button
+                    const deleteBtn = row.querySelector('.delete-btn');
+                    deleteBtn.addEventListener('click', function () {
+                        handleDelete(referee.id, row);
+                    });
+                });
+            }
+
+            function handleDelete(id, row) {
+                if (confirm('Are you sure you want to delete this referee?')) {
+                    fetch(`/Admin/DeleteReferee/${id}`, { method: 'DELETE' })
+                        .then(response => {
+                            if (response.ok) {
+                                row.remove();
+                                alert('Referee deleted successfully!');
+                            } else {
+                                alert('Error deleting referee!');
+                            }
+                        })
+                        .catch(error => console.error('Error deleting referee:', error));
+                }
+            }
+        });
+
+
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
