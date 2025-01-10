@@ -668,14 +668,13 @@
                         console.warn(`No nextBracketBox found for Bracket ${bracketNo} in Round ${roundNo}`);
                     }
 
-                    return; // Skip further processing for "bye" case
+                    return; 
                 }
 
-                // Check for a tie
                 if (scores[0] === scores[1]) {
-                    // Remove highlighting in case of a tie
+
                     bracketBox.classList.remove('winner-a', 'winner-b');
-                    return; // Stop here as there's no winner to propagate
+                    return; 
                 }
 
                 let winner = scores[0] > scores[1] ? 0 : 1;
@@ -736,21 +735,17 @@
 
 
             function dynamicChange() {
-                
 
-                // Get all `.bracketbox` elements
                 let boxes = document.querySelectorAll('.bracketbox');
                 if (boxes.length === 0) {
                     console.warn("No bracket boxes found! Check if brackets are rendered correctly.");
-                    return; // Exit if no bracket boxes exist
+                    return; 
                 }
 
-                // Calculate the maximum number of rounds
                 let maxRounds = Math.max(
                     ...Array.from(boxes).map(box => parseInt(box.dataset.round) || 0)
                 );
-               
-                // Start from Round 1 and propagate winners to all subsequent rounds
+
                 for (let round = 1; round <= maxRounds; round++) {
                     document.querySelectorAll(`.bracketbox[data-round="${round}"]`).forEach((bracketBox) => {
                         
@@ -759,7 +754,6 @@
                         
 
                         if (scoreA !== '' && scoreB !== '') {
-                            // Update the bracket and propagate winners
                             updateBracket(bracketBox);
                         }
                     });
@@ -808,22 +802,20 @@
                        
 
                         const tournamentList = document.getElementById('savedTournaments');
-                        tournamentList.innerHTML = ''; // Clear existing content
+                        tournamentList.innerHTML = ''; 
 
                         tournaments.forEach(tournament => {
                             if (!tournament.tournamentName) {
-                                console.warn('Missing tournamentName for:', tournament); // Log any missing names
+                                console.warn('Missing tournamentName for:', tournament); 
                             }
 
                             const listItem = document.createElement('li');
                             listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
 
-                            // Add the tournament name
                             const tournamentNameSpan = document.createElement('span');
-                            tournamentNameSpan.textContent = tournament.tournamentName || 'Unknown Tournament'; // Fallback for missing names
-                            tournamentNameSpan.style.flexGrow = '1'; // Ensure proper alignment
+                            tournamentNameSpan.textContent = tournament.tournamentName || 'Unknown Tournament'; 
+                            tournamentNameSpan.style.flexGrow = '1'; 
 
-                            // Add the button to load the tournament
                             const loadButton = document.createElement('button');
                             loadButton.className = 'btn btn-primary btn-sm';
                             loadButton.textContent = 'بارگذاری جدول';
@@ -831,20 +823,17 @@
                                 loadTournament(tournament.tournamentName);
                             });
 
-                            // Add the button to delete the tournament
                             const deleteButton = document.createElement('button');
-                            deleteButton.className = 'btn btn-danger btn-sm ms-2'; // Add spacing between buttons
+                            deleteButton.className = 'btn btn-danger btn-sm ms-2'; 
                             deleteButton.textContent = 'حذف';
                             deleteButton.addEventListener('click', () => {
                                 deleteTournament(tournament.tournamentName);
                             });
 
-                            // Append elements to the list item
                             listItem.appendChild(tournamentNameSpan);
                             listItem.appendChild(loadButton);
                             listItem.appendChild(deleteButton);
 
-                            // Append the list item to the modal
                             tournamentList.appendChild(listItem);
                         });
                     })
@@ -873,30 +862,28 @@
                 console.log('Gender:', gender);
                 console.log('Age Group:', ageGroup);
 
-                // Step 1: Set ageGroup first and trigger its change event
+                
                 const ageGroupDropdown = document.getElementById('ageGroup');
                 ageGroupDropdown.value = ageGroup || '';
-                ageGroupDropdown.dispatchEvent(new Event('change')); // Populate gender options
+                ageGroupDropdown.dispatchEvent(new Event('change')); 
 
-                // Step 2: Immediately set gender after ageGroup is set
+               
                 const genderDropdown = document.getElementById('gender');
                 genderDropdown.value = gender || '';
-                genderDropdown.dispatchEvent(new Event('change')); // Populate weightClass options
+                genderDropdown.dispatchEvent(new Event('change'));
 
-                // Step 3: Immediately set weightClass after gender is set
+            
                 const weightClassDropdown = document.getElementById('weightClass');
                 weightClassDropdown.value = weightClass || '';
-                weightClassDropdown.dispatchEvent(new Event('change')); // Ensure weightClass updates
+                weightClassDropdown.dispatchEvent(new Event('change')); 
             } else {
                 console.warn('Invalid tournamentName format:', tournamentName);
                 alert('Invalid tournament name format. Cannot parse values.');
             }
 
-            // Use the fetched data to generate the bracket
             currentStruct = tournamentData;
             renderBrackets(currentStruct, true);
 
-            // Show the save button
             document.getElementById('saveBracketButton').style.display = 'block';
         })
         .catch(error => {
@@ -906,16 +893,10 @@
 }
 
 
-
-
-
             document.getElementById('viewTablesButton').addEventListener('click', function () {
                 const modal = new bootstrap.Modal(document.getElementById('bracketModal'));
                 modal.show();
             });
-
-
-
 
 
 
@@ -925,7 +906,7 @@
 
         function deleteTournament(tournamentName) {
             if (!confirm(`آیا از حذف جدول '${tournamentName}' اطمینان دارید؟`)) {
-                return; // Exit if the user cancels the confirmation dialog
+                return; 
             }
 
             const requestData = {
@@ -950,7 +931,7 @@
                 })
                 .then(result => {
                     alert(result.message);
-                    // Reload the tournament list to reflect changes
+                    
                     document.getElementById('viewTablesButton').click();
                 })
                 .catch(error => {
