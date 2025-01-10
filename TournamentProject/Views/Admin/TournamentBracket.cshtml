@@ -302,15 +302,14 @@
         alert('No bracket data to save.');
         return;
     }
-
-    
+    alert('here for saving')
     const ageGroup = document.getElementById('ageGroup').value.trim();
     const gender = document.getElementById('gender').value.trim();
     const weightClass = document.getElementById('weightClass').value.trim();
 
     const tournamentName = `${weightClass}-${gender}-${ageGroup}`;
 
-    // Collect scores from the DOM
+    // Collect scores and team names from the DOM
     document.querySelectorAll('.bracketbox').forEach(box => {
         const bracketNo = parseInt(box.dataset.bracketNo, 10);
 
@@ -322,10 +321,12 @@
 
         const scoreA = parseInt(box.querySelector('.team:nth-child(1) .team-score').value, 10) || 0;
         const scoreB = parseInt(box.querySelector('.team:nth-child(2) .team-score').value, 10) || 0;
+        const teamA = box.querySelector('.team:nth-child(1) .team-name').textContent.trim();
+        const teamB = box.querySelector('.team:nth-child(2) .team-name').textContent.trim();
 
         match.scores = [scoreA, scoreB];
+        match.teamNames = [teamA, teamB]; // Add this line to save team names
     });
-
 
     const dataToSave = {
         tournamentName: tournamentName,
@@ -346,15 +347,12 @@
             return response.json();
         })
         .then(result => {
-            
             alert('Bracket saved successfully!');
         })
         .catch(error => {
-           
             alert('Failed to save bracket.');
         });
 });
-
 
 
 
@@ -497,226 +495,329 @@
 
 
 
-            function renderBrackets(struct, isFromDatabase = false) {
-    currentStruct = struct;
+            //  function renderBrackets(struct, isFromDatabase = false) {
+            //     currentStruct = struct;
+               
 
-    const bracketsContainer = document.getElementById('brackets');
-    bracketsContainer.innerHTML = ''; // Clear existing content
+            //     let groupCount = [...new Set(struct.map(s => s.roundNo))].length;
+            //     let bracketsContainer = document.getElementById('brackets');
+            //     bracketsContainer.innerHTML = ''; // Clear existing content
 
-    // Determine the number of rounds
-    const groupCount = [...new Set(struct.map(s => s.roundNo))].length;
+            //     for (let g = 1; g <= groupCount; g++) {
+            //         let round = document.createElement('div');
+            //         round.className = `round round-${g}`;
 
-    // Loop through each round and render brackets
-    for (let g = 1; g <= groupCount; g++) {
-        const round = document.createElement('div');
-        round.className = `round round-${g}`;
+            //         struct.filter(s => s.roundNo === g).forEach(gg => {
+            //             if (!isFromDatabase && gg.bye) {
+            //                 // Handle "bye" matches when creating a new bracket
+            //                 let byeDiv = document.createElement('div');
+            //                 byeDiv.className = 'bye';
+            //                 round.appendChild(byeDiv);
+            //             } else {
+            //                 let bracketBox = document.createElement('div');
+            //                 bracketBox.className = 'bracketbox';
+            //                 bracketBox.dataset.bracketNo = gg.bracketNo;
+            //                 bracketBox.dataset.round = g;
 
-        struct.filter(s => s.roundNo === g).forEach(gg => {
-            if (!isFromDatabase && gg.bye) {
-                // Add "bye" placeholder for new brackets
-                const byeDiv = document.createElement('div');
-                byeDiv.className = 'bye';
-                round.appendChild(byeDiv);
-            } else {
-                // Create a bracket box
-                const bracketBox = document.createElement('div');
-                bracketBox.className = 'bracketbox';
-                bracketBox.dataset.bracketNo = gg.bracketNo;
-                bracketBox.dataset.round = g;
+            //                 // Use different logic depending on whether it's from the database
+            //                 if (isFromDatabase) {
+            //                     // When retrieving data from the database
+            //                     const teamNames = typeof gg.teamNames === 'string' ? gg.teamNames.split(',') : gg.teamNames;
+            //                     const teamA = teamNames?.[0] || '';
+            //                     const teamB = teamNames?.[1] || '';
+            //                     const scoreA = gg.scores?.[0] || 0;
+            //                     const scoreB = gg.scores?.[1] || 0;
 
-                // Handle database vs. new bracket creation
+            //                     bracketBox.innerHTML = `
+            //                             <div class="team team-a">
+            //                                 <span class="team-name">${teamA}</span>
+            //                                 <input type="number" class="team-score" value="${scoreA}" min="0" data-team="0">
+            //                             </div>
+            //                             <div class="team team-b">
+            //                                 <span class="team-name">${teamB}</span>
+            //                                 <input type="number" class="team-score" value="${scoreB}" min="0" data-team="1">
+            //                             </div>
+            //                         `;
+            //                 } else {
+            //                     // When creating a new bracket
+            //                     bracketBox.innerHTML = `
+            //                             <div class="team team-a">
+            //                                 <span class="team-name">${gg.teamnames[0]}</span>
+            //                                 <input type="number" class="team-score" value="${gg.scores[0]}" min="0" data-team="0">
+            //                             </div>
+            //                             <div class="team team-b">
+            //                                 <span class="team-name">${gg.teamnames[1]}</span>
+            //                                 <input type="number" class="team-score" value="${gg.scores[1]}" min="0" data-team="1">
+            //                             </div>
+            //                         `;
+            //                 }
+
+            //                 round.appendChild(bracketBox);
+            //             }
+            //         });
+
+            //         bracketsContainer.appendChild(round);
+            //     }
+
+            //     let finalRound = document.createElement('div');
+            //     finalRound.className = 'round final';
+            //     finalRound.innerHTML = `
+            //             <div class="bracketbox winner">
+            //                 <div class="team">
+            //                     <span class="team-name"></span>
+            //                     <i class="fas fa-trophy trophy"></i>
+            //                 </div>
+            //             </div>
+            //         `;
+            //     bracketsContainer.appendChild(finalRound);
+
+            //     // Add event listeners for score inputs when creating a new bracket
+            //     if (!isFromDatabase) {
+            //         document.querySelectorAll('.team-score').forEach(input => {
+            //             input.addEventListener('change', function () {
+            //                 updateBracket(this.closest('.bracketbox'));
+            //             });
+            //         });
+            //     }
+
+
+
+            //     document.querySelectorAll('.team-score').forEach(input => {
+            //         input.addEventListener('change', function () {
+            //             console.log("Score changed, updating corresponding bracket...");
+            //             updateBracket(this.closest('.bracketbox')); // Trigger update for the relevant bracket
+            //         });
+            //     });
+
+            //     if (isFromDatabase) {
+            //         document.querySelectorAll('.bracketbox').forEach((box) => {
+            //             // Explicitly skip the final winner bracket
+            //             dynamicChange();
+            //             if (box.classList.contains('winner')) {
+            //                 console.log('Skipping final winner box:', box);
+            //                 return;
+            //             }
+                        
+            //             const scoreAInput = box.querySelector('.team-score[data-team="0"]');
+            //             const scoreBInput = box.querySelector('.team-score[data-team="1"]');
+
+            //             if (!scoreAInput || !scoreBInput) {
+            //                 console.warn('Skipping intermediate bracket box due to missing team-score inputs:', {
+            //                     box: box,
+            //                     innerHTML: box.innerHTML,
+            //                 });
+            //                 return;
+            //             }
+
+            //             const scoreA = scoreAInput.value || 0;
+            //             const scoreB = scoreBInput.value || 0;
+
+            //             if (scoreA !== '' && scoreB !== '') {
+            //                 updateBracket(box);
+            //             }
+            //         });
+
+            //     }
+
+
+            // }
+
+
+
+function renderBrackets(struct, isFromDatabase = false) {
+                currentStruct = struct;
+                
+                let groupCount = [...new Set(struct.map(s => s.roundNo))].length;
+                let bracketsContainer = document.getElementById('brackets');
+                bracketsContainer.innerHTML = ''; // Clear existing content
+
+                for (let g = 1; g <= groupCount; g++) {
+                    let round = document.createElement('div');
+                    round.className = `round round-${g}`;
+
+                    struct.filter(s => s.roundNo === g).forEach(gg => {
+                        if (!isFromDatabase && gg.bye) {
+                            // Handle "bye" matches when creating a new bracket
+                            let byeDiv = document.createElement('div');
+                            byeDiv.className = 'bye';
+                            round.appendChild(byeDiv);
+                        } else {
+                            let bracketBox = document.createElement('div');
+                            bracketBox.className = 'bracketbox';
+                            bracketBox.dataset.bracketNo = gg.bracketNo;
+                            bracketBox.dataset.round = g;
+
+                            // Use different logic depending on whether it's from the database
+                            if (isFromDatabase) {
+                                // When retrieving data from the database
+                                const teamNames = typeof gg.teamNames === 'string' ? gg.teamNames.split(',') : gg.teamNames;
+                                const teamA = teamNames?.[0] || '';
+                                const teamB = teamNames?.[1] || '';
+                                const scoreA = gg.scores?.[0] || 0;
+                                const scoreB = gg.scores?.[1] || 0;
+
+                                bracketBox.innerHTML = `
+                                        <div class="team team-a">
+                                            <span class="team-name">${teamA}</span>
+                                            <input type="number" class="team-score" value="${scoreA}" min="0" data-team="0">
+                                        </div>
+                                        <div class="team team-b">
+                                            <span class="team-name">${teamB}</span>
+                                            <input type="number" class="team-score" value="${scoreB}" min="0" data-team="1">
+                                        </div>
+                                    `;
+                            } else {
+                                // When creating a new bracket
+                                bracketBox.innerHTML = `
+                                        <div class="team team-a">
+                                            <span class="team-name">${gg.teamnames[0]}</span>
+                                            <input type="number" class="team-score" value="${gg.scores[0]}" min="0" data-team="0">
+                                        </div>
+                                        <div class="team team-b">
+                                            <span class="team-name">${gg.teamnames[1]}</span>
+                                            <input type="number" class="team-score" value="${gg.scores[1]}" min="0" data-team="1">
+                                        </div>
+                                    `;
+                            }
+
+                            round.appendChild(bracketBox);
+                        }
+                    });
+
+                    bracketsContainer.appendChild(round);
+                }
+
+                let finalRound = document.createElement('div');
+                finalRound.className = 'round final';
+                finalRound.innerHTML = `
+                        <div class="bracketbox winner">
+                            <div class="team">
+                                <span class="team-name"></span>
+                                <i class="fas fa-trophy trophy"></i>
+                            </div>
+                        </div>
+                    `;
+                bracketsContainer.appendChild(finalRound);
+
+                // Add event listeners for score inputs when creating a new bracket
+                if (!isFromDatabase) {
+                    document.querySelectorAll('.team-score').forEach(input => {
+                        input.addEventListener('change', function () {
+                            updateBracket(this.closest('.bracketbox'));
+                        });
+                    });
+                }
+
+
+
+                document.querySelectorAll('.team-score').forEach(input => {
+                    input.addEventListener('change', function () {
+                        
+                        updateBracket(this.closest('.bracketbox')); // Trigger update for the relevant bracket
+                    });
+                });
+
                 if (isFromDatabase) {
-                    // From database: parse team names and scores
-                    const teamNames = typeof gg.teamNames === 'string' ? gg.teamNames.split(',') : gg.teamNames;
-                    const [teamA, teamB] = teamNames || ['', ''];
-                    const [scoreA, scoreB] = gg.scores || [0, 0];
+                    document.querySelectorAll('.bracketbox').forEach((box) => {
+                        // Explicitly skip the final winner bracket
+                        dynamicChange();
+                        if (box.classList.contains('winner')) {
+                           
+                            return;
+                        }
+                        
+                        const scoreAInput = box.querySelector('.team-score[data-team="0"]');
+                        const scoreBInput = box.querySelector('.team-score[data-team="1"]');
 
-                    bracketBox.innerHTML = `
-                        <div class="team team-a">
-                            <span class="team-name">${teamA}</span>
-                            <input type="number" class="team-score" value="${scoreA}" min="0" data-team="0">
-                        </div>
-                        <div class="team team-b">
-                            <span class="team-name">${teamB}</span>
-                            <input type="number" class="team-score" value="${scoreB}" min="0" data-team="1">
-                        </div>
-                    `;
-                } else {
-                    // For new bracket creation
-                    bracketBox.innerHTML = `
-                        <div class="team team-a">
-                            <span class="team-name">${gg.teamnames[0]}</span>
-                            <input type="number" class="team-score" value="${gg.scores[0]}" min="0" data-team="0">
-                        </div>
-                        <div class="team team-b">
-                            <span class="team-name">${gg.teamnames[1]}</span>
-                            <input type="number" class="team-score" value="${gg.scores[1]}" min="0" data-team="1">
-                        </div>
-                    `;
+                        if (!scoreAInput || !scoreBInput) {
+                            console.warn('Skipping intermediate bracket box due to missing team-score inputs:', {
+                                box: box,
+                                innerHTML: box.innerHTML,
+                            });
+                            return;
+                        }
+
+                        const scoreA = scoreAInput.value || 0;
+                        const scoreB = scoreBInput.value || 0;
+
+                        if (scoreA !== '' && scoreB !== '') {
+                            updateBracket(box);
+                        }
+                    });
+
                 }
 
-                round.appendChild(bracketBox);
+
             }
-        });
-
-        bracketsContainer.appendChild(round);
-    }
-
-    // Add the final winner bracket
-    const finalRound = document.createElement('div');
-    finalRound.className = 'round final';
-    finalRound.innerHTML = `
-        <div class="bracketbox winner">
-            <div class="team">
-                <span class="team-name"></span>
-                <i class="fas fa-trophy trophy"></i>
-            </div>
-        </div>
-    `;
-    bracketsContainer.appendChild(finalRound);
-
-    // Attach event listeners for score inputs (if not from database)
-    if (!isFromDatabase) {
-        document.querySelectorAll('.team-score').forEach(input => {
-            input.addEventListener('change', function () {
-                updateBracket(this.closest('.bracketbox'));
-            });
-        });
-    }
-
-    // Handle brackets loaded from database
-    if (isFromDatabase) {
-        document.querySelectorAll('.bracketbox').forEach(box => {
-            // Skip the final winner bracket
-            if (box.classList.contains('winner')) return;
-
-            const scoreAInput = box.querySelector('.team-score[data-team="0"]');
-            const scoreBInput = box.querySelector('.team-score[data-team="1"]');
-
-            if (scoreAInput && scoreBInput) {
-                const scoreA = scoreAInput.value || 0;
-                const scoreB = scoreBInput.value || 0;
-
-                // Trigger update if scores are valid
-                if (scoreA !== '' && scoreB !== '') {
-                    updateBracket(box);
-                }
-            }
-        });
-    }
-}
 
 
 
 
             function updateBracket(bracketBox) {
-                // Get the current bracket number and round number
-                let bracketNo = parseInt(bracketBox.dataset.bracketNo);
-                let roundNo = parseInt(bracketBox.dataset.round);
+    // Get the current bracket number and round number
+    let bracketNo = parseInt(bracketBox.dataset.bracketNo);
+    let roundNo = parseInt(bracketBox.dataset.round);
 
-                
+    let teamA = bracketBox.querySelector('.team-a .team-name').textContent.trim();
+    let teamB = bracketBox.querySelector('.team-b .team-name').textContent.trim();
 
-                let teamA = bracketBox.querySelector('.team-a .team-name').textContent.trim();
-                let teamB = bracketBox.querySelector('.team-b .team-name').textContent.trim();
+    let scores = [
+        parseInt(bracketBox.querySelector('.team-a .team-score')?.value || 0),
+        parseInt(bracketBox.querySelector('.team-b .team-score')?.value || 0),
+    ];
 
-                let scores = [
-                    parseInt(bracketBox.querySelector('.team-a .team-score')?.value || 0),
-                    parseInt(bracketBox.querySelector('.team-b .team-score')?.value || 0),
-                ];
+    // Check for a tie
+    if (scores[0] === scores[1]) {
+        bracketBox.classList.remove('winner-a', 'winner-b');
+        return; // Exit if it's a tie
+    }
 
-                // Special "Bye" logic only for Bracket No. 6
-                if (bracketNo === 6 && (!teamA || !teamB)) {
-                    let winner = teamA ? 0 : 1; // If Team A exists, they win; otherwise, Team B wins
+    // Determine the winner
+    let winner = scores[0] > scores[1] ? 0 : 1;
 
-                   
+    // Highlight the winner in the current box
+    bracketBox.classList.remove('winner-a', 'winner-b');
+    bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
 
-                    // Highlight the winner in the current box
-                    bracketBox.classList.remove('winner-a', 'winner-b');
-                    bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
+    // Determine the next bracket number based on the current round
+    let nextBracketNo = null;
+    if (roundNo === 1) {
+        // Round 1 winners advance to specific brackets in Round 2
+        nextBracketNo = 4 + Math.floor((bracketNo + 1) / 2);
+    } else if (roundNo === 2) {
+        // Round 2 winners advance to Bracket 7 in Round 3
+        nextBracketNo = 7;
+    }
 
-                    // Propagate the winner to the next round
-                    let nextBracketNo = 7; // Bracket 6 always feeds into Bracket 7
-                    
+    // Find the next bracket box
+    let nextBracketBox = document.querySelector(
+        `.bracketbox[data-round="${roundNo + 1}"][data-bracket-no="${nextBracketNo}"]`
+    );
 
-                    let nextBracketBox = document.querySelector(
-                        `.bracketbox[data-round="${roundNo + 1}"][data-bracket-no="${nextBracketNo}"]`
-                    );
+    if (nextBracketBox) {
+        // Determine the position of the winner in the next bracket
+        let winnerPosition = (bracketNo % 2 === 0) ? 2 : 1; // Even → Team B, Odd → Team A
+        let winnerName = bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
 
-                    if (nextBracketBox) {
-                        let winnerPosition = (bracketNo % 2 === 0) ? 2 : 1; // Even → Team B, Odd → Team A
-                        let winnerName = teamA || teamB;
+        // Update the next bracket with the winner's name
+        nextBracketBox.querySelector(`.team:nth-child(${winnerPosition}) .team-name`).textContent = winnerName;
 
-                       
-                        nextBracketBox.querySelector(`.team:nth-child(${winnerPosition}) .team-name`).textContent = winnerName;
+        // Recursively update the next bracket
+        updateBracket(nextBracketBox);
+    } else {
+        console.warn(`No nextBracketBox found for Bracket ${bracketNo} in Round ${roundNo}`);
+    }
 
-                        updateBracket(nextBracketBox); // Recursively update the next bracket
-                    } else {
-                        console.warn(`No nextBracketBox found for Bracket ${bracketNo} in Round ${roundNo}`);
-                    }
+    // If there is no next round, update the final winner
+    if (!document.querySelector(`.bracketbox[data-round="${roundNo + 1}"]`)) {
+        let finalWinner = bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
+        document.querySelector('.final .team-name').textContent = finalWinner;
 
-                    return; 
-                }
-
-                if (scores[0] === scores[1]) {
-
-                    bracketBox.classList.remove('winner-a', 'winner-b');
-                    return; 
-                }
-
-                let winner = scores[0] > scores[1] ? 0 : 1;
-
-                bracketBox.classList.remove('winner-a', 'winner-b');
-                bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
-
-       
-               
-                let nextBracketNo = null;
-                if (roundNo === 1) {
-                    
-                    nextBracketNo = 4 + Math.floor((bracketNo + 1) / 2);
-                } else if (roundNo === 2) {
-                    
-                    nextBracketNo = 7; 
-                }
-
-                
-                
-                let nextBracketBox = document.querySelector(
-                    `.bracketbox[data-round="${roundNo + 1}"][data-bracket-no="${nextBracketNo}"]`
-                );
-
-                if (nextBracketBox) {
-                    let winnerPosition = (bracketNo % 2 === 0) ? 2 : 1; 
-                    let winnerName = bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
-
-                   
-                    nextBracketBox.querySelector(`.team:nth-child(${winnerPosition}) .team-name`).textContent = winnerName;
-
-                    updateBracket(nextBracketBox); 
-                } else {
-                    console.warn(`No nextBracketBox found for Bracket ${bracketNo} in Round ${roundNo}`);
-                }
-
-                if (!document.querySelector(`.bracketbox[data-round="${roundNo + 1}"]`)) {
-                    let finalWinner = bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
-                    document.querySelector('.final .team-name').textContent = finalWinner;
-
-                    console.log(`Final winner updated: ${finalWinner}`);
-                }
-            }
+        console.log(`Final winner updated: ${finalWinner}`);
+    }
+}
 
 
-
-
-
-
-           
-
-
-
-
-
-           
 
 
 
