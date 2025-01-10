@@ -501,13 +501,11 @@
                 const degree2Table = document.getElementById('degree2Table').getElementsByTagName('tbody')[0];
                 const degree3Table = document.getElementById('degree3Table').getElementsByTagName('tbody')[0];
 
-                // Clear existing rows
                 internationalTable.innerHTML = '';
                 degree1Table.innerHTML = '';
                 degree2Table.innerHTML = '';
                 degree3Table.innerHTML = '';
 
-                // Populate tables with new data
                 referees.forEach(referee => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
@@ -522,7 +520,6 @@
                     </td>
                 `;
 
-                    // Add the row to the appropriate table based on the degree
                     switch (referee.degree) {
                         case 'international':
                             internationalTable.appendChild(row);
@@ -538,7 +535,7 @@
                             break;
                     }
 
-                    // Add delete functionality to the button
+                    
                     const deleteBtn = row.querySelector('.delete-btn');
                     deleteBtn.addEventListener('click', function () {
                         handleDelete(referee.id, row);

@@ -76,5 +76,10 @@ namespace TournamentProject.Controllers
             }
         }
 
+        public IActionResult ShowTournamentBracket()
+        {
+            return View();
+        }
+
     }
 }

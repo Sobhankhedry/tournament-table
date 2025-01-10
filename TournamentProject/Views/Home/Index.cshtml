@@ -37,7 +37,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="mynav">
-                <a href="" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">مشاهده جدول مسابقات</a>
+                <a asp-controller="Home" asp-action="ShowTournamentBracket" class="badge badge-light text-dark p-2 mr-2 mt-2 mb-1">مشاهده جدول مسابقات</a>
                 <ul class="navbar-nav list-unstyled mr-auto mx-5">
                     @if (User.Identity!.IsAuthenticated && User.IsInRole("Admin"))
                     {           
