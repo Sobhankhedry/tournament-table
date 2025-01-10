@@ -159,7 +159,7 @@
         <div class="col-md-4">
             <select id="tournamentSelector" class="form-select custom-button text-center">
                 <option value="" disabled selected>انتخاب جدول مسابقات</option>
-                <!-- Tournament options will be dynamically added here -->
+                
             </select>
         </div>
     </div>
@@ -167,60 +167,67 @@
 </div>
     <script>
          
-         function renderBrackets(struct, isFromDatabase = false) {
-        alert("ongotpointercapture here");
-        const bracketsContainer = document.getElementById('brackets');
-        if (!bracketsContainer) {
-            console.error('Brackets container not found');
-            return;
-        }
-        bracketsContainer.innerHTML = ''; // Clear existing content
-
-        const groupCount = [...new Set(struct.map(s => s.roundNo))].length;
-
-        for (let g = 1; g <= groupCount; g++) {
-            const round = document.createElement('div');
-            round.className = `round round-${g}`;
-
-            const matchesInRound = struct.filter(s => s.roundNo === g);
-            matchesInRound.forEach(match => {
-                const bracketBox = document.createElement('div');
-                bracketBox.className = 'bracketbox';
-                bracketBox.dataset.bracketNo = match.bracketNo;
-                bracketBox.dataset.round = g;
-
-                const teamNames = match.teamNames || ['', ''];
-                const scores = match.scores || [0, 0];
-
-                bracketBox.innerHTML = `
-                    <div class="team team-a">
-                        <span class="team-name">${teamNames[0]}</span>
-                        <input type="number" class="team-score" value="${scores[0]}" min="0" data-team="0">
-                    </div>
-                    <div class="team team-b">
-                        <span class="team-name">${teamNames[1]}</span>
-                        <input type="number" class="team-score" value="${scores[1]}" min="0" data-team="1">
-                    </div>
-                `;
-
-                round.appendChild(bracketBox);
-            });
-
-            bracketsContainer.appendChild(round);
-        }
-
-        const finalRound = document.createElement('div');
-        finalRound.className = 'round final';
-        finalRound.innerHTML = `
-            <div class="bracketbox winner">
-                <div class="team">
-                    <span class="team-name"></span>
-                    <i class="fas fa-trophy trophy"></i>
-                </div>
-            </div>
-        `;
-        bracketsContainer.appendChild(finalRound);
+        function renderBrackets(struct, isFromDatabase = false) {
+    alert("ongotpointercapture here");
+    const bracketsContainer = document.getElementById('brackets');
+    if (!bracketsContainer) {
+        console.error('Brackets container not found');
+        return;
     }
+    bracketsContainer.innerHTML = ''; // Clear existing content
+
+    const groupCount = [...new Set(struct.map(s => s.roundNo))].length;
+
+    for (let g = 1; g <= groupCount; g++) {
+        const round = document.createElement('div');
+        round.className = `round round-${g}`;
+
+        const matchesInRound = struct.filter(s => s.roundNo === g);
+        matchesInRound.forEach(match => {
+            const bracketBox = document.createElement('div');
+            bracketBox.className = 'bracketbox';
+            bracketBox.dataset.bracketNo = match.bracketNo;
+            bracketBox.dataset.round = g;
+
+            const teamNames = match.teamNames || ['', ''];
+            const scores = match.scores || [0, 0];
+
+            // Determine the winner (only if there is no tie)
+            if (scores[0] !== scores[1]) { // Check for a tie
+                const winner = scores[0] > scores[1] ? 'a' : 'b';
+                bracketBox.classList.add(`winner-${winner}`); // Add winner class
+            }
+
+            bracketBox.innerHTML = `
+                <div class="team team-a">
+                    <span class="team-name">${teamNames[0]}</span>
+                    <input type="number" class="team-score" value="${scores[0]}" min="0" data-team="0" disabled>
+                </div>
+                <div class="team team-b">
+                    <span class="team-name">${teamNames[1]}</span>
+                    <input type="number" class="team-score" value="${scores[1]}" min="0" data-team="1" disabled>
+                </div>
+            `;
+
+            round.appendChild(bracketBox);
+        });
+
+        bracketsContainer.appendChild(round);
+    }
+
+    const finalRound = document.createElement('div');
+    finalRound.className = 'round final';
+    finalRound.innerHTML = `
+        <div class="bracketbox winner">
+            <div class="team">
+                <span class="team-name"></span>
+                <i class="fas fa-trophy trophy"></i>
+            </div>
+        </div>
+    `;
+    bracketsContainer.appendChild(finalRound);
+}
+
 
 
         // Ensure the DOM is fully loaded before running the script
@@ -389,9 +396,7 @@ fetchTournaments();
         });
 }
 
-// Event listener to render the brackets when a tournament is selected
 function loadTournament(tournamentName) {
-    alert('okay');
     fetch(`/Admin/LoadTournament?tournamentName=${encodeURIComponent(tournamentName)}`)
         .then(response => {
             if (!response.ok) throw new Error('Failed to load tournament');
