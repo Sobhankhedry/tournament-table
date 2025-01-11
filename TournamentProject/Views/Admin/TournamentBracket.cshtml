@@ -729,9 +729,15 @@ function updateBracket(bracketBox) {
         parseInt(bracketBox.querySelector('.team-a .team-score').value),
         parseInt(bracketBox.querySelector('.team-b .team-score').value)
     ];
-    let winner = scores[0] > scores[1] ? 0 : 1;
+    
+    // If the scores are tied, don't highlight the winner
+    if (scores[0] === scores[1]) {
+        bracketBox.classList.remove('winner-a', 'winner-b');
+        return; // Return early since no winner is determined
+    }
 
-    // Highlight the winner
+    // Determine the winner and highlight them
+    let winner = scores[0] > scores[1] ? 0 : 1;
     bracketBox.classList.remove('winner-a', 'winner-b');
     bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
 
@@ -772,6 +778,7 @@ function checkAndEnableNextRound(currentRound) {
         });
     }
 }
+
 
 
 
