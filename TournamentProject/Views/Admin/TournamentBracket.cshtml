@@ -644,68 +644,135 @@ document.querySelectorAll('.team-score').forEach(input => {
             }
 
 
-
-
-            function updateBracket(bracketBox) {
-  
-    let bracketNo = parseInt(bracketBox.dataset.bracketNo);
-    let roundNo = parseInt(bracketBox.dataset.round);
-
-    let teamA = bracketBox.querySelector('.team-a .team-name').textContent.trim();
-    let teamB = bracketBox.querySelector('.team-b .team-name').textContent.trim();
-
-    let scores = [
-        parseInt(bracketBox.querySelector('.team-a .team-score')?.value || 0),
-        parseInt(bracketBox.querySelector('.team-b .team-score')?.value || 0),
-    ];
-
-  
-    if (scores[0] === scores[1]) {
-        bracketBox.classList.remove('winner-a', 'winner-b');
-        return; 
-    }
-
     
-    let winner = scores[0] > scores[1] ? 0 : 1;
+
+
+//             function updateBracket(bracketBox) {
+  
+//     let bracketNo = parseInt(bracketBox.dataset.bracketNo);
+//     let roundNo = parseInt(bracketBox.dataset.round);
+    
+//     let teamA = bracketBox.querySelector('.team-a .team-name').textContent.trim();
+//     let teamB = bracketBox.querySelector('.team-b .team-name').textContent.trim();
+
+//     let scores = [
+//         parseInt(bracketBox.querySelector('.team-a .team-score')?.value || 0),
+//         parseInt(bracketBox.querySelector('.team-b .team-score')?.value || 0),
+//     ];
+
+  
+//     if (scores[0] === scores[1]) {
+//         bracketBox.classList.remove('winner-a', 'winner-b');
+//         return; 
+//     }
+//     function getBracketCount() {
+//     let bracketBoxes = document.querySelectorAll('.bracketbox');
+//     return bracketBoxes.length;
+// }
+    
+//     let winner = scores[0] > scores[1] ? 0 : 1;
+
+//    let totalBrackets = getBracketCount();
+//     bracketBox.classList.remove('winner-a', 'winner-b');
+//     bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
 
    
+//     let nextBracketNo = null;
+//    if(totalBrackets == 3){
+//        if(bracketNo == 1 || bracketNo == 2){
+//             nextBracketNo = 3
+//         }
+//    }
+//       if(totalBrackets == 7){
+//           if(roundNo == 1){
+//               nextBracketNo = 4 + Math.floor((bracketNo + 1) / 2);
+//           }
+//            else if (roundNo === 2) {
+        
+//         nextBracketNo = 7;
+//     }
+//     } 
+        
+        
+       
+    
+
+
+
+//     let nextBracketBox = document.querySelector(
+//         `.bracketbox[data-round="${roundNo + 1}"][data-bracket-no="${nextBracketNo}"]`
+//     );
+
+//     if (nextBracketBox) {
+      
+//         let winnerPosition = (bracketNo % 2 === 0) ? 2 : 1; 
+//         let winnerName = bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
+
+//         nextBracketBox.querySelector(`.team:nth-child(${winnerPosition}) .team-name`).textContent = winnerName;
+
+//         updateBracket(nextBracketBox);
+//     } else {
+//         console.warn(`No nextBracketBox found for Bracket ${bracketNo} in Round ${roundNo}`);
+//     }
+
+//     if (!document.querySelector(`.bracketbox[data-round="${roundNo + 1}"]`)) {
+//         let finalWinner = bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
+//         document.querySelector('.final .team-name').textContent = finalWinner;
+
+//         console.log(`Final winner updated: ${finalWinner}`);
+//     }
+// }
+
+function updateBracket(bracketBox) {
+    let bracketNo = parseInt(bracketBox.dataset.bracketNo);
+    let scores = [
+        parseInt(bracketBox.querySelector('.team-a .team-score').value),
+        parseInt(bracketBox.querySelector('.team-b .team-score').value)
+    ];
+    let winner = scores[0] > scores[1] ? 0 : 1;
+
+    // Highlight the winner
     bracketBox.classList.remove('winner-a', 'winner-b');
     bracketBox.classList.add(winner === 0 ? 'winner-a' : 'winner-b');
 
-   
-    let nextBracketNo = null;
-    if (roundNo === 1) {
-        
-        nextBracketNo = 4 + Math.floor((bracketNo + 1) / 2);
-    } else if (roundNo === 2) {
-        
-        nextBracketNo = 7;
-    }
+    // Find next game in the current structure
+    let nextGame = currentStruct.find(s => s.lastGames && s.lastGames.includes(bracketNo));
 
-
-    let nextBracketBox = document.querySelector(
-        `.bracketbox[data-round="${roundNo + 1}"][data-bracket-no="${nextBracketNo}"]`
-    );
-
-    if (nextBracketBox) {
-      
-        let winnerPosition = (bracketNo % 2 === 0) ? 2 : 1; 
-        let winnerName = bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
-
-        nextBracketBox.querySelector(`.team:nth-child(${winnerPosition}) .team-name`).textContent = winnerName;
-
-        updateBracket(nextBracketBox);
+    if (nextGame) {
+        let nextBracketBox = document.querySelector(`.bracketbox[data-bracket-no="${nextGame.bracketNo}"]`);
+        let winnerIndex = nextGame.lastGames.indexOf(bracketNo);
+        nextBracketBox.querySelector(`.team:nth-child(${winnerIndex + 1}) .team-name`).textContent = 
+            bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
     } else {
-        console.warn(`No nextBracketBox found for Bracket ${bracketNo} in Round ${roundNo}`);
+        // If it's the last round, update the final winner
+        document.querySelector('.final .team-name').textContent = 
+            bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
     }
 
-    if (!document.querySelector(`.bracketbox[data-round="${roundNo + 1}"]`)) {
-        let finalWinner = bracketBox.querySelector(`.team:nth-child(${winner + 1}) .team-name`).textContent;
-        document.querySelector('.final .team-name').textContent = finalWinner;
+    // Check if all scores are entered in the current round
+    let currentRound = parseInt(bracketBox.dataset.round);
+    checkAndEnableNextRound(currentRound);
+}
 
-        console.log(`Final winner updated: ${finalWinner}`);
+function checkAndEnableNextRound(currentRound) {
+    let allScoresEntered = true;
+    
+    document.querySelectorAll(`.bracketbox[data-round="${currentRound}"]`).forEach(box => {
+        let score1 = box.querySelector('.team-score[data-team="0"]').value;
+        let score2 = box.querySelector('.team-score[data-team="1"]').value;
+        if (score1 === '' || score2 === '') {
+            allScoresEntered = false;
+        }
+    });
+
+    // Enable the next round if all scores for the current round are entered
+    if (allScoresEntered) {
+        document.querySelectorAll(`.bracketbox[data-round="${currentRound + 1}"] .team-score`).forEach(input => {
+            input.disabled = false;
+        });
     }
 }
+
 
 
 
