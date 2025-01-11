@@ -220,7 +220,7 @@
         <div class="container mt-5">
             <h1 class="text-center mb-5 pb-5 text-white">پنل ادمین</h1>
             <div class="row">
-                <div class="col-md-3 mb-4">
+                <div class="col-md mb-5">
                     <div class="card text-center" data-bs-toggle="modal" data-bs-target="#championshipModal">
                         <div class="card-body">
                             <i class="bi bi-trophy fs-1"></i>
@@ -231,7 +231,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-4">
+                <div class="col-md mb-5">
                     <div class="card text-center" data-bs-toggle="modal" data-bs-target="#medalsModal">
                         <div class="card-body">
                             <i class="bi bi-award fs-1"></i>
@@ -242,7 +242,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-4">
+                <div class="col-md mb-5">
                     <div class="card text-center" data-bs-toggle="modal" data-bs-target="#coachesModal">
                         <div class="card-body">
                             <i class="bi bi-person-badge fs-1"></i>
@@ -253,10 +253,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 mb-4">
+                <div class="col-md mb-5">
                     <div class="card text-center" data-bs-toggle="modal" data-bs-target="#refereesModal">
                         <div class="card-body">
-                            <i class="bi bi-person-raised-hand fs-1"></i>
+                            <i class="bi bi-whistle fs-1"></i>
                             <h5 class="card-title m-4">داوران</h5>
                         </div>
                         <div class="card-footer">
@@ -264,9 +264,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md mb-5">
+                    <div class="card text-center" data-bs-toggle="modal" data-bs-target="#announcementsModal">
+                        <div class="card-body">
+                            <i class="bi bi-megaphone fs-1"></i>
+                            <h5 class="card-title m-4">اطلاعیه‌</h5>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#announcementsModal">ویرایش</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-       </div>
         <!-- end of cards -->
         <!-- Modal for Championship -->
         <div class="modal fade" id="championshipModal" tabindex="-1" aria-hidden="true">
@@ -554,6 +564,10 @@
             </div>
          </div>
 
+
+
+   
+
     <!-- confirmation -->
     <div class="container mt-5 containerc bg-dark">
         <h2 class="text-center text-white mb-4 bg-dark">
@@ -572,6 +586,43 @@
             </table>
     </div>
 
+
+
+    <!-- Modal for Announcements -->
+    <div class="modal fade" id="announcementsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark">مدیریت اطلاعیه‌ها</h5>
+                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                    <form id="announcementForm" enctype="multipart/form-data">
+                        <div class="mb-2">
+                            <label for="announcementTitle" class="form-label text-dark">عنوان اطلاعیه</label>
+                            <input type="text" class="form-control" id="announcementTitle" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="announcementDescription" class="form-label text-dark">توضیحات اطلاعیه</label>
+                            <textarea class="form-control" id="announcementDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label for="announcementImage" class="form-label text-dark">تصویر اطلاعیه</label>
+                            <input type="file" class="form-control" id="announcementImage" accept="image/*" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">افزودن اطلاعیه</button>
+                    </form>
+                    <hr>
+                    <h6 class="mt-4 text-dark">اطلاعیه‌های موجود</h6>
+                    <div id="announcementsList" class="row">
+                        <!-- Existing announcements will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- feedback table -->
     <div class="container mt-5 containerc bg-dark">
         <table class="table table-striped text-center table-hover table-dark">
@@ -718,10 +769,7 @@
                             }
                     return;
               }
-                       
-                
-           
-            // Collect data from each row
+
             for (let i = 0; i < rows.length; i++) {
                 const input = rows[i].cells[0].querySelector("input");
                 if (input) {
@@ -979,7 +1027,7 @@
                 $.post('/Admin/ToggleConfirmation', { id: id }, function (response) {
                     console.log('Response from server:', response);
                     if (response.success) {
-                        loadUsers(); // Refresh the table after the status change
+                        loadUsers(); 
                     } else {
                         alert('Error updating confirmation status');
                     }
@@ -988,13 +1036,135 @@
                 });
             };
 
-            // Load users when the document is ready
             loadUsers();
         });
 
 
+        const announcementForm = document.getElementById('announcementForm');
+        const announcementsList = document.getElementById('announcementsList');
+        let announcements = [];
 
-        
+            announcementForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                if (announcements.length >= 3) {
+                    alert('حداکثر تعداد اطلاعیه‌ها (3) قبلاً اضافه شده است.');
+                    return;
+                }
+
+                const title = document.getElementById('announcementTitle').value;
+                const description = document.getElementById('announcementDescription').value;
+                const imageFile = document.getElementById('announcementImage').files[0];
+
+                const formData = new FormData();
+                formData.append('Title', title);
+                formData.append('Description', description);
+                formData.append('Image', imageFile);
+
+                fetch('/Admin/Create', {
+                    method: 'POST',
+                    body: formData,
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to save the announcement');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        
+                        addAnnouncementToList(data.id, data.title, data.description, data.imagePath);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        alert('خطا در ذخیره اطلاعیه.');
+                    });
+
+
+                announcementForm.reset();
+            });
+
+
+            function addAnnouncementToList(id, title, description, imageData) {
+                const announcement = { id, title, description, imageData };
+                announcements.push(announcement);
+                renderAnnouncements();
+            }
+
+
+        function renderAnnouncements() {
+            announcementsList.innerHTML = '';
+            announcements.forEach((announcement, index) => {
+                const announcementElement = document.createElement('div');
+                announcementElement.className = 'col-md-4 mb-3';
+                announcementElement.innerHTML = `
+                            <div class="h-100 position-relative">
+                                <img src="${announcement.imageData}" class="card-img-top" alt="${announcement.title}" style="height: 200px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-dark text-center">${announcement.title}</h5>
+                                    <p class="card-text text-dark text-center">${announcement.description}</p>
+                                    <button class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 po" onclick="deleteAnnouncement(${index})">حذف</button>
+                                </div>
+                            </div>
+                        `;
+                announcementsList.appendChild(announcementElement);
+            });
+        }
+
+            
+
+
+            function deleteAnnouncement(index) {
+                const announcementId = announcements[index].id;
+
+                if (confirm('آیا مطمئن هستید که می‌خواهید این اطلاعیه را حذف کنید؟')) {
+                    fetch(`/Admin/Delete/${announcementId}`, {
+                        method: 'DELETE',
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to delete the announcement');
+                            }
+                            
+                            announcements.splice(index, 1);
+                            renderAnnouncements();
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            alert('خطا در حذف اطلاعیه.');
+                        });
+                }
+            }
+
+
+        window.addEventListener('load', function () {
+            const savedAnnouncements = localStorage.getItem('announcements');
+            if (savedAnnouncements) {
+                announcements = JSON.parse(savedAnnouncements);
+                renderAnnouncements();
+            }
+        });
+
+            window.addEventListener('load', function () {
+                fetch('/Admin/GetAll')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to load announcements');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        data.forEach(announcement => {
+                            addAnnouncementToList(announcement.id, announcement.title, announcement.description, announcement.imagePath);
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        alert('خطا در بارگذاری اطلاعیه‌ها.');
+                    });
+            });
+
+
     </script>  
 </body>
 </html>

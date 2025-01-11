@@ -596,6 +596,76 @@
                 }
             });
         }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/Home/GetAnnouncements', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('HTTP error! Status: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Announcements Data:', data); 
+                    populateCarousel(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while retrieving announcements.');
+                });
+        });
+
+
+        function populateCarousel(announcements) {
+            const carouselInner = document.querySelector('.carousel-inner');
+            const carouselIndicators = document.querySelector('.carousel-indicators');
+
+            carouselInner.innerHTML = '';
+            carouselIndicators.innerHTML = '';
+
+            if (announcements.length === 0) {
+                carouselInner.innerHTML = `<div class="carousel-item active text-center">
+                    <h3>No announcements available</h3>
+                </div>`;
+                return;
+            }
+
+            announcements.forEach((announcement, index) => {
+
+                const title = announcement.title || 'No Title';
+                const description = announcement.description || 'No Description';
+                const imageUrl = announcement.imageUrl || '/images/default.jpg'; 
+
+                const carouselItem = document.createElement('div');
+                carouselItem.className = `carousel-item ${index === 0 ? 'active' : ''}`;
+                carouselItem.innerHTML = `
+                    <img src="${imageUrl}" class="img-fluid d-block w-100" style="height: 700px;" alt="${title}">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h3>${title}</h3>
+                        <p>${description}</p>
+                    </div>
+                `;
+
+                carouselInner.appendChild(carouselItem);
+
+                const indicator = document.createElement('li');
+                indicator.setAttribute('data-target', '#announcementsCarousel');
+                indicator.setAttribute('data-slide-to', index.toString());
+                if (index === 0) {
+                    indicator.className = 'active';
+                }
+
+                carouselIndicators.appendChild(indicator);
+            });
+        }
+
+
         </script>
         </body>
 </html>

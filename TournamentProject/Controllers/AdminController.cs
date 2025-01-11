@@ -762,6 +762,100 @@ namespace TournamentProject.Controllers
             return Ok();
         }
 
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> Create(AnnouncementViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string imagePath = null;
+
+                // Save the uploaded image
+                if (model.Image != null)
+                {
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+                    Directory.CreateDirectory(uploadsFolder);
+
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Image.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.Image.CopyToAsync(fileStream);
+                    }
+
+                    imagePath = "/uploads/" + uniqueFileName;
+                }
+
+                // Save the announcement to the database
+                var announcement = new Announcement
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    ImagePath = imagePath,
+                    CreatedAt = DateTime.Now
+                };
+
+                _dbContext.Announcements.Add(announcement);
+                await _dbContext.SaveChangesAsync();
+
+                return Json(new
+                {
+                    title = announcement.Title,
+                    description = announcement.Description,
+                    imagePath = announcement.ImagePath
+                });
+            }
+
+            return BadRequest("Invalid data");
+        }
+
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var announcements = _dbContext.Announcements
+                .Select(a => new
+                {
+                    id = a.Id,
+                    title = a.Title,
+                    description = a.Description,
+                    imagePath = a.ImagePath
+                })
+                .ToList();
+
+            return Json(announcements);
+        }
+
+
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var announcement = await _dbContext.Announcements.FindAsync(id);
+            if (announcement == null)
+            {
+                return NotFound();
+            }
+
+            // Remove the image file
+            if (!string.IsNullOrEmpty(announcement.ImagePath))
+            {
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", announcement.ImagePath.TrimStart('/'));
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+
+            _dbContext.Announcements.Remove(announcement);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
     }
 
 

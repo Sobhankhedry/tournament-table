@@ -81,5 +81,21 @@ namespace TournamentProject.Controllers
             return View();
         }
 
+        public IActionResult GetAnnouncements()
+        {
+            var announcements = _dbContext.Announcements
+                .Select(a => new
+                {
+                    a.Id,
+                    a.Title,
+                    a.Description,
+                    ImageUrl = Url.Content(a.ImagePath)
+                })
+                .ToList();
+
+            return Json(announcements);
+        }
+
+
     }
 }

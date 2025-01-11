@@ -59,15 +59,15 @@
     <script>
         document.querySelectorAll('.card span').forEach(category => {
             category.addEventListener('click', () => {
-                const ageGroup = category.getAttribute('data-age-group'); // Get the clicked age group
-                const managerName = document.querySelector('.button2').innerText.trim(); // Get the manager's name
+                const ageGroup = category.getAttribute('data-age-group');
+                const managerName = document.querySelector('.button2').innerText.trim(); 
 
                 console.log(`Fetching players for manager: ${managerName}, Age Group: ${ageGroup}`);
 
-                // Construct the API endpoint URL
+               
                 const apiUrl = `/Admin/GetPlayersByManagerAndAgeGroup?managerName=${encodeURIComponent(managerName)}&ageGroup=${encodeURIComponent(ageGroup)}`;
 
-                // Fetch players for the selected manager and age group
+                
                 fetch(apiUrl)
                     .then(response => {
                         if (!response.ok) {
@@ -76,18 +76,15 @@
                         return response.json();
                     })
                     .then(data => {
-                        
-                        // Select the table body
+
                         const tbody = document.querySelector('.table-container table tbody');
                         if (!tbody) {
                             console.error("Table <tbody> element not found in the DOM");
                             return;
                         }
 
-                        // Clear existing table rows
                         tbody.innerHTML = '';
 
-                        // Populate the table with new player data
                         data.forEach(player => {
                             const row = document.createElement('tr');
                             row.innerHTML = `

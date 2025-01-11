@@ -486,7 +486,7 @@
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
-                    return response.text(); // If the back-end sends a success message
+                    return response.text(); 
                 })
                 .then(data => {
                     console.log(data);
@@ -498,13 +498,13 @@
                     );
 
                     if (rowToDelete) {
-                        rowToDelete.remove(); // Remove the row from the table
+                        rowToDelete.remove(); 
                     } else {
                         console.error("Row to delete not found in the table.");
                     }
 
-                    document.body.removeChild(modal); // Close the modal
-                    // Optionally refresh the table or remove the row
+                    document.body.removeChild(modal); 
+                    
 
                     
 
